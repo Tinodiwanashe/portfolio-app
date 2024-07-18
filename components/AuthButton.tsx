@@ -1,6 +1,10 @@
+
 import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { buttonVariants } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { SubmitButton } from "./submit-button";
+import { signOut } from "@/app/login/actions";
 
 export default async function AuthButton() {
   const supabase = createClient();
@@ -9,29 +13,33 @@ export default async function AuthButton() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const signOut = async () => {
-    "use server";
+/*   const {
+    data: { userProfile }
+  } = await getUserProfile(supabase); */
 
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    return redirect("/login");
-  };
 
+  // Display user's profile picture and name if user is authenticated {`/profile/${user.id}`}
   return user ? (
     <div className="flex items-center gap-4">
-      Hey, {user.email}!
-      <form action={signOut}>
-        <button className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover">
+      <Avatar>
+        <AvatarImage src='' alt={user.email}/>
+        <AvatarFallback>{user.email}</AvatarFallback>
+      </Avatar>
+      <span>{user.email}</span>
+      <form>
+        <SubmitButton
+          formAction={signOut}
+          className=""
+          loadingText="Logging Out..."
+        >
           Logout
-        </button>
+        </SubmitButton>
       </form>
     </div>
   ) : (
-    <Link
-      href="/login"
-      className="py-2 px-3 flex rounded-md no-underline bg-btn-background hover:bg-btn-background-hover"
-    >
+       // Display login link if user is not authenticated
+    <Link  href="/login" className={buttonVariants({ variant: "default" })}>
       Login
-    </Link>
+     </Link>
   );
 }
