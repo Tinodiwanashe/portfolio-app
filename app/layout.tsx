@@ -21,9 +21,7 @@ export const metadata: Metadata  = {
   description: "A Tech Enthusiast Portfolio Website"
 };
 
-export default function RootLayout({
-  children,
-}: RootLayoutProps) {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
       <Head>

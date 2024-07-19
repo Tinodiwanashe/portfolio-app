@@ -1,10 +1,6 @@
 "use client";
 
 import React from "react";
-import { FaLocationArrow } from "react-icons/fa";
-import MagicButton from "./MagicButton";
-import Link from "next/link";
-import Image from "next/image";
 import { socials } from "@/app/types/data";
 import { Button } from "./button";
 
@@ -35,11 +31,4 @@ export const Footer = () => {
     </footer>
   );
 };
-
-
-{socials.map((item, index) => ( 
-<Button variant="outline" size={"icon"} key={index} className="h-[2.3rem] w-[2.3rem]" > 
-  <span className="sr-only">{item.name}</span> 
-  {item.icon} 
-  </Button> ))} 
   

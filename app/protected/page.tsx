@@ -4,6 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import FetchDataSteps from "@/components/tutorial/FetchDataSteps";
 import Header from "@/components/Header";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 export default async function ProtectedPage() {
   const supabase = createClient();
@@ -42,14 +43,14 @@ export default async function ProtectedPage() {
       <footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
         <p>
           Powered by{" "}
-          <a
+          <Link
             href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
             target="_blank"
             className="font-bold hover:underline"
             rel="noreferrer"
           >
             Supabase
-          </a>
+          </Link>
         </p>
       </footer>
     </div>
