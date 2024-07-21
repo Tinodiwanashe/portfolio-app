@@ -4,6 +4,7 @@ import { stats } from '@/app/types/data'
 import React from 'react'
 import CountUp from 'react-countup';
 
+
 const Stats = () => {
   return (
     <section className='mt-10'>
