@@ -3,6 +3,7 @@
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
 import * as Sentry from "@sentry/nextjs";
+import { color } from "framer-motion";
 
 Sentry.init({
   dsn: "https://aae8500f375a9ecd0abccd9d4e04b6ab@o4507618020884480.ingest.de.sentry.io/4507644402139216",
@@ -25,6 +26,10 @@ Sentry.init({
       // Additional Replay configuration goes in here, for example:
       maskAllText: true,
       blockAllMedia: true,
+    }),
+    Sentry.feedbackIntegration({
+      // Additional Replay configuration goes in here, for example:
+      colorScheme: "dark"
     }),
   ],
 });
