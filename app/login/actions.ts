@@ -10,6 +10,7 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { type NextRequest, NextResponse  } from "next/server";
+import { AuthRequiredError } from "@/lib/exceptions";
 
 
 export const signInWithGoogle = async () => {
@@ -75,7 +76,8 @@ export const signUp = async (formData: FormData) => {
     });
 
     if (error) {
-    return redirect("/login?message=Could not authenticate user");
+    //return redirect("/login?message=Could not authenticate user");
+    throw new AuthRequiredError
     }
 
     revalidatePath('/', 'layout');
