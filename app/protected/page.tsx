@@ -5,6 +5,7 @@ import FetchDataSteps from "@/components/tutorial/FetchDataSteps";
 import Header from "@/components/Header";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { AuthRequiredError } from "@/lib/exceptions";
 
 export default async function ProtectedPage() {
   const supabase = createClient();
@@ -14,7 +15,7 @@ export default async function ProtectedPage() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return redirect("/login");
+    throw new AuthRequiredError();
   }
 
   return (
