@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 
+// Injected content via Sentry wizard below
+const { withSentryConfig } = require("@sentry/nextjs");
+
 const nextConfig = {
     images: {
         remotePatterns: [
@@ -13,15 +16,10 @@ const nextConfig = {
       },
 };
 
-module.exports = nextConfig;
-
-
-// Injected content via Sentry wizard below
-
-const { withSentryConfig } = require("@sentry/nextjs");
+// module.exports = nextConfig;
 
 module.exports = withSentryConfig(
-  module.exports,
+  nextConfig,
   {
     // For all available options, see:
     // https://github.com/getsentry/sentry-webpack-plugin#options
