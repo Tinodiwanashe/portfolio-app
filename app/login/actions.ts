@@ -29,7 +29,7 @@ export const signInWithGoogle = async () => {
     });
 
     if (error) {
-        console.log(" Google login error occured: " + error);
+        console.error(" Google login error occured: " + error);
         return redirect("/login?message=Could not authenticate user");
     }
 
@@ -53,7 +53,8 @@ export const signIn = async (formData: FormData) => {
     const { error } = await supabase.auth.signInWithPassword(data);
 
     if (error) {
-    return redirect("/login?message=Could not authenticate user");
+        console.error("Login Error: ", error);
+        return redirect("/login?message=Could not authenticate user");
     }
     revalidatePath('/', 'layout');
     return redirect("/protected");
@@ -77,7 +78,7 @@ export const signUp = async (formData: FormData) => {
     if (error) {
     //return redirect("/login?message=Could not authenticate user");
     console.error(error);
-    throw new AuthRequiredError(error.message);
+    throw new Error(error.message);
     }
 
     revalidatePath('/', 'layout');
