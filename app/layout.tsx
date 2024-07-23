@@ -11,12 +11,12 @@ const fontSans = FontSans({
   variable: "--font-sans",
 })
 
-const defaultUrl = process.env.VERCEL_URL
+/* const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+  : "http://localhost:3000"; */
 
 export const metadata: Metadata  = {
-  metadataBase: new URL(defaultUrl),
+  // metadataBase: new URL(defaultUrl),
   title: "Munyaradzi Kandoro Portfolio",
   description: "A Tech Enthusiast Portfolio Website"
 };
