@@ -36,6 +36,7 @@ export const signInWithGoogle = async () => {
     if (data.url) {
         console.log(" Google login Redirecting...");
         console.log(" Redirecting to:", data.url);
+        revalidatePath('/', 'layout');
         return redirect(data.url); // use the redirect API for your server framework
     }
   };

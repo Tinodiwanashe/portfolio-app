@@ -25,7 +25,7 @@ export default async function Index() {
   return (
     <HomeLayout>
       <div className="py-20">
-        <Hero/>
+        <Hero isSupabaseConnected={isSupabaseConnected}/>
       </div>
     </HomeLayout>
   );
