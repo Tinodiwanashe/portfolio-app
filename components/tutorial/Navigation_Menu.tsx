@@ -61,7 +61,7 @@ export function Navigation_Menu({
     }, []) */
 
   return (
-    <header className='sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
+    <header className='sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60' >
       <div className="container h-14 max-w-screen-2xl flex items-center">
         <div className='mr-4 hidden md:flex lg:flex'>
           <Logo href= '/' classNames = 'mr-6 space-x-2'/> 
