@@ -66,20 +66,24 @@ export const signUp = async (formData: FormData) => {
     const origin = headers().get("origin");
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    const supabase = createClient();
 
-    const { error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-        emailRedirectTo: `${origin}/auth/callback`,
-    },
-    });
+    try {
+        const supabase = createClient();
+        const { error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                emailRedirectTo: `${origin}/auth/callback`,
+            },
+            });  
 
-    if (error) {
-    //return redirect("/login?message=Could not authenticate user");
-    console.error(error);
-    throw new Error(error.message);
+            if (error) {
+                //return redirect("/login?message=Could not authenticate user");
+                
+                throw new Error(error.message);
+            }
+    } catch (error) {
+        console.error("Sign up error: ", error);
     }
 
     revalidatePath('/', 'layout');
