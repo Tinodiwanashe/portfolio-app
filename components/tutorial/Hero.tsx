@@ -1,12 +1,7 @@
 import React from 'react'
 
-import { Spotlight } from '../ui/Spotlight'
 import { TextGenerateEffect } from '../ui/TextGenerateEffect'
-import MagicButton from '../ui/MagicButton'
 import { FaPhone, FaDownload } from 'react-icons/fa'
-import Link from 'next/link'
-import { GridBackground } from '../ui/GridBackground'
-import { TypewriterEffect } from '../ui/typewriter-effect'
 import { FlipWords } from '../ui/FlipWords'
 import { Button } from '../ui/button'
 import HeroImage from './HeroImage'
@@ -27,7 +22,7 @@ const words = [
 
 const words_ = ["Outsystems", "Next.js", ".Net"];
 
-const Hero = () => {
+const Hero = ({isSupabaseConnected} : {isSupabaseConnected: boolean;}) => {
   return (
     <section className=" container m-auto h-full w-full relative z-10">
       <div className="mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
@@ -50,7 +45,7 @@ const Hero = () => {
           <p className="mt-6 text-lg leading-8 text-gray-400 flex-1">
             I excel at crafting seamless digital experiences and I am a proficient in various programming languages and technologies.
           </p>
-
+          {isSupabaseConnected && <p className='mt-4 text-lg leading-8 text-gray-400 flex-1'>SUPABASE IS CONNECTED!</p>}
           <div className='mt-10 flex flex-col xl:flex-row items-center gap-2'>
             <Button variant={'default'} size={'lg'}>
               Download CV <FaDownload className='ml-2 h-4 w-4'/>

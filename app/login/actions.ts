@@ -36,6 +36,7 @@ export const signInWithGoogle = async () => {
     if (data.url) {
         console.log(" Google login Redirecting...");
         console.log(" Redirecting to:", data.url);
+        revalidatePath('/', 'layout');
         return redirect(data.url); // use the redirect API for your server framework
     }
   };
@@ -65,24 +66,28 @@ export const signUp = async (formData: FormData) => {
     const origin = headers().get("origin");
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    const supabase = createClient();
 
-    const { error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-        emailRedirectTo: `${origin}/auth/callback`,
-    },
-    });
+    try {
+        const supabase = createClient();
+        const { error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                emailRedirectTo: `${origin}/auth/callback`,
+            },
+            });  
 
-    if (error) {
-    //return redirect("/login?message=Could not authenticate user");
-    console.error(error);
-    throw new Error(error.message);
+            if (error) {               
+                throw new AuthRequiredError(error.message);
+            } else {
+                revalidatePath('/', 'layout');
+                return redirect("/login?message=Check email to continue sign in process");
+            }
+    } catch (error) {
+        console.log("Sign up error: ", error);
+        return redirect("/login?message=Could not authenticate user");
     }
 
-    revalidatePath('/', 'layout');
-    return redirect("/login?message=Check email to continue sign in process");
 }
 
 //req: NextRequest
