@@ -13,6 +13,11 @@ export default async function AuthButton() {
     data: { user },
   } = await supabase.auth.getUser();
 
+  //Substr(Trim(Name),0,1)+If(Index(Trim(Name)," ") > -1, Substr(Trim(Name),Index(Trim(Name)," ")+1,1),"")
+
+
+  const fullname =  user?.email;
+  const initials = fullname && fullname?.trim().substring(0, 1 ) + fullname && fullname?.trim().indexOf(" ") > -1 ? fullname?.trim().substring(fullname?.trim().indexOf(" ") + 1, 1 ) : "";
 /*   const {
     data: { userProfile }
   } = await getUserProfile(supabase); */
@@ -23,7 +28,7 @@ export default async function AuthButton() {
     <div className="flex items-center gap-4">
       <Avatar>
         <AvatarImage src='' alt={user.email}/>
-        <AvatarFallback>{user.email}</AvatarFallback>
+        <AvatarFallback>{initials}</AvatarFallback>
       </Avatar>
       <span>{user.email}</span>
       <form>
