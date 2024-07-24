@@ -77,15 +77,15 @@ export const signUp = async (formData: FormData) => {
             },
             });  
 
-            if (error) {
-                //return redirect("/login?message=Could not authenticate user");
-                throw new Error(error.message);
+            if (error) {               
+                throw new AuthRequiredError(error.message);
             } else {
                 revalidatePath('/', 'layout');
                 return redirect("/login?message=Check email to continue sign in process");
             }
     } catch (error) {
-        console.error("Sign up error: ", error);
+        console.log("Sign up error: ", error);
+        return redirect("/login?message=Could not authenticate user");
     }
 
 }
