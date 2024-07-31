@@ -5,38 +5,42 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Head from "next/head";
 import { RootLayoutProps } from "./types/definitions";
 import { Metadata } from 'next'
+import { ClerkProvider, Theme  } from "@clerk/nextjs";
 
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 })
 
-/* const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000"; */
+// Define the dark theme
+const dark: Theme = {
+  baseTheme: "dark"
+  // Add other properties as needed
+};
 
 export const metadata: Metadata  = {
-  // metadataBase: new URL(defaultUrl),
   title: "Munyaradzi Kandoro Portfolio",
   description: "A Tech Enthusiast Portfolio Website"
 };
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <Head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-      </Head>
-      <body className={cn("min-h-screen bg-background text-foreground font-sans antialiased",fontSans.variable)}>
-        <ThemeProvider
-              attribute="class"
-              defaultTheme="dark"
-              enableSystem
-              disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
+    <ClerkProvider appearance={dark}>
+      <html lang="en" suppressHydrationWarning>
+        <Head>
+          <link rel="icon" href="/favicon.ico" sizes="any" />
+        </Head>
+        <body className={cn("min-h-screen bg-background text-foreground font-sans antialiased",fontSans.variable)}>
+          <ThemeProvider
+                attribute="class"
+                defaultTheme="dark"
+                enableSystem
+                disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

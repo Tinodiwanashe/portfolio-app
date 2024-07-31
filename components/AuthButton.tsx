@@ -1,50 +1,90 @@
 
-import { createClient } from "@/utils/supabase/server";
+"use client";
+
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { SubmitButton } from "./submit-button";
-import { signOut } from "@/app/login/actions";
+import { 
+  Avatar, 
+  AvatarFallback, 
+  AvatarImage 
+} from "@/components/ui/avatar";
+import { 
+  SignedIn, 
+  SignedOut, 
+  SignOutButton, 
+  useUser 
+} from "@clerk/nextjs";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
+import { FaUser, FaSignOutAlt, FaSignInAlt, FaCog} from "react-icons/fa"
 
-export default async function AuthButton() {
-  const supabase = createClient();
+export default function AuthButton() {
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { isLoaded, isSignedIn, user } = useUser();
 
-  //Substr(Trim(Name),0,1)+If(Index(Trim(Name)," ") > -1, Substr(Trim(Name),Index(Trim(Name)," ")+1,1),"")
-
-
-  const fullname =  user?.email;
+  const fullname =  user?.fullName;
   const initials = fullname && fullname?.trim().substring(0, 1 ) + fullname && fullname?.trim().indexOf(" ") > -1 ? fullname?.trim().substring(fullname?.trim().indexOf(" ") + 1, 1 ) : "";
-/*   const {
+  /*   const {
     data: { userProfile }
   } = await getUserProfile(supabase); */
 
 
   // Display user's profile picture and name if user is authenticated {`/profile/${user.id}`}
   return user ? (
-    <div className="flex items-center gap-4">
-      <Avatar>
-        <AvatarImage src='' alt={user.email}/>
-        <AvatarFallback>{initials}</AvatarFallback>
-      </Avatar>
-      <span>{user.email}</span>
-      <form>
-        <SubmitButton
-          formAction={signOut}
-          className=""
-          loadingText="Logging Out..."
-        >
-          Logout
-        </SubmitButton>
-      </form>
-    </div>
+    <SignedIn>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild className="w-[2.25rem] h-[2.25rem]">
+            <Avatar >
+                <AvatarImage src={user?.imageUrl} alt="User Profile" />
+                <AvatarFallback>{initials}</AvatarFallback>
+            </Avatar>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56" align="end">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+                <Link href="/user-profile">
+                    <DropdownMenuItem>
+                        <FaUser className="mr-2 h-4 w-4" />
+                        <span>Profile</span>
+                        <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                </Link>
+                <Link href="/dashboard/settings">
+                        <DropdownMenuItem>
+                            <FaCog className="mr-2 h-4 w-4" />
+                            <span>Settings</span>
+                            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                        </DropdownMenuItem>
+                    </Link>                
+            </DropdownMenuGroup>
+            <SignOutButton>
+                <DropdownMenuItem>
+                    <FaSignOutAlt className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
+                    <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                </DropdownMenuItem>
+            </SignOutButton>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </SignedIn>
   ) : (
-       // Display login link if user is not authenticated
-    <Link  href="/login" className={buttonVariants({ variant: "default" })}>
-      Login
-     </Link>
+    // Display login link if user is not authenticated
+
+    <SignedOut>
+      <Link  href="/sign-in" className={buttonVariants({ variant: "default" })}>
+        <FaSignInAlt className="mr-2 h-4 w-4" />
+        <span>Login</span>
+      </Link>
+    </SignedOut>
+
   );
 }

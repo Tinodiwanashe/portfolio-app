@@ -16,11 +16,14 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/avatar"
+import { SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { FaHamburger} from "react-icons/fa"
 import Logo from '../Logo';
 import { Button } from "../ui/button"
 import { ModeToggle } from "./ModeToggle"
 import { useState, useEffect, forwardRef, ElementRef, ComponentPropsWithoutRef } from "react"
 import { socials } from "@/app/types/data"
+import { Dialog, DialogClose } from "@/components/ui/dialog"
 
 //you cannot export an async functioon within a client component. The solution here is to use the use state and use effect hook
 
@@ -64,6 +67,33 @@ export function Navigation_Menu({
     <header className='sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60' >
       <div className="container h-14 max-w-screen-2xl flex items-center">
         <div className='mr-4 hidden md:flex lg:flex'>
+          <div className="flex justify-between w-full min-[825px]:hidden">
+            <Dialog>
+                <SheetTrigger className="p-2 transition">
+                    <FaHamburger />
+                </SheetTrigger>
+                <SheetContent side="left">
+                    <SheetHeader>
+                        <SheetTitle>Next Starter</SheetTitle>
+                    </SheetHeader>
+                    <div className="flex flex-col space-y-3 mt-[1rem]">
+                        <DialogClose asChild>
+                            <Link href="/">
+                                <Button variant="outline" className="w-full">Home</Button>
+                            </Link>
+                        </DialogClose>
+                        <DialogClose asChild>
+                            <Link href="/dashboard" legacyBehavior passHref className="cursor-pointer">
+                                <Button variant="outline">
+                                    Dashboard
+                                </Button>
+                            </Link>
+                        </DialogClose>
+                    </div>
+                </SheetContent>
+            </Dialog>
+            <ModeToggle />
+          </div>
           <Logo href= '/' classNames = 'mr-6 space-x-2'/> 
           <NavigationMenu className="hidden xl:flex items-center gap-8">            
             <NavigationMenuList className="hidden md:flex md:space-x-4">
