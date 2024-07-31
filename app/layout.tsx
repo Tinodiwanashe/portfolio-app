@@ -26,8 +26,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
     baseTheme: theme === "dark" ? dark : undefined,
     elements: {
       formButtonPrimary:
-        "bg-primary text-primary-foreground shadow hover:bg-primary/90 text-sm font-medium",
-    },
+        "bg-primary text-primary-foreground shadow hover:bg-primary/90 text-sm font-medium"
+    }
   }
   return (
     <ClerkProvider appearance={clerkAppearance}>
