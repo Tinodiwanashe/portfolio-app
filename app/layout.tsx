@@ -1,3 +1,5 @@
+
+
 import { Inter as FontSans } from "next/font/google"
 import "./styles/globals.css";
 import { cn } from "@/lib/utils";
@@ -8,7 +10,7 @@ import { Metadata } from 'next'
 import { ClerkProvider  } from "@clerk/nextjs";
 import { useTheme } from "next-themes";
 import { dark } from '@clerk/themes';
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { UseThemeProps } from "next-themes/dist/types";
 
 const fontSans = FontSans({
@@ -22,9 +24,15 @@ export const metadata: Metadata  = {
 };
 
 export default function RootLayout({ children }: RootLayoutProps) {
-  const [nextTheme, setNextTheme] = useState<UseThemeProps | null>()
+/*   async function getTheme() {
+    'use server'
+    const {theme} = useTheme();
+    return theme;
+    // ...
+  } */
+  
  
-  useEffect(() => {
+/*   useEffect(() => {
     const fetchTheme = async () => {
       setNextTheme(useTheme());
     }
@@ -34,15 +42,17 @@ export default function RootLayout({ children }: RootLayoutProps) {
       console.error('An error occurred while fetching the data: ', e)
     })
   }, [])
-
+ */
   const clerkAppearance = {
-    baseTheme: nextTheme?.theme === "dark" ? dark : undefined,
+    baseTheme: "dark", //await getTheme() === "dark" ? dark : undefined,
     elements: {
       formButtonPrimary: "bg-primary text-primary-foreground shadow hover:bg-primary/90 text-sm font-medium"
     }
   }
+  //appearance={clerkAppearance}
+
   return (
-    <ClerkProvider appearance={clerkAppearance}>
+    <ClerkProvider >
       <html lang="en" suppressHydrationWarning>
         <Head>
           <link rel="icon" href="/favicon.ico" sizes="any" />
