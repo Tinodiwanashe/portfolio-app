@@ -8,6 +8,8 @@ import { Metadata } from 'next'
 import { ClerkProvider  } from "@clerk/nextjs";
 import { useTheme } from "next-themes";
 import { dark } from '@clerk/themes';
+import React, { useState, useEffect } from 'react'
+import { UseThemeProps } from "next-themes/dist/types";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -20,13 +22,23 @@ export const metadata: Metadata  = {
 };
 
 export default function RootLayout({ children }: RootLayoutProps) {
-  const { theme } = useTheme();
+  const [nextTheme, setNextTheme] = useState<UseThemeProps | null>()
+ 
+  useEffect(() => {
+    const fetchTheme = async () => {
+      setNextTheme(useTheme());
+    }
+ 
+    fetchTheme().catch((e) => {
+      // handle the error as needed
+      console.error('An error occurred while fetching the data: ', e)
+    })
+  }, [])
 
   const clerkAppearance = {
-    baseTheme: theme === "dark" ? dark : undefined,
+    baseTheme: nextTheme?.theme === "dark" ? dark : undefined,
     elements: {
-      formButtonPrimary:
-        "bg-primary text-primary-foreground shadow hover:bg-primary/90 text-sm font-medium"
+      formButtonPrimary: "bg-primary text-primary-foreground shadow hover:bg-primary/90 text-sm font-medium"
     }
   }
   return (
