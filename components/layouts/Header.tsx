@@ -27,7 +27,7 @@ import { Dialog, DialogClose } from "@/components/ui/dialog"
 
 //you cannot export an async functioon within a client component. The solution here is to use the use state and use effect hook
 
-export function Header({
+export default function Header({
     navItems,
     children,
   }: {
