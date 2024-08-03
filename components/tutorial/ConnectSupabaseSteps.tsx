@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Step from "./Step";
 
 export default function ConnectSupabaseSteps() {
@@ -6,14 +7,14 @@ export default function ConnectSupabaseSteps() {
       <Step title="Create Supabase project">
         <p>
           Head over to{" "}
-          <a
+          <Link
             href="https://app.supabase.com/project/_/settings/api"
             target="_blank"
             className="font-bold hover:underline text-foreground/80"
             rel="noreferrer"
           >
             database.new
-          </a>{" "}
+          </Link>{" "}
           and create a new Supabase project.
         </p>
       </Step>
@@ -29,14 +30,14 @@ export default function ConnectSupabaseSteps() {
             .env.local
           </span>{" "}
           and populate with values from{" "}
-          <a
+          <Link
             href="https://app.supabase.com/project/_/settings/api"
             target="_blank"
             className="font-bold hover:underline text-foreground/80"
             rel="noreferrer"
           >
             your Supabase project's API Settings
-          </a>
+          </Link>
           .
         </p>
       </Step>

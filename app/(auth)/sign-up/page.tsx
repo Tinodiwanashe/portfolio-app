@@ -20,7 +20,7 @@ export default function Page({
           Home
         </Link>
         <div className="mx-auto grid w-[350px] gap-6">
-          <SignUp />
+          <SignUp path="/sign-up" routing="path" signInUrl="/sign-in"/>
         </div>
       </form>
       <div className="hidden bg-muted lg:block">

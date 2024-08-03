@@ -1,13 +1,12 @@
-
 import { Navigation_Menu } from "@/components/tutorial/Navigation_Menu";
 import AuthButton from "@/components/AuthButton";
-import { navItems } from "../types/data";
+import { navItems } from "../../types/data";
 import Background from "@/components/tutorial/Background";
 import { Footer } from "@/components/ui/Footer";
-import { RootLayoutProps } from "../types/definitions";
+import { RootLayoutProps } from "../../types/definitions";
 
 
-export default function ProtectedLayout({
+export default function ResumeLayout({
   children
 }: RootLayoutProps) {
   return (

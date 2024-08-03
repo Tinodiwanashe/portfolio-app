@@ -49,7 +49,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       formButtonPrimary: "bg-primary text-primary-foreground shadow hover:bg-primary/90 text-sm font-medium"
     }
   }
-  //appearance={clerkAppearance}
+  //appearance={clerkAppearance}bh
 
   return (
     <ClerkProvider >
