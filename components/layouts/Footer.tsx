@@ -2,7 +2,7 @@
 
 import React from "react";
 import { socials } from "@/app/types/data";
-import { Button } from "./button";
+import { Button } from "../ui/button";
 
 export const Footer = () => {
   return (
