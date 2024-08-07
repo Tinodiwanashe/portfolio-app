@@ -36,7 +36,10 @@ import Menu from "./Menu"
       <div className="container h-14 max-w-screen-2xl flex items-center">
         <div className='mr-4 hidden md:flex lg:flex'>
           <div className="flex justify-between w-full min-[825px]:hidden">
-          <Sheet>
+
+            
+          </div>
+          <Sheet >
             <SheetTrigger className="p-2 transition">
                 <FaBars />
             </SheetTrigger>
@@ -56,8 +59,6 @@ import Menu from "./Menu"
                 </div>
             </SheetContent>
           </Sheet>
-            
-          </div>
           <Logo href= '/' classNames = 'mr-6 space-x-2'/> 
           <Menu menuItems={menuItems} orientation="horizontal"/>
         </div>
