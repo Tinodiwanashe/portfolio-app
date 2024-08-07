@@ -5,8 +5,16 @@ import FetchDataSteps from "@/components/tutorial/FetchDataSteps";
 import Link from "next/link";
 import { AuthRequiredError } from "@/lib/exceptions";
 import Header from "@/components/layouts/Header";
+import { useAuth } from "@clerk/nextjs";
 
 export default async function ProtectedPage() {
+  const { isLoaded, userId, sessionId, getToken } = useAuth();
+
+    // In case the user signs out while on the page.
+    if (!isLoaded || !userId) {
+      return null;
+    }
+
   const supabase = createClient();
 
   const {

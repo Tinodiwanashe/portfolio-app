@@ -7,8 +7,8 @@ import { Button } from "../ui/button";
 export const Footer = () => {
   return (
     //"w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs"
-    <footer className="w-full text-center text-xs border-t border-t-foreground/10 py-8" >
-      <div className="mx-auto max-w-7xl md:flex md:items-center md:justify-between px-6 py-12 lg:px-8">
+    <footer className="w-full text-center text-xs border-t border-t-foreground/10" >
+      <div className="mx-auto max-w-7xl md:flex md:items-center md:justify-between p-6">
         <div className="flex justify-center space-x-6 md:order-2">
           {socials.map((item, index) => (
             <Button 

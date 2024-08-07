@@ -11,63 +11,63 @@ import {
     FaUserAstronaut,
   } from 'react-icons/fa';
 
-  export const navItems = [
+  export const menuItems = [
     {
-      name: "Home",
+      label: "Home",
       href: "/",
-      icon: <FaHome className="h-[1.2rem] w-[1.2rem]"/>,
+      icon: <FaHome/>,
       hasProductItem: true,
-      SubMenu: [
+      SubMenuItems: [
 /*         {
-          title: "Tailwind Master Kit",
-          href: "https://tailwindmasterkit.com",
-          src: "https://assets.aceternity.com/demos/tailwindmasterkit.webp",
+          label: "Tailwind Master Kit",
+          description: "Prepare for tech interviews like never before.",  
           icon: <FaHome/>,
-          description: "Prepare for tech interviews like never before."   
+          href: "https://tailwindmasterkit.com",
+          src: "https://assets.aceternity.com/demos/tailwindmasterkit.webp"
         },
         {
-          title: "Rogue",
-          href: "https://userogue.com",
-          src: "https://assets.aceternity.com/demos/Screenshot+2024-02-21+at+11.47.07%E2%80%AFPM.png",
+          label: "Rogue",
+          description: "Respond to government RFPs, RFIs and RFQs 10x faster using AI",
           icon: <FaHome/>,
-          description: "Respond to government RFPs, RFIs and RFQs 10x faster using AI"   
+          href: "https://userogue.com",
+          src: "https://assets.aceternity.com/demos/Screenshot+2024-02-21+at+11.47.07%E2%80%AFPM.png"
         } */
       ]
     },
     {
-      name: "Experience",
+      label: "Experience",
       href: "/experience",
-      icon: <FaUserAstronaut className="h-[1.2rem] w-[1.2rem]"/>,
+      icon: <FaUserAstronaut/>,
       hasProductItem: false,
-      SubMenu: []
+      SubMenuItems: []
     },
     {
-      name: "Resume",
+      label: "Resume",
       href: "/resume",
-      icon: <FaFilePdf className="h-[1.2rem] w-[1.2rem]"/>,
+      icon: <FaFilePdf/>,
       hasProductItem: false,
-      SubMenu: [
+      SubMenuItems: [
 /*         {
-          title: "About Us",
+          label: "About Us",
+          description: "Learn more about us",
+          icon: <FaUser/>, 
           href: "/about",
           src: "https://assets.aceternity.com/demos/Screenshot+2024-02-21+at+11.47.07%E2%80%AFPM.png",
-          icon: <FaUser/>,
-          description: "Learn more about us"   
         }, {
-          title: "About our team",
-          href: "/about",
-          src: "https://assets.aceternity.com/demos/Screenshot+2024-02-21+at+11.47.07%E2%80%AFPM.png",
+          label: "About our team",
+          description: "Learn more about us",  
           icon: <FaUser/>,
-          description: "Learn more about us"   
+          href: "/about",
+          src: "https://assets.aceternity.com/demos/Screenshot+2024-02-21+at+11.47.07%E2%80%AFPM.png"
         } */
       ]
     },
     {
-      name: "Contact me",
+      label: "Contact me",
       href: "/contact",
-      icon: <FaPhone className="h-[1.2rem] w-[1.2rem]"/>,
+      icon: <FaPhone/>,
       hasProductItem: false,
-      SubMenu: []
+      SubMenuItems: []
     },
   ];
 

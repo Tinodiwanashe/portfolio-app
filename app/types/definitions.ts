@@ -11,6 +11,22 @@ export type Navlink = {
     label: string;
     icon?: React.ReactNode | JSX.Element | any;
   };
+
+  export type MenuItem = {
+    label: string;
+    href: string;
+    icon?: React.ReactNode | JSX.Element | any;
+    hasProductItem: boolean;
+    SubMenuItems?: SubMenuItem[];
+  }; 
+
+  export type SubMenuItem = {
+    label: string;
+    description?: string; 
+    icon?: React.ReactNode | JSX.Element | any;  
+    href: string;
+    src?: string;   
+  };
   
   export type userData = 
   {
