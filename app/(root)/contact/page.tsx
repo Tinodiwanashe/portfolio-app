@@ -45,26 +45,26 @@ const page = () => {
           <div className="max-w-lg mx-auto gap-12 justify-between lg:flex lg:max-w-none">
               <div className="max-w-lg space-y-3">
                   <h3 className="text-indigo-600 font-semibold">
-                      Contact
+                    Contact
                   </h3>
                   <p className="text-gray-800 text-3xl font-semibold sm:text-4xl">
-                      Let us know how we can help
+                    Let us know how we can help
                   </p>
                   <p>
-                      We’re here to help and answer any question you might have, We look forward to hearing from you! Please fill out the form, or us the contact information bellow .
+                    We’re here to help and answer any question you might have, We look forward to hearing from you! Please fill out the form, or us the contact information bellow .
                   </p>
                   <div>
                       <ul className="mt-6 flex flex-wrap gap-x-10 gap-y-6 items-center">
-                          {
-                              contactMethods.map((item, idx) => (
-                                  <li key={idx} className="flex items-center gap-x-3">
-                                      <div className="flex-none text-gray-400">
-                                          {item.icon}
-                                      </div>
-                                      <p>{item.contact}</p>
-                                  </li>
-                              ))
-                          }
+                        {
+                          contactMethods.map((item, idx) => (
+                            <li key={idx} className="flex items-center gap-x-3">
+                              <div className="flex-none text-gray-400">
+                                {item.icon}
+                              </div>
+                              <p>{item.contact}</p>
+                            </li>
+                          ))
+                        }
                       </ul>
                   </div>
               </div>
@@ -72,46 +72,46 @@ const page = () => {
                   <form className="space-y-5">
                       <div>
                           <Label className="font-medium">
-                              Full name
+                            Full name
                           </Label>
                           <Input
-                              type="text"
-                              required
-                              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                            type="text"
+                            required
+                            className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
                           />
                       </div>
                       <div>
                           <Label className="font-medium">
-                              Email
+                            Email
                           </Label>
                           <Input
-                              type="email"
-                              required
-                              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                            type="email"
+                            required
+                            className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
                           />
                       </div>
                       <div>
                           <Label className="font-medium">
-                              Company
+                            Company
                           </Label>
                           <Input
-                              type="text"
-                              required
-                              className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                            type="text"
+                            required
+                            className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
                           />
                       </div>
                       <div>
                           <Label className="font-medium">
-                              Message
+                            Message
                           </Label>
-                          <Textarea required className="w-full mt-2 h-36 px-3 py-2 resize-none appearance-none bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"/>
+                          <Textarea required placeholder='Type your message here.' className="w-full mt-2 h-36 px-3 py-2 resize-none appearance-none bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"/>
                       </div>
                       <SubmitButton
-                          className="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
-                          type="submit"
-                          formAction={contact}
+                        className="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150"
+                        type="submit"
+                        formAction={contact}
                       >
-                          Submit
+                        Submit
                       </SubmitButton>
                   </form>
               </div>
