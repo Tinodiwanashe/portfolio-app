@@ -1,6 +1,6 @@
 "use client"
 
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { FaBars } from "react-icons/fa"
 import Logo from '../Logo';
 import { Button } from "../ui/button"
@@ -59,6 +59,9 @@ import Menu from "./Menu"
             {/* <div className="space-y-3 mt-[1rem]">
               <Menu menuItems={menuItems} orientation="vertical"/>
             </div> */}
+            <SheetFooter>
+              
+            </SheetFooter>
           </SheetContent>
         </Sheet>
         <div className="flex flex-1 items-center justify-end gap-2 sm:gap-2 w-full">
