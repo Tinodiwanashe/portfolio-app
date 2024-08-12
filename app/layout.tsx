@@ -57,7 +57,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <Head>
           <link rel="icon" href="/favicon.ico" sizes="any" />
         </Head>
-        <body className={cn("min-h-screen bg-background text-foreground font-sans antialiased",fontSans.variable)}>
+        <body className={cn("min-h-screen w-full flex flex-col bg-background text-foreground font-sans antialiased",fontSans.variable)}>
           <ThemeProvider
                 attribute="class"
                 defaultTheme="dark"

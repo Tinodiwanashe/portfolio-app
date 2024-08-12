@@ -14,14 +14,17 @@ import { MenuItem, SubMenuItem } from "@/app/types/definitions"
 
 const Menu = ({
     menuItems,
-    orientation
+    orientation,
+    className
   }: {
     menuItems: MenuItem[];
     orientation?: "vertical" | "horizontal";
+    className?: string;
   }) => {
     return (
-      <NavigationMenu orientation={orientation} className="hidden xl:flex items-center gap-8">            
-        <NavigationMenuList className="hidden md:flex md:space-x-4">
+        //hidden flex-col gap-6 md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6
+      <NavigationMenu orientation={orientation} className={cn("md:flex items-center gap-6", className)}>            
+        <NavigationMenuList className="md:flex md:space-x-4">
           {menuItems.map((menuItem, index) => {
             return (
               menuItem.SubMenuItems?.length?

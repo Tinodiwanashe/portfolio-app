@@ -1,6 +1,6 @@
 "use client"
 
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { FaBars } from "react-icons/fa"
 import Logo from '../Logo';
 import { Button } from "../ui/button"
@@ -32,37 +32,36 @@ import Menu from "./Menu"
     }, []) */
 
   return (
-    <header className='sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60' >
-      <div className="container h-14 max-w-screen-2xl flex items-center">
+    <header className='sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex items-center gap-4 h-16 px-4 md:px-6' >
+      {/* <div className="container h-14 max-w-screen-2xl flex items-center"> */}
         <div className='mr-4 hidden md:flex lg:flex'>
-          <div className="flex justify-between w-full min-[825px]:hidden">
-
-            
-          </div>
-          <Sheet >
-            <SheetTrigger className="p-2 transition">
-                <FaBars />
-            </SheetTrigger>
-            <SheetContent side="left">
-                <SheetHeader>
-                    <SheetTitle>Next Starter</SheetTitle>
-                </SheetHeader>
-                <div className="flex flex-col space-y-3 mt-[1rem]">
-                  <Menu menuItems={menuItems} orientation="vertical"/>
-                  {/*<DialogClose asChild>
-                        <Link href="/dashboard" legacyBehavior passHref className="cursor-pointer">
-                            <Button variant="outline">
-                                Dashboard
-                            </Button>
-                        </Link>
-                  </DialogClose> */}
-                </div>
-            </SheetContent>
-          </Sheet>
           <Logo href= '/' classNames = 'mr-6 space-x-2'/> 
-          <Menu menuItems={menuItems} orientation="horizontal"/>
+          <Menu menuItems={menuItems} orientation="horizontal" className="hidden"/>
         </div>
-        <div className="flex flex-1 items-center justify-end gap-2 sm:gap-2 md:justify-end">
+        <Sheet>
+          <SheetTrigger asChild className="p-2 transition">
+            <Button
+              variant="outline"
+              size="icon"
+              className="shrink-0 md:hidden"
+            >
+              <FaBars className="h-5 w-5" />
+              <span className="sr-only">Toggle navigation menu</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-[400px] sm:w-[540px]">
+            <SheetHeader>
+                <SheetTitle>Next Starter</SheetTitle>
+            </SheetHeader>
+            <SheetDescription>
+              test
+            </SheetDescription>
+            {/* <div className="space-y-3 mt-[1rem]">
+              <Menu menuItems={menuItems} orientation="vertical"/>
+            </div> */}
+          </SheetContent>
+        </Sheet>
+        <div className="flex flex-1 items-center justify-end gap-2 sm:gap-2 w-full">
           {
             socials.map((item, index) => {
               return (
@@ -80,7 +79,7 @@ import Menu from "./Menu"
           <ModeToggle/>
           {children}
         </div>
-      </div>
+      {/* </div> */}
     </header>
 
   )
