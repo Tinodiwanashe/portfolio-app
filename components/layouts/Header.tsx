@@ -36,7 +36,7 @@ import Menu from "./Menu"
       {/* <div className="container h-14 max-w-screen-2xl flex items-center"> */}
         <div className='mr-4 hidden md:flex lg:flex'>
           <Logo href= '/' classNames = 'mr-6 space-x-2'/> 
-          <Menu menuItems={menuItems} orientation="horizontal" className="hidden"/>
+          <Menu menuItems={menuItems} orientation="horizontal"/>
         </div>
         <Sheet>
           <SheetTrigger asChild className="p-2 transition">
@@ -51,16 +51,18 @@ import Menu from "./Menu"
           </SheetTrigger>
           <SheetContent side="left" className="w-[400px] sm:w-[540px]">
             <SheetHeader>
-                <SheetTitle>Next Starter</SheetTitle>
+                <SheetTitle>
+                  <Logo href= '/' classNames = 'mr-6 space-x-2'/>
+                </SheetTitle>
             </SheetHeader>
             <SheetDescription>
               test
             </SheetDescription>
-            {/* <div className="space-y-3 mt-[1rem]">
-              <Menu menuItems={menuItems} orientation="vertical"/>
-            </div> */}
+            <div className="space-y-3 mt-[1rem]">
+              <Menu menuItems={menuItems} orientation="vertical" className="flex flex-col font-medium items-start md:text-base"/>
+            </div>
             <SheetFooter>
-              
+
             </SheetFooter>
           </SheetContent>
         </Sheet>

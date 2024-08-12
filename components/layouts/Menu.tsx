@@ -23,8 +23,8 @@ const Menu = ({
   }) => {
     return (
         //hidden flex-col gap-6 md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6
-      <NavigationMenu orientation={orientation} className={cn("md:flex items-center gap-6", className)}>            
-        <NavigationMenuList className="md:flex md:space-x-4">
+      <NavigationMenu orientation={orientation} className={"md:flex items-center gap-6"}>            
+        <NavigationMenuList className={cn("md:flex md:space-x-4",className)}>
           {menuItems.map((menuItem, index) => {
             return (
               menuItem.SubMenuItems?.length?
