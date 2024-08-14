@@ -58,7 +58,7 @@ import Menu from "./Menu"
             <SheetDescription>
               test
             </SheetDescription>
-            <div className="space-y-3 mt-[1rem]">
+            <div className="space-y-3 ">
               <Menu menuItems={menuItems} orientation="vertical" className="flex flex-col font-medium items-start md:text-base"/>
             </div>
             <SheetFooter>
