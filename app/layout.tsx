@@ -6,12 +6,8 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import Head from "next/head";
 import { RootLayoutProps } from "./types/definitions";
-import { Metadata } from 'next'
+import { Metadata } from 'next';
 import { ClerkProvider  } from "@clerk/nextjs";
-import { useTheme } from "next-themes";
-import { dark } from '@clerk/themes';
-import { useState, useEffect } from 'react'
-import { UseThemeProps } from "next-themes/dist/types";
 
 const fontSans = FontSans({
   subsets: ["latin"],
