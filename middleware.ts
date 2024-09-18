@@ -20,8 +20,8 @@ export const config = {
      * - images - .svg, .png, .jpg, .jpeg, .gif, .webp
      * Feel free to modify this pattern to include more paths.
      */
-    //"/((?!_next/static|_next/image|favicon.ico|.*\\.(?:html?|css|js(?!on)|svg|png|jpg|jpeg|gif|ttf|woff2?|csv|docx?|xlsx?|zip|webmanifest|webp)$).*)",
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:html?|css|js(?!on)|svg|png|jpg|jpeg|gif|ttf|woff2?|csv|docx?|xlsx?|zip|webmanifest|webp)$).*)",
+    //'/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
     // Always run for API routes
     '/(api|trpc)(.*)',
   ],
