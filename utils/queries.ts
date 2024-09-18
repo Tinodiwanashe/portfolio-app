@@ -2,7 +2,7 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { cache } from "react";
 
-export const addProfile = cache(async (supabase: SupabaseClient, userId: string) => {
+/* export const addProfile = cache(async (supabase: SupabaseClient, userId: string) => {
     const { data, error } = await supabase
       .from('Profile')
       .insert([{
@@ -13,7 +13,7 @@ export const addProfile = cache(async (supabase: SupabaseClient, userId: string)
       }]);
   
     return data;
-  });
+  }); */
 
 export const getProfile = cache(async (supabase: SupabaseClient, userId: string) => {
     const { data: profile, error } = await supabase
