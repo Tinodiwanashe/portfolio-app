@@ -2,9 +2,9 @@
 import React from "react";
 import { boolean } from "zod";
 
-export type RootLayoutProps = {
-    children: React.ReactNode,
-}
+export type RootLayoutProps = Readonly<{
+    children: React.ReactNode;
+}>
 
 export type Navlink = {
     href: string;
