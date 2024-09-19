@@ -61,9 +61,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 enableSystem
                 disableTransitionOnChange
           >
-            <ConvexClientProvider>
+            {/* <ConvexClientProvider> */}
             {children}
-            </ConvexClientProvider>
+            {/* </ConvexClientProvider> */}
           </ThemeProvider>
         </body>
       </html>
