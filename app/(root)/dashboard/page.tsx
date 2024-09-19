@@ -4,7 +4,6 @@ import { createClient } from "@/utils/supabase/server";
 import FetchDataSteps from "@/components/tutorial/FetchDataSteps";
 import Link from "next/link";
 import { AuthRequiredError } from "@/lib/exceptions";
-import Header from "@/components/layouts/Header";
 import { useAuth } from "@clerk/nextjs";
 
 export default async function ProtectedPage() {

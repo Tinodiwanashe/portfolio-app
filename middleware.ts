@@ -1,13 +1,17 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { clerkMiddleware } from "@clerk/nextjs/server";
-import { updateSession } from "@/utils/supabase/middleware";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-/* export async function middleware(request: NextRequest) {
-  return await updateSession(request);
-} */
+  const isProtectedRoute = createRouteMatcher(['/dashboard(.*)', '/forum(.*)'])
 
-export default clerkMiddleware((req) => {
-  return NextResponse.next();
+export default clerkMiddleware((auth,req) => {
+  
+  if (!auth().userId && isProtectedRoute(req)) {
+    // Add custom logic to run before redirecting
+
+    return auth().redirectToSignIn();
+  } else {
+    return NextResponse.next();
+  }
 });
 
 export const config = {

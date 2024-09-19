@@ -8,6 +8,7 @@ import Head from "next/head";
 import { RootLayoutProps } from "./types/definitions";
 import { Metadata } from 'next';
 import { ClerkProvider  } from "@clerk/nextjs";
+import { ConvexClientProvider } from "./ConvexClientProvider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -60,7 +61,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 enableSystem
                 disableTransitionOnChange
           >
+            <ConvexClientProvider>
             {children}
+            </ConvexClientProvider>
           </ThemeProvider>
         </body>
       </html>
