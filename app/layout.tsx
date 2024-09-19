@@ -7,7 +7,6 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Head from "next/head";
 import { RootLayoutProps } from "./types/definitions";
 import { Metadata } from 'next';
-import { ClerkProvider  } from "@clerk/nextjs";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 
 const fontSans = FontSans({
@@ -49,7 +48,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   //appearance={clerkAppearance}bh
 
   return (
-    <ClerkProvider >
+    <ConvexClientProvider>
       <html lang="en" suppressHydrationWarning>
         <Head>
           <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -67,6 +66,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
           </ThemeProvider>
         </body>
       </html>
-    </ClerkProvider>
+    </ConvexClientProvider>
   );
 }
