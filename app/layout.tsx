@@ -39,13 +39,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     })
   }, [])
  */
-  const clerkAppearance = {
-    baseTheme: "dark", //await getTheme() === "dark" ? dark : undefined,
-    elements: {
-      formButtonPrimary: "bg-primary text-primary-foreground shadow hover:bg-primary/90 text-sm font-medium"
-    }
-  }
-  //appearance={clerkAppearance}bh
+
 
   return (
     <ConvexClientProvider>
@@ -60,9 +54,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 enableSystem
                 disableTransitionOnChange
           >
-            {/* <ConvexClientProvider> */}
             {children}
-            {/* </ConvexClientProvider> */}
           </ThemeProvider>
         </body>
       </html>

@@ -4,14 +4,19 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
   const isProtectedRoute = createRouteMatcher(['/dashboard(.*)', '/forum(.*)'])
 
 export default clerkMiddleware((auth,req) => {
-  
-  if (!auth().userId && isProtectedRoute(req)) {
+  if (isProtectedRoute(req)) {
+    auth().protect();
+  } else {
+    return NextResponse.next();
+  }
+
+/*   if (!auth().userId && isProtectedRoute(req)) {
     // Add custom logic to run before redirecting
 
     return auth().redirectToSignIn();
   } else {
     return NextResponse.next();
-  }
+  } */
 });
 
 export const config = {
