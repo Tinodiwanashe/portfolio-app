@@ -6,7 +6,6 @@
     You can also write Server Actions directly inside Server Components by adding "use server" inside the action. 
 */
 import { headers } from "next/headers";
-import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { AuthRequiredError } from "@/lib/exceptions";
@@ -15,7 +14,7 @@ import { AuthRequiredError } from "@/lib/exceptions";
 export const signInWithGoogle = async () => {
     const origin = headers().get("origin");
     console.log("Begin Google login...");
-    const supabase = createClient();
+/*     const supabase = createClient();
 
     const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -38,7 +37,7 @@ export const signInWithGoogle = async () => {
         console.log(" Redirecting to:", data.url);
         revalidatePath('/', 'layout');
         return redirect(data.url); // use the redirect API for your server framework
-    }
+    } */
   };
 
 export const signIn = async (formData: FormData) => {
@@ -49,14 +48,14 @@ export const signIn = async (formData: FormData) => {
         email: formData.get("email") as string,
         password: formData.get("password") as string,
     }
-    const supabase = createClient();
+/*     const supabase = createClient();
 
-    const { error } = await supabase.auth.signInWithPassword(data);
+    const { error } = await supabase.auth.signInWithPassword(data); */
 
-    if (error) {
+/*     if (error) {
         console.error("Login Error: ", error);
         return redirect("/login?message=Could not authenticate user");
-    }
+    } */
     revalidatePath('/', 'layout');
     return redirect("/protected");
 }
@@ -67,7 +66,7 @@ export const signUp = async (formData: FormData) => {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    try {
+/*     try {
         const supabase = createClient();
         const { error } = await supabase.auth.signUp({
             email,
@@ -86,13 +85,13 @@ export const signUp = async (formData: FormData) => {
     } catch (error) {
         console.log("Sign up error: ", error);
         return redirect("/login?message=Could not authenticate user");
-    }
+    } */
 
 }
 
 //req: NextRequest
 export const signOut = async () => {   
-    const supabase = createClient();
+/*     const supabase = createClient();
     // Check if a user's logged in
     const {
         data: { user },
@@ -104,7 +103,7 @@ export const signOut = async () => {
         console.log("User is not logged in");
     }
     revalidatePath('/', 'layout');
-    return redirect("/login");
+    return redirect("/login"); */
 /*     return NextResponse.redirect(new URL('/login', req.url), {
       status: 302,
     }) */

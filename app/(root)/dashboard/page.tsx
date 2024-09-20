@@ -1,6 +1,5 @@
 import DeployButton from "@/components/DeployButton";
 import AuthButton from "@/components/AuthButton";
-import { createClient } from "@/utils/supabase/server";
 import FetchDataSteps from "@/components/tutorial/FetchDataSteps";
 import Link from "next/link";
 import { AuthRequiredError } from "@/lib/exceptions";
@@ -9,18 +8,8 @@ import { useAuth } from "@clerk/nextjs";
 export default async function ProtectedPage() {
   const { isLoaded, userId, sessionId, getToken } = useAuth();
 
-    // In case the user signs out while on the page.
-    if (!isLoaded || !userId) {
-      return null;
-    }
-
-  const supabase = createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
+  // In case the user signs out while on the page.
+  if (!isLoaded || !userId) {
     throw new AuthRequiredError();
   }
 
