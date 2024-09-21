@@ -38,7 +38,7 @@ export function ProfileForm() {
     defaultValues: {
       name: "",
       email: "",
-      address: "",
+      address: ""
     },
   })
 
@@ -47,11 +47,7 @@ export function ProfileForm() {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values)
-    createOrUpdateUser({
-        name: values.name,
-        email: values.email,
-        address: values.address, 
-    })
+    createOrUpdateUser();
   }
 
   return (
