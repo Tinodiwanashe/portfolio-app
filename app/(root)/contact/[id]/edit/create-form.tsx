@@ -14,19 +14,31 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useMutation } from "convex/react"
+import { api } from "@/convex/_generated/api"
 
 const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+  name: z.string().min(2, {
+    message: "name must be at least 2 characters.",
+  }),
+  email: z.string().min(2, {
+    message: "email must be at least 2 characters.",
+  }),
+  address: z.string().min(2, {
+    message: "address must be at least 2 characters.",
   }),
 })
 
 export function ProfileForm() {
+    const createOrUpdateUser = useMutation(api.users.createOrUpdateUser);
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      name: "",
+      email: "",
+      address: "",
     },
   })
 
@@ -35,6 +47,11 @@ export function ProfileForm() {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values)
+    createOrUpdateUser({
+        name: values.name,
+        email: values.email,
+        address: values.address, 
+    })
   }
 
   return (
@@ -42,15 +59,15 @@ export function ProfileForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="username"
+          name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>name</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="your full name" {...field} />
               </FormControl>
               <FormDescription>
-                This is your public display name.
+                This is your full name.
               </FormDescription>
               <FormMessage />
             </FormItem>
