@@ -30,13 +30,17 @@ export default function AuthButton() {
 
   const { isLoaded, isSignedIn, user } = useUser();
 
-  console.log("AuthButton: ", isLoaded, isSignedIn, user);
-  const fullname =  user?.fullName;
-  const initials = fullname && fullname?.trim().substring(0, 1 ) + fullname && fullname?.trim().indexOf(" ") > -1 ? fullname?.trim().substring(fullname?.trim().indexOf(" ") + 1, 1 ) : "";
-  /*   const {
-    data: { userProfile }
-  } = await getUserProfile(supabase); */
-
+  const getInitials = (name: string) => {
+    return name
+      .trim()
+      .split(' ')
+      .map((word) => word[0])
+      .join('')
+      .toUpperCase();
+  };
+  
+  const fullname =  user?.fullName === null || user?.fullName === undefined? "": user?.fullName;
+  const initials = getInitials(fullname);
 
   // Display user's profile picture and name if user is authenticated {`/profile/${user.id}`}
   return user ? (
