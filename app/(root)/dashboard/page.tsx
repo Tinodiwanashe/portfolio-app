@@ -13,10 +13,6 @@ export default async function ProtectedPage() {
   const { isLoaded, isSignedIn, user } = useUser(); //use this one on the client side
  //You can use the auth() helper to protect your server actions. This helper will return the current user's ID if they are signed in, or null if they are not.
   
-  if (!isLoaded || !isSignedIn) {
-    throw new AuthRequiredError();
-  }
-
   // In case the user signs out while on the page.
   const store = useMutation(api.users.store);
 
@@ -24,8 +20,10 @@ export default async function ProtectedPage() {
     const storeUser = async () => {
       await store({});  
     }
-
-    if (user.id) {
+    
+    if (!isLoaded || !isSignedIn) {
+      throw new AuthRequiredError();
+    } else {
       console.log("User id: ",user.id);
       storeUser();
     }     
