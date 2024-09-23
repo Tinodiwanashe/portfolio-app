@@ -21,7 +21,12 @@ export function ConvexClientProvider({ children }: RootLayoutProps) {
     return (
         <ClerkProvider  appearance={clerkAppearance} publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!}>
             <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
-                {children}
+                <Authenticated>
+                    {children}
+                </Authenticated>
+                <Unauthenticated>
+                    {children}
+                </Unauthenticated>                
                 {/*                 <AuthLoading>
                     <Loading/>
                 </AuthLoading> */}
