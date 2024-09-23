@@ -3,36 +3,30 @@
 /* import FetchDataSteps from "@/components/tutorial/FetchDataSteps"; */
 import Link from "next/link";
 import { AuthRequiredError } from "@/lib/exceptions";
-//import { useAuth } from "@clerk/nextjs"; //se this one on the client side
+import { useUser } from "@clerk/nextjs"; //se this one on the client side
 import { auth, currentUser } from '@clerk/nextjs/server' //use this one on the server side
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useEffect, useState } from "react";
 
 export default async function ProtectedPage() {
- // const { isLoaded, userId } = useAuth(); //use this one on the client side
+  const { isLoaded, isSignedIn, user } = useUser(); //use this one on the client side
  //You can use the auth() helper to protect your server actions. This helper will return the current user's ID if they are signed in, or null if they are not.
   
+  if (!isLoaded || !isSignedIn) {
+    throw new AuthRequiredError();
+  }
 
-
-  const [myUserId, setMyUserId] = useState<string | null>();
   // In case the user signs out while on the page.
   const store = useMutation(api.users.store);
 
   useEffect(() => {
     const storeUser = async () => {
-      store({});  
-    }
-  
-    const getUserId = async () => {
-      const { userId } = auth(); //use this one on the server side
-      setMyUserId(userId);
+      await store({});  
     }
 
-    if (!myUserId) {
-      throw new AuthRequiredError();
-    }else {
-      console.log("User id: ",myUserId);
+    if (user.id) {
+      console.log("User id: ",user.id);
       storeUser();
     }     
   }, [store]); 
