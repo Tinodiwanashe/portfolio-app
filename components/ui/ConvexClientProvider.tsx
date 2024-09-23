@@ -28,9 +28,9 @@ export function ConvexClientProvider({ children }: RootLayoutProps) {
                 <Unauthenticated>
                     {children}
                 </Unauthenticated>                
-                {/*                 <AuthLoading>
-                    <Loading/>
-                </AuthLoading> */}
+                <AuthLoading>
+                    <div>Loading...</div>
+                </AuthLoading>
             </ConvexProviderWithClerk>
         </ClerkProvider>
     );
