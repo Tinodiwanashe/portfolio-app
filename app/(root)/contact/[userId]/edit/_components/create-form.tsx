@@ -64,6 +64,7 @@ export function ProfileForm({
       address: user?.address,
       countryId: "" // default to empty string. Will be filled dynamically when selecting a country.
     },
+    mode: "onChange"
   })
 
   function handleCountryChange(countryName: string) {
