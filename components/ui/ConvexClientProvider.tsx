@@ -4,7 +4,8 @@ import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { ConvexReactClient, Authenticated, Unauthenticated, AuthLoading } from "convex/react";
 import { ClerkProvider, useAuth } from "@clerk/nextjs";
 import { dark } from '@clerk/themes'
-import { RootLayoutProps } from "./types/definitions";
+import { RootLayoutProps } from "@/app/types/definitions";
+
 
 
 const clerkAppearance = {
