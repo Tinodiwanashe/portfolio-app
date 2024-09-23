@@ -17,10 +17,10 @@ export default async function ProtectedPage() {
   const store = useMutation(api.users.store);
 
   useEffect(() => {
+    console.log("User id: ",user?.id);
     const storeUser = async () => {
       await store({});  
     }
-    console.log("User id: ",user?.id);
     if (!isLoaded || !isSignedIn) {
       throw new AuthRequiredError();
     } else { 
