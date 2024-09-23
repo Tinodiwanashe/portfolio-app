@@ -44,7 +44,7 @@ export default function AuthButton() {
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="w-[2.25rem] h-[2.25rem]">
             <Avatar >
-                <AvatarImage src={user?.imageUrl} alt="User Profile" />
+                <AvatarImage src={""} alt="User Profile" />
                 <AvatarFallback>{initials}</AvatarFallback>
             </Avatar>
         </DropdownMenuTrigger>
@@ -80,12 +80,12 @@ export default function AuthButton() {
   ) : (
     // Display login link if user is not authenticated
 
-    //<SignedOut>
+    <SignedOut>
       <Link  href="/sign-in" className={buttonVariants({ variant: "default" })}>
         <FaSignInAlt className="mr-2 h-4 w-4" />
         <span>Login</span>
       </Link>
-    //</SignedOut>
+    </SignedOut>
 
   );
 }
