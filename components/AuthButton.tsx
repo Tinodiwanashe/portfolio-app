@@ -39,8 +39,7 @@ export default function AuthButton() {
       .toUpperCase();
   };
   
-  const fullname =  user?.fullName === null || user?.fullName === undefined? "": user?.fullName;
-  const initials = getInitials(fullname);
+  const fullName =  user?.fullName === null || user?.fullName === undefined? "": user?.fullName;
 
   // Display user's profile picture and name if user is authenticated {`/profile/${user.id}`}
   return user ? (
@@ -48,8 +47,8 @@ export default function AuthButton() {
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="w-[2.25rem] h-[2.25rem]">
             <Avatar >
-                <AvatarImage src={""} alt="User Profile" />
-                <AvatarFallback>{initials}</AvatarFallback>
+                <AvatarImage src={user?.imageUrl} alt="User Profile" />
+                <AvatarFallback>{getInitials(fullName)}</AvatarFallback>
             </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56" align="end">
