@@ -20,11 +20,10 @@ export default async function ProtectedPage() {
     const storeUser = async () => {
       await store({});  
     }
-    
+    console.log("User id: ",user?.id);
     if (!isLoaded || !isSignedIn) {
       throw new AuthRequiredError();
-    } else {
-      console.log("User id: ",user.id);
+    } else { 
       storeUser();
     }     
   }, [store]); 

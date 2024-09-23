@@ -7,7 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Head from "next/head";
 import { RootLayoutProps } from "./types/definitions";
 import { Metadata } from 'next';
-import { ConvexClientProvider } from "./ConvexClientProvider";
+import { ConvexClientProvider } from "@/components/ui/ConvexClientProvider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -41,23 +41,23 @@ export default function RootLayout({ children }: RootLayoutProps) {
  */
 
 
-  return (
-    <ConvexClientProvider>
+  return (  
       <html lang="en" suppressHydrationWarning>
         <Head>
           <link rel="icon" href="/favicon.ico" sizes="any" />
         </Head>
         <body className={cn("min-h-screen w-full flex flex-col bg-background text-foreground font-sans antialiased",fontSans.variable)}>
-          <ThemeProvider
-                attribute="class"
-                defaultTheme="dark"
-                enableSystem
-                disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+          <ConvexClientProvider>
+            <ThemeProvider
+                  attribute="class"
+                  defaultTheme="dark"
+                  enableSystem
+                  disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+          </ConvexClientProvider>
         </body>
-      </html>
-    </ConvexClientProvider>
+      </html>   
   );
 }
