@@ -4,12 +4,12 @@
 import Link from "next/link";
 import { AuthRequiredError } from "@/lib/exceptions";
 import { useUser } from "@clerk/nextjs"; //se this one on the client side
-import { auth, currentUser } from '@clerk/nextjs/server' //use this one on the server side
+//import { auth, currentUser } from '@clerk/nextjs/server' //use this one on the server side
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useEffect, useState } from "react";
 
-export default async function ProtectedPage() {
+export default function ProtectedPage() {
   const { isLoaded, isSignedIn, user } = useUser(); //use this one on the client side
  //You can use the auth() helper to protect your server actions. This helper will return the current user's ID if they are signed in, or null if they are not.
   
