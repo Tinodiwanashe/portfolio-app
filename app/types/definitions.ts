@@ -1,6 +1,11 @@
 
+import { Doc } from "@/convex/_generated/dataModel";
 import React from "react";
 import { boolean } from "zod";
+
+export type UserWithCountryType = Doc<"User"> & {
+  country: Doc<"Country">
+};
 
 export type RootLayoutProps = Readonly<{
     children: React.ReactNode;

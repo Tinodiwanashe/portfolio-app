@@ -41,14 +41,16 @@ import { v } from "convex/values";
             if (socialMediaLink) {
                 await ctx.db.patch(args.id, {
                     name: args.name,
-                    url: args.url
+                    url: args.url,
                 }); 
+                return socialMediaLink._id;
             } else {
-                await ctx.db.insert("SocialMediaLink", {
+                const socialMediaLinkId = await ctx.db.insert("SocialMediaLink", {
                     name: args.name,
                     url: args.url,
                     createdBy: user._id
-                });        
+                });  
+                return socialMediaLinkId;      
             }
             },
     });
@@ -56,6 +58,21 @@ import { v } from "convex/values";
     export const deleteSocialMediaLink = mutation({
     args: { id: v.id("SocialMediaLink") },
     handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity();
+        if (!identity) {
+            throw new Error("Unauthenticated call to mutation");
+        }
+
+        const user = await ctx.db
+        .query("User")
+        .withIndex("idx_token", (q) =>
+            q.eq("tokenIdentifier", identity.tokenIdentifier),
+        )
+        .unique();
+        if (!user) {
+            throw new Error("Unauthenticated call to mutation");
+        }
+
         const socialMediaLink = await ctx.db.get(args.id);
         if (!socialMediaLink) {
             throw new Error("Social Media Link not found");

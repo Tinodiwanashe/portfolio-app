@@ -2,7 +2,7 @@ import { paginationOptsValidator } from "convex/server";
 import { query, mutation  } from "./_generated/server";
 import { v } from "convex/values";
 
-export const createOrUpdateUser= mutation(async ({ db, auth }) => {
+export const store = mutation(async ({ db, auth }) => {
   const identity = await auth.getUserIdentity();
   if (!identity) {
     throw new Error("Called storeUser without authentication present");
@@ -26,7 +26,9 @@ export const createOrUpdateUser= mutation(async ({ db, auth }) => {
   return db.insert("User", {
     name: identity.name!,
     tokenIdentifier: identity.tokenIdentifier,
-    countryId: null
+    email: identity.email,
+    address: identity.address,
+    countryId: null 
   });
 });
 
@@ -56,8 +58,28 @@ export const deleteUser = mutation({
     });
 
     export const getUser = query({
-        args: {userId: v.id("User") },
+        args: {id: v.id("User") },
         handler: async (ctx, args) => {
-            return await ctx.db.get(args.userId);
+            return await ctx.db.get(args.id);
         },
     });  
+
+    export const getCurrentUser = query({
+      handler: async (ctx) => {
+          const identity = await ctx.auth.getUserIdentity();
+  
+          if (!identity) {
+              return null;
+          }
+  
+          // throw new Error("Unauthenticated call to query");
+          const user = await ctx.db
+              .query("User")
+              .withIndex("idx_token", (q) =>
+                  q.eq("tokenIdentifier", identity.tokenIdentifier)
+              )
+              .unique();
+  
+          return user;
+      }
+  });

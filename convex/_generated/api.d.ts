@@ -15,6 +15,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as countries from "../countries.js";
 import type * as Schema from "../Schema.js";
 import type * as socialmedialinks from "../socialmedialinks.js";
 import type * as users from "../users.js";
@@ -28,6 +29,7 @@ import type * as users from "../users.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  countries: typeof countries;
   Schema: typeof Schema;
   socialmedialinks: typeof socialmedialinks;
   users: typeof users;
