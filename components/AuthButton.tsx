@@ -30,6 +30,7 @@ export default function AuthButton() {
 
   const { isLoaded, isSignedIn, user } = useUser();
 
+  console.log("AuthButton: ", isLoaded, isSignedIn, user);
   const fullname =  user?.fullName;
   const initials = fullname && fullname?.trim().substring(0, 1 ) + fullname && fullname?.trim().indexOf(" ") > -1 ? fullname?.trim().substring(fullname?.trim().indexOf(" ") + 1, 1 ) : "";
   /*   const {
@@ -79,12 +80,12 @@ export default function AuthButton() {
   ) : (
     // Display login link if user is not authenticated
 
-    <SignedOut>
+    //<SignedOut>
       <Link  href="/sign-in" className={buttonVariants({ variant: "default" })}>
         <FaSignInAlt className="mr-2 h-4 w-4" />
         <span>Login</span>
       </Link>
-    </SignedOut>
+    //</SignedOut>
 
   );
 }
