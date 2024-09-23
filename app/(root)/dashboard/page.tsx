@@ -1,15 +1,17 @@
+"use client";
+
 /* import FetchDataSteps from "@/components/tutorial/FetchDataSteps"; */
 import Link from "next/link";
 import { AuthRequiredError } from "@/lib/exceptions";
-//import { useAuth } from "@clerk/nextjs"; use this one on the client side
-import { auth, currentUser } from '@clerk/nextjs/server'
+import { useAuth } from "@clerk/nextjs"; //se this one on the client side
+import { auth, currentUser } from '@clerk/nextjs/server' //use this one on the server side
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useEffect } from "react";
 
 export default async function ProtectedPage() {
-  //const { isLoaded, userId } = useAuth(); use this one on the client side
-  const { userId } = auth()
+  const { isLoaded, userId } = useAuth(); //use this one on the client side
+  //const { userId } = auth()
 
   // In case the user signs out while on the page.
   if (!userId) {
