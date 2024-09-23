@@ -56,6 +56,16 @@ export const deleteUser = mutation({
         .paginate(args.paginationOpts);
         },
     });
+    
+    export const getUsers = query({
+      handler: async (ctx) => {
+          return await ctx.db
+          .query("User")
+          .withIndex("idx_user_name")
+          .order("asc")
+          .collect();
+          },
+      });  
 
     export const getUser = query({
         args: {id: v.id("User") },
