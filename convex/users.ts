@@ -1,6 +1,7 @@
 import { paginationOptsValidator } from "convex/server";
 import { query, mutation  } from "./_generated/server";
 import { v } from "convex/values";
+import { Id } from "./_generated/dataModel";
 
 export const store = mutation(async ({ db, auth }) => {
   const identity = await auth.getUserIdentity();
@@ -59,13 +60,27 @@ export const deleteUser = mutation({
     
     export const getUsers = query({
       handler: async (ctx) => {
-          return await ctx.db
-          .query("User")
-          .withIndex("idx_user_name")
-          .order("asc")
-          .collect();
-          },
-      });  
+        const users =  await ctx.db
+        .query("User")
+        .withIndex("idx_user_name")
+        .order("asc")
+        .collect();
+
+        return Promise.all(
+          users.map(async (user) => {
+            // For each user , fetch the `Country` he comes from and
+            // insert the name into the `Country name` field.
+            const country = await ctx.db.get(user.countryId as Id<"Country">);
+            const UserWithCountry =  {
+              ...user,
+              country: country
+            };
+            return UserWithCountry;
+          }),
+        );
+
+      },
+    });  
 
     export const getUser = query({
         args: {id: v.id("User") },

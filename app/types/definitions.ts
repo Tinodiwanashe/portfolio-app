@@ -3,8 +3,26 @@ import { Doc } from "@/convex/_generated/dataModel";
 import React from "react";
 import { boolean } from "zod";
 
-export type UserWithCountryType = Doc<"User"> & {
+export type UserWithCountry = Doc<"User"> & {
   country: Doc<"Country">
+};
+
+export type UserWithSocialMediaLink = Doc<"User"> & {
+  user: Doc<"SocialMediaLink">
+};
+
+export type CompanyWithOccupation = Doc<"Company"> & {
+  company: Doc<"Occupation">,
+  user: Doc<"User">
+};
+
+export type CompanyWithUser = Doc<"Company"> & {
+  company: Doc<"User">
+};
+
+export type CompanyWithProject = Doc<"Company"> & {
+  company: Doc<"Project">,
+  user: Doc<"User">,
 };
 
 export type RootLayoutProps = Readonly<{

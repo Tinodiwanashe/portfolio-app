@@ -1,12 +1,14 @@
 
+"use client";
+
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
   
-  export default async function page() {
-    const users = useQuery(api.users.getUsers);
+  export default function page() {
+    const usersList = useQuery(api.users.getUsers);
 
-    if (users === undefined) {
+    if (usersList === undefined) {
       return <div>Loading...</div>
     }
     return (
@@ -22,7 +24,7 @@ import { useQuery } from "convex/react";
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users.map((user) => (
+          {usersList.map((user) => (
             <TableRow key={user._id}>
               <TableCell className="font-medium">{user.name}</TableCell>
               <TableCell className="hidden xl:table-column">{user.email}</TableCell>
