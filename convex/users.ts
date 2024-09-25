@@ -36,8 +36,8 @@ export const store = mutation(async ({ db, auth }) => {
 export const deleteUser = mutation({
   args: { id: v.id("User") },
   handler: async (ctx, args) => {
-      const socialMediaLink = await ctx.db.get(args.id);
-      if (!socialMediaLink) {
+      const user = await ctx.db.get(args.id);
+      if (!user) {
           throw new Error("User not found");
       } else {
           await ctx.db.delete(args.id);
