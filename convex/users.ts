@@ -72,7 +72,7 @@ export const deleteUser = mutation({
             // insert the name into the `Country name` field.
             const country = await ctx.db.get(user.countryId as Id<"Country">);
             const UserWithCountry =  {
-              ...user,
+              user: user,
               country: country
             };
             return UserWithCountry;

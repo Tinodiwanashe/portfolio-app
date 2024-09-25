@@ -24,13 +24,13 @@ import { useQuery } from "convex/react";
           </TableRow>
         </TableHeader>
         <TableBody>
-          {usersList.map((user) => (
-            <TableRow key={user._id}>
-              <TableCell className="font-medium">{user.name}</TableCell>
-              <TableCell className="xl:table-column">{user.email}</TableCell>
-              <TableCell className="xl:table-column">{user.address}</TableCell>
-              <TableCell className="xl:table-column">{user.tokenIdentifier}</TableCell>
-              <TableCell className="text-right">{user.}</TableCell>
+          {usersList.map((record) => (
+            <TableRow key={record.user._id}>
+              <TableCell className="font-medium">{record.user.name}</TableCell>
+              <TableCell className="xl:table-column">{record.user.email}</TableCell>
+              <TableCell className="xl:table-column">{record.user.address}</TableCell>
+              <TableCell className="xl:table-column">{record.user.tokenIdentifier}</TableCell>
+              <TableCell className="text-right">{record.country?.name}</TableCell>
             </TableRow>
           ))}
         </TableBody>
