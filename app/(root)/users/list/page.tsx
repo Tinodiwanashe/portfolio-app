@@ -27,10 +27,10 @@ import { useQuery } from "convex/react";
           {usersList.map((user) => (
             <TableRow key={user._id}>
               <TableCell className="font-medium">{user.name}</TableCell>
-              <TableCell className="hidden xl:table-column">{user.email}</TableCell>
-              <TableCell className="hidden xl:table-column">{user.address}</TableCell>
-              <TableCell className="hidden xl:table-column">{user.tokenIdentifier}</TableCell>
-              <TableCell className="text-right">{user.countryId}</TableCell>
+              <TableCell className="xl:table-column">{user.email}</TableCell>
+              <TableCell className="xl:table-column">{user.address}</TableCell>
+              <TableCell className="xl:table-column">{user.tokenIdentifier}</TableCell>
+              <TableCell className="text-right">{user.}</TableCell>
             </TableRow>
           ))}
         </TableBody>
