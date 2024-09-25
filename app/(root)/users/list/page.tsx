@@ -16,10 +16,10 @@ import { useQuery } from "convex/react";
         <TableCaption>A list of users.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="hidden xl:table-column">Name</TableHead>
-            <TableHead className="hidden xl:table-column">Email</TableHead>
-            <TableHead className="hidden xl:table-column">Address</TableHead>
-            <TableHead className="hidden xl:table-column">Token Identifier</TableHead>
+            <TableHead className="xl:table-column">Name</TableHead>
+            <TableHead className="xl:table-column">Email</TableHead>
+            <TableHead className="xl:table-column">Address</TableHead>
+            <TableHead className="xl:table-column">Token Identifier</TableHead>
             <TableHead className="text-right">Country</TableHead>
           </TableRow>
         </TableHeader>
