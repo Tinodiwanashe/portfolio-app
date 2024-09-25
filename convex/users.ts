@@ -60,13 +60,13 @@ export const deleteUser = mutation({
     
     export const getUsers = query({
       handler: async (ctx) => {
-        const users =  await ctx.db
+        return await ctx.db
         .query("User")
         .withIndex("idx_user_name")
         .order("asc")
         .collect();
 
-        return Promise.all(
+/*         return Promise.all(
           users.map(async (user) => {
             // For each user , fetch the `Country` he comes from and
             // insert the name into the `Country name` field.
@@ -77,7 +77,7 @@ export const deleteUser = mutation({
             };
             return UserWithCountry;
           }),
-        );
+        ); */
 
       },
     });  
