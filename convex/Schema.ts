@@ -15,7 +15,9 @@ export default defineSchema({
     name: v.string(),
     tokenIdentifier: v.string(),
     email: v.optional(v.string()),
+    phoneNumber: v.optional(v.string()),
     address: v.optional(v.string()),
+    pictureUrl: v.optional(v.string()),
     countryId: v.union(v.id("Country"), v.null())  
   }).index("idx_user_name", ["name"]).index("idx_token", ["tokenIdentifier"]).index("countryId", ["countryId"]),
   Country: defineTable({

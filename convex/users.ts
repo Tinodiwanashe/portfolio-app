@@ -22,6 +22,15 @@ export const store = mutation(async ({ db, auth }) => {
     if (user.name !== identity.name) {
       await db.patch(user._id, { name: identity.name });
     }
+
+    if (user.pictureUrl !== identity.pictureUrl) {
+      await db.patch(user._id, { name: identity.name });
+    }
+
+    if (user.phoneNumber !== identity.phoneNumber) {
+      await db.patch(user._id, { name: identity.name });
+    }
+
     return user._id;
   }
   // If it's a new identity, create a new `User`.
