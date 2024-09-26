@@ -25,3 +25,4 @@ export const useApiMutation = (mutationFunction: any) => {
         pending,
     }
 };
+

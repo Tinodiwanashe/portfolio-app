@@ -28,6 +28,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "convex": "^1.16.1",
+    "convex-helpers": "^0.1.58",
     "framer-motion": "^11.3.6",
     "geist": "^1.2.1",
     "mini-svg-data-uri": "^1.4.4",

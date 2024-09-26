@@ -2,6 +2,15 @@ import { paginationOptsValidator } from "convex/server";
 import { query, mutation  } from "./_generated/server";
 import { v } from "convex/values";
 import { Id } from "./_generated/dataModel";
+import { NoOp } from "convex-helpers/server/customFunctions";
+import { zCustomMutation, zCustomQuery, zid } from "convex-helpers/server/zod";
+
+// Make this once, to use anywhere you would have used `query`
+const zQuery = zCustomQuery(query, NoOp);
+const zMutation = zCustomMutation(mutation, NoOp);
+
+//const mutationWithZod = ({ args, handler }) => mutation(withZod({ args, handler }));
+
 
 export const store = mutation(async ({ db, auth }) => {
   const identity = await auth.getUserIdentity();
@@ -33,8 +42,8 @@ export const store = mutation(async ({ db, auth }) => {
   });
 });
 
-export const deleteUser = mutation({
-  args: { id: v.id("User") },
+export const deleteUser = zMutation({
+  args: { id: zid("User") },
   handler: async (ctx, args) => {
       const user = await ctx.db.get(args.id);
       if (!user) {
@@ -44,67 +53,67 @@ export const deleteUser = mutation({
       }
       
   },
-  });
+});
 
-  export const getUsersPaginated = query({
-    args: {paginationOpts: paginationOptsValidator, name: v.string() },
+export const getUsersPaginated = query({
+  args: {paginationOpts: paginationOptsValidator, name: v.string() },
+  handler: async (ctx, args) => {
+    return await ctx.db
+    .query("User")
+    .filter((q) => q.eq(q.field("name"), args.name))
+    .withIndex("idx_user_name")
+    .order("asc")
+    .paginate(args.paginationOpts);
+  },
+});
+  
+export const getUsers = query({
+  handler: async (ctx) => {
+    const users = await ctx.db
+    .query("User")
+    .withIndex("idx_user_name")
+    .order("asc")
+    .collect();
+
+      return Promise.all(
+      users.map(async (user) => {
+        // For each user , fetch the `Country` he comes from and
+        // insert the name into the `Country name` field.
+        const country = await ctx.db.get(user.countryId as Id<"Country">);
+        const UserWithCountry =  {
+          user: user,
+          country: country
+        };
+        return UserWithCountry;
+      }),
+    ); 
+  },
+});  
+
+export const getUser = query({
+    args: {id: v.id("User") },
     handler: async (ctx, args) => {
-        return await ctx.db
-        .query("User")
-        .filter((q) => q.eq(q.field("name"), args.name))
-        .withIndex("idx_user_name")
-        .order("asc")
-        .paginate(args.paginationOpts);
-        },
-    });
-    
-    export const getUsers = query({
-      handler: async (ctx) => {
-        const users = await ctx.db
-        .query("User")
-        .withIndex("idx_user_name")
-        .order("asc")
-        .collect();
+        return await ctx.db.get(args.id);
+    },
+});  
 
-         return Promise.all(
-          users.map(async (user) => {
-            // For each user , fetch the `Country` he comes from and
-            // insert the name into the `Country name` field.
-            const country = await ctx.db.get(user.countryId as Id<"Country">);
-            const UserWithCountry =  {
-              user: user,
-              country: country
-            };
-            return UserWithCountry;
-          }),
-        ); 
+export const getCurrentUser = query({
+  handler: async (ctx) => {
+      const identity = await ctx.auth.getUserIdentity();
 
-      },
-    });  
-
-    export const getUser = query({
-        args: {id: v.id("User") },
-        handler: async (ctx, args) => {
-            return await ctx.db.get(args.id);
-        },
-    });  
-
-    export const getCurrentUser = query({
-      handler: async (ctx) => {
-          const identity = await ctx.auth.getUserIdentity();
-  
-          if (!identity) {
-              return null;
-          }
-  
-          // throw new Error("Unauthenticated call to query");
-          const user = await ctx.db
-              .query("User")
-              .withIndex("idx_token", (q) =>
-                  q.eq("tokenIdentifier", identity.tokenIdentifier)
-              )
-              .unique();
-  
-          return user;
+      if (!identity) {
+          return null;
       }
-  });
+
+      // throw new Error("Unauthenticated call to query");
+      const user = await ctx.db
+          .query("User")
+          .withIndex("idx_token", (q) =>
+              q.eq("tokenIdentifier", identity.tokenIdentifier)
+          )
+          .unique();
+
+      return user;
+  }
+});
+
