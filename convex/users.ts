@@ -2,14 +2,6 @@ import { paginationOptsValidator } from "convex/server";
 import { query, mutation  } from "./_generated/server";
 import { v } from "convex/values";
 import { Id } from "./_generated/dataModel";
-import { NoOp } from "convex-helpers/server/customFunctions";
-import { zCustomMutation, zCustomQuery, zid } from "convex-helpers/server/zod";
-
-// Make this once, to use anywhere you would have used `query`
-const zQuery = zCustomQuery(query, NoOp);
-const zMutation = zCustomMutation(mutation, NoOp);
-
-//const mutationWithZod = ({ args, handler }) => mutation(withZod({ args, handler }));
 
 
 export const store = mutation(async ({ db, auth }) => {
@@ -42,8 +34,8 @@ export const store = mutation(async ({ db, auth }) => {
   });
 });
 
-export const deleteUser = zMutation({
-  args: { id: zid("User") },
+export const deleteUser = mutation({
+  args: { id: v.id("User") },
   handler: async (ctx, args) => {
       const user = await ctx.db.get(args.id);
       if (!user) {
