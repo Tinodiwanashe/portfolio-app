@@ -7,10 +7,9 @@ import { revalidatePath } from 'next/cache';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import React from 'react';
-import { FaTrash } from 'react-icons/fa';
-import { FaEllipsisVertical, FaPencil } from 'react-icons/fa6';
+import { FaEllipsisVertical, FaPencil, FaTrash } from 'react-icons/fa6';
 
-export default async function TableOptions({id}: {id: Id<"User"> }) {
+export default function TableOptions({id}: {id: Id<"User"> }) {
   return (
     <>
         <DropdownMenu>

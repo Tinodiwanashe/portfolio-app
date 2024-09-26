@@ -8,8 +8,6 @@ import { api } from "@/convex/_generated/api";
 import { useMutation, useQuery } from "convex/react";
 import Link from "next/link";
 import { FaArrowUpRightFromSquare, FaPencil, FaTrash, FaEllipsisVertical } from "react-icons/fa6";
-import { Id } from "@/convex/_generated/dataModel";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import TableOptions from "../[userId]/_components/TableOptions";
   
   export default function page() {
