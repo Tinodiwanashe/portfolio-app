@@ -29,12 +29,18 @@ import { ProfileFormValues, ProfileFormSchema } from "@/app/types/definitions";
 } */
 
 export function ProfileForm() {
-    const countries = useQuery(api.countries.getCountries);
+    
+    const {
+      mutate,
+      pending
+    } = useApiMutation(api.users.updateUser);
     const user = useQuery(api.users.getCurrentUser);
+    const countries = useQuery(api.countries.getCountries);
 
-    if (user === undefined) {
+    /*if (user === undefined) {
       return <div>Loading...</div>
-    }
+    } */ 
+    //commented this if out because it was resulting in the following "Rendered more hooks than during the previous render."
 
   // 1. Define your form and set default values. These values can come from database or API
   const form = useForm<ProfileFormValues>({
@@ -44,19 +50,14 @@ export function ProfileForm() {
       address: user?.address,
       countryId: user?.countryId?.toString(), // default to empty string. Will be filled dynamically when selecting a country.
       socialLinks: user?.socialLinks
-    }
-   // mode: "onChange"
+    },
+    mode: "onChange"
   })
 
   const { fields, append } = useFieldArray({
     name: "socialLinks",
     control: form.control
   })
-
-  const {
-    mutate,
-    pending
-  } = useApiMutation(api.users.updateUser);
 
 
   async function handleCountryChange(countryName: string) {
