@@ -8,6 +8,8 @@ import { useUser } from "@clerk/nextjs"; //se this one on the client side
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useEffect, useState } from "react";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export default function ProtectedPage() {
   const { isLoaded, isSignedIn, user } = useUser(); //use this one on the client side
@@ -37,26 +39,20 @@ export default function ProtectedPage() {
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col gap-20 max-w-4xl px-3">
-        <main className="flex-1 flex flex-col gap-6">
-          <h2 className="font-bold text-4xl mb-4">Dashboard screen</h2>
-{/*           <FetchDataSteps /> */}
-        </main>
+      <div className="flex-1 space-y-4 p-8 pt-6">
+          <div className="flex items-center justify-between space-y-2">
+            <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+            <div className="flex items-center space-x-2">
+              <Link
+                href="/dashboard/settings/profile"
+                className={buttonVariants({ variant: "default" })}
+              >
+                Settings
+              </Link>
+            </div>
+          </div>
+          
       </div>
-
-      <footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
-        <p>
-          Powered by{" "}
-          <Link
-            href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-            target="_blank"
-            className="font-bold hover:underline"
-            rel="noreferrer"
-          >
-            Supabase
-          </Link>
-        </p>
-      </footer>
     </div>
   );
 }

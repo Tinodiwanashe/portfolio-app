@@ -43,6 +43,39 @@ export const store = mutation(async ({ db, auth }) => {
   });
 });
 
+export const updateUser = mutation({
+  args: { 
+    id: v.id("User"),
+    phoneNumber: v.optional(v.string()),
+    address: v.optional(v.string()),
+    countryId: v.union(v.id("Country"), v.null()),  
+    socialLinks: v.optional(v.array(v.object({
+      value: v.string()
+    })))
+  },
+  handler: async (ctx, args) => {
+    // Check if the user exists.
+    const user = await ctx.db.get(args.id);
+
+    if (user !== null) {
+      // If the user exists but the inputs have changed, patch the values.
+      if (user.phoneNumber !== args.phoneNumber || user.address !== args.address ||  user.countryId !== args.countryId || user.socialLinks !== args.socialLinks) {
+          await ctx.db.patch(user._id, { 
+            phoneNumber: args.phoneNumber,
+            address: args.address,
+            countryId: args.countryId,
+            socialLinks: args.socialLinks
+          });
+      }
+
+      return user._id;
+    } else {
+      throw new Error("User not found");
+    }
+  
+  },
+});
+
 export const deleteUser = mutation({
   args: { id: v.id("User") },
   handler: async (ctx, args) => {

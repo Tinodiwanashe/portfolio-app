@@ -8,6 +8,7 @@ import Head from "next/head";
 import { RootLayoutProps } from "./types/definitions";
 import { Metadata } from 'next';
 import { ConvexClientProvider } from "@/components/ui/ConvexClientProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -47,6 +48,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <link rel="icon" href="/favicon.ico" sizes="any" />
         </Head>
         <body className={cn("min-h-screen w-full flex flex-col bg-background text-foreground font-sans antialiased",fontSans.variable)}>
+          <Toaster />
           <ConvexClientProvider>
             <ThemeProvider
                   attribute="class"

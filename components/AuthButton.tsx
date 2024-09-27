@@ -25,19 +25,13 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { FaUser, FaSignOutAlt, FaSignInAlt, FaCog} from "react-icons/fa"
+import { getInitials } from "@/lib/utils";
 
 export default function AuthButton() {
 
   const { isLoaded, isSignedIn, user } = useUser();
 
-  const getInitials = (name: string) => {
-    return name
-      .trim()
-      .split(' ')
-      .map((word) => word[0])
-      .join('')
-      .toUpperCase();
-  };
+
   
   const fullName =  user?.fullName === null || user?.fullName === undefined? "": user?.fullName;
 

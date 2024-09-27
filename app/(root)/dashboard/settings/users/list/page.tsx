@@ -8,9 +8,11 @@ import { api } from "@/convex/_generated/api";
 import { useMutation, useQuery } from "convex/react";
 import Link from "next/link";
 import { FaArrowUpRightFromSquare, FaPencil, FaTrash, FaEllipsisVertical } from "react-icons/fa6";
-import TableOptions from "../[userId]/_components/TableOptions";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { formatDateToLocal, getInitials } from "@/lib/utils";
+import TableOptions from "../_components/TableOptions";
   
-  export default function page() {
+  export default function usersTable() {
     const usersList = useQuery(api.users.getUsers);
 
     if (usersList === undefined) {
@@ -48,14 +50,21 @@ import TableOptions from "../[userId]/_components/TableOptions";
                     {usersList.map((record) => (
                         <TableRow key={record.user._id}>
                             <TableCell className="font-medium">
-                                <div className="font-medium">{record.user.name}</div>
-                                <div className="hidden text-sm text-muted-foreground md:inline">
-                                    {record.user.email}
+                                <Avatar className="hidden h-9 w-9 sm:flex">
+                                    <AvatarImage src={record.user.pictureUrl} alt="Avatar" />
+                                    <AvatarFallback>{getInitials(record.user.name)}</AvatarFallback>
+                                </Avatar>
+                                <div className="grid gap-1">
+                                    <div className="font-medium">{record.user.name}</div>
+                                    <div className="hidden text-sm text-muted-foreground md:inline">
+                                        {record.user.email}
+                                    </div>
                                 </div>
+
                             </TableCell>
                             <TableCell>{record.user.address}</TableCell>
                             <TableCell>{record.country?.name}</TableCell>
-                            <TableCell className="hidden md:table-cell">{record.user._creationTime}</TableCell>
+                            <TableCell className="hidden md:table-cell">{formatDateToLocal(record.user._creationTime.toString())}</TableCell>
                             <TableCell className="text-right">
                                 <TableOptions id={record.user._id}/>
                             </TableCell>
