@@ -23,6 +23,7 @@ import { useApiMutation } from "@/hooks/use-api-mutation"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "sonner"
 import { ProfileFormValues, ProfileFormSchema } from "@/app/types/definitions";
+import { Label } from "@/components/ui/label";
 
 /* interface CreateFormProps {
   userId: Id<"User">;
@@ -124,14 +125,14 @@ export function ProfileForm() {
               </FormItem>
             )} 
           />
-                    <FormField
+          <FormField
             control={form.control}
             name="address"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Address</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="your address" {...field} />
+                  <Textarea id="address" placeholder="your address" {...field} className="resize-none" />
                 </FormControl>
                 <FormDescription>
                   This is your address.
