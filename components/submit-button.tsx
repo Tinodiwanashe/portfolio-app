@@ -12,6 +12,7 @@ type Props = ComponentProps<"button"> & {
 
 export function SubmitButton({ children, loadingText, ...props }: Props) {
   const { pending, action } = useFormStatus();
+  // The useFormStatus hook exposes a pending boolean that can be used to show a loading indicator while the action is being executed.
 
   if(!props.variant){
     props.variant = "default"; // default variant if not provided

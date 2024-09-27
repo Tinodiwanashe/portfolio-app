@@ -22,39 +22,15 @@ import { cn } from "@/lib/utils"
 import { useApiMutation } from "@/hooks/use-api-mutation"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "sonner"
+import { ProfileFormValues, ProfileFormSchema } from "@/app/types/definitions";
 
-interface CreateFormProps {
+/* interface CreateFormProps {
   userId: Id<"User">;
-}
-
-const ProfileFormSchema = z.object({
-  phoneNumber: z.string({
-    required_error: "Please add a phone number to display.",
-  }).optional(),
-  address: z.string().min(2, {
-    message: "address must be at least 2 characters.",
-  }),
-  countryId: z.string({
-    required_error: "Please select a country."
-  }),
-  socialLinks: z.array(
-    z.object({
-      value: z.string().url({ message: "Please enter a valid URL." }),
-    })
-  ).optional()
-})
-
-type ProfileFormValues = z.infer<typeof ProfileFormSchema>;
-
-
+} */
 
 export function ProfileForm() {
     const countries = useQuery(api.countries.getCountries);
     const user = useQuery(api.users.getCurrentUser);
-
-    if (user === undefined) {
-      return <div>Loading...</div>
-    }
 
   // 1. Define your form and set default values. These values can come from database or API
   const form = useForm<ProfileFormValues>({
