@@ -44,7 +44,7 @@ const ProfileFormSchema = z.object({
   ).optional()
 })
 
-type ProfileFormValues = z.infer<typeof ProfileFormSchema>
+type ProfileFormValues = z.infer<typeof ProfileFormSchema>;
 
 
 
@@ -56,19 +56,16 @@ export function ProfileForm() {
       return <div>Loading...</div>
     }
 
-    // This can come from your database or API.
-    const defaultValues: Partial<ProfileFormValues> = {
+  // 1. Define your form and set default values. These values can come from database or API
+  const form = useForm<ProfileFormValues>({
+    resolver: zodResolver(ProfileFormSchema),
+    defaultValues: {
       phoneNumber: user?.phoneNumber,
       address: user?.address,
       countryId: user?.countryId?.toString(), // default to empty string. Will be filled dynamically when selecting a country.
       socialLinks: user?.socialLinks
     }
-
-  // 1. Define your form and set default values. These values can come from database or API
-  const form = useForm<ProfileFormValues>({
-    resolver: zodResolver(ProfileFormSchema),
-    defaultValues,
-    mode: "onChange"
+   // mode: "onChange"
   })
 
   const { fields, append } = useFieldArray({
@@ -76,12 +73,10 @@ export function ProfileForm() {
     control: form.control
   })
 
-/*   const {
+  const {
     mutate,
     pending
-  } = useApiMutation(api.users.updateUser);  */
-
-  const mutate = useMutation(api.users.updateUser);
+  } = useApiMutation(api.users.updateUser);
 
 
   async function handleCountryChange(countryName: string) {
@@ -95,7 +90,7 @@ export function ProfileForm() {
     // ✅ This will be type-safe and validated.
     console.log(data)
         // You can now use these values for mutation.
-      await mutate({
+      mutate({
         id: user?._id,
         phoneNumber: data.phoneNumber,
         address: data.address,
@@ -112,7 +107,7 @@ export function ProfileForm() {
               </>
             )
           })
-          .catch(() => {
+          .catch((error) => {
             toast.error(
               <>
                 <span>Something is wrong! </span>
