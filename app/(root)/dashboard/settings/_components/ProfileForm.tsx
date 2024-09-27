@@ -113,7 +113,7 @@ export function ProfileForm() {
             name="phoneNumber"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>name</FormLabel>
+                <FormLabel>Phone Number</FormLabel>
                 <FormControl>
                   <Input placeholder="your phone number" {...field} />
                 </FormControl>
@@ -129,7 +129,7 @@ export function ProfileForm() {
             name="address"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>name</FormLabel>
+                <FormLabel>Address</FormLabel>
                 <FormControl>
                   <Textarea placeholder="your address" {...field} />
                 </FormControl>
