@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, useFieldArray } from "react-hook-form"
@@ -81,13 +81,13 @@ export function ProfileForm() {
     control: form.control
   })
 
-  function handleCountryChange(countryName: string) {
+  async function handleCountryChange(countryName: string) {
     if (countries === undefined) return;
     const selectedCategory = countries.find(country => country.name === countryName);
 }
 
   // 2. Define a submit handler.
-  function onSubmit(data: ProfileFormValues) {
+  async function onSubmit(data: ProfileFormValues) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(data)
