@@ -49,11 +49,6 @@ type ProfileFormValues = z.infer<typeof ProfileFormSchema>
 
 
 export function ProfileForm() {
-
-    const {
-      mutate,
-      pending
-    } = useApiMutation(api.users.updateUser); 
     const countries = useQuery(api.countries.getCountries);
     const user = useQuery(api.users.getCurrentUser);
 
@@ -81,10 +76,18 @@ export function ProfileForm() {
     control: form.control
   })
 
+/*   const {
+    mutate,
+    pending
+  } = useApiMutation(api.users.updateUser);  */
+
+  const mutate = useMutation(api.users.updateUser);
+
+
   async function handleCountryChange(countryName: string) {
     if (countries === undefined) return;
     const selectedCategory = countries.find(country => country.name === countryName);
-}
+  }
 
   // 2. Define a submit handler.
   async function onSubmit(data: ProfileFormValues) {
@@ -92,7 +95,7 @@ export function ProfileForm() {
     // ✅ This will be type-safe and validated.
     console.log(data)
         // You can now use these values for mutation.
-      mutate({
+      await mutate({
         id: user?._id,
         phoneNumber: data.phoneNumber,
         address: data.address,
@@ -109,11 +112,11 @@ export function ProfileForm() {
               </>
             )
           })
-          .catch((error) => {
+          .catch(() => {
             toast.error(
               <>
                 <span>Something is wrong! </span>
-                <div>{error}</div>
+                {/* <div>{error}</div> */}
                 <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
                   <code className="text-white">{JSON.stringify(data, null, 2)}</code>
                 </pre>
