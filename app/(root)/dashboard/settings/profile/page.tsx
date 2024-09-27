@@ -1,8 +1,8 @@
 import { Separator } from "@/components/ui/separator";
-import { ProfileForm } from "./_components/ProfileForm";
+import { ProfileForm } from "../_components/ProfileForm";
 
 
-export default function SettingsProfilePage() {
+export default function page() {
   return (
     <div className="space-y-6">
       <div>
