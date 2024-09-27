@@ -32,6 +32,10 @@ export function ProfileForm() {
     const countries = useQuery(api.countries.getCountries);
     const user = useQuery(api.users.getCurrentUser);
 
+    if (user === undefined) {
+      return <div>Loading...</div>
+    }
+
   // 1. Define your form and set default values. These values can come from database or API
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(ProfileFormSchema),
