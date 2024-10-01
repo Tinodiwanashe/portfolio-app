@@ -147,7 +147,8 @@ export const getCurrentUser = query({
           )
           .unique();
 
-      return user;
+      const User = {...user}
+      return User;
   }
 });
 

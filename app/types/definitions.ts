@@ -1,18 +1,20 @@
 
-import { Doc } from "@/convex/_generated/dataModel";
+import { Doc, Id } from "@/convex/_generated/dataModel";
 import React from "react";
 import { z } from "zod";
 
 export const ProfileFormSchema = z.object({
+  name: z.string().optional(),  
+  pictureUrl: z.string().optional(), 
   phoneNumber: z.string({
     required_error: "Please add a phone number to display.",
   }).optional(),
-  address: z.string().min(2, {
+  address: z.string({
     message: "address must be at least 2 characters.",
-  }),
+  }).optional(),
   countryId: z.string({
     required_error: "Please select a country."
-  }),
+  }).optional(),
   socialLinks: z.array(
     z.object({
       value: z.string().url({ message: "Please enter a valid URL." }),
@@ -25,6 +27,10 @@ export type ProfileFormValues = z.infer<typeof ProfileFormSchema>;
 export type UserWithCountry = Doc<"User"> & {
   country: Doc<"Country">
 };
+
+export type User = Doc<"User">;
+
+export type Country = Doc<"Country">;
 
 export type UserWithSocialMediaLink = Doc<"User"> & {
   user: Doc<"SocialMediaLink">

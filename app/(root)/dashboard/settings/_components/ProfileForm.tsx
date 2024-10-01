@@ -14,29 +14,50 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
-import { Id } from "@/convex/_generated/dataModel"
+import { Doc, Id } from "@/convex/_generated/dataModel"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 import { useApiMutation } from "@/hooks/use-api-mutation"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "sonner"
-import { ProfileFormValues, ProfileFormSchema } from "@/app/types/definitions";
+import { ProfileFormValues, ProfileFormSchema, User, Country } from "@/app/types/definitions";
 import { Label } from "@/components/ui/label";
+import { convexQuery } from "@convex-dev/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useEffect, useState } from "react";
 
 /* interface CreateFormProps {
   userId: Id<"User">;
 } */
 
-export function ProfileForm() {
-    
+export function ProfileForm(/* {
+  user,
+  countries
+}: {
+  user: User;
+  countries: Country[];
+} */) {
+  const { data:user, isPending, error } = useQuery(convexQuery(api.users.getCurrentUser,{}));
+  const { data: countries, isPending: isLoading } = useQuery(convexQuery(api.countries.getCountries,{}));
+
     const {
       mutate,
       pending
     } = useApiMutation(api.users.updateUser);
-    const user = useQuery(api.users.getCurrentUser);
-    const countries = useQuery(api.countries.getCountries);
+
+    console.log("error: ", error);
+
+/*     const [usert, setUserT] = useState<User| null>(null);
+    
+    useEffect(() => {
+      async function fetchPosts() {
+        setUserT(user);
+      }
+      fetchPosts()
+    }, []);
+    console.log("user: ", user); */
 
     /*if (user === undefined) {
       return <div>Loading...</div>
@@ -47,8 +68,10 @@ export function ProfileForm() {
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(ProfileFormSchema),
     defaultValues: {
-      phoneNumber: user?.phoneNumber,
-      address: user?.address,
+      name: user?.name,
+      pictureUrl: user?.pictureUrl,
+      phoneNumber: "0848706127",
+      address: user?.address?.toString(),
       countryId: user?.countryId?.toString(), // default to empty string. Will be filled dynamically when selecting a country.
       socialLinks: user?.socialLinks
     },
@@ -61,10 +84,10 @@ export function ProfileForm() {
   })
 
 
-  async function handleCountryChange(countryName: string) {
+/*   async function handleCountryChange(countryName: string) {
     if (countries === undefined) return;
     const selectedCategory = countries.find(country => country.name === countryName);
-  }
+  } */
 
   // 2. Define a submit handler.
   async function onSubmit(data: ProfileFormValues) {
@@ -80,14 +103,7 @@ export function ProfileForm() {
         socialLinks: data.socialLinks
       })
           .then(() => {
-            toast.success(
-              <>
-                <span>User updated successfully! </span>,
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                  <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-                </pre>
-              </>
-            )
+            toast.success("User updated successfully!")
           })
           .catch((error) => {
             toast.error(
@@ -103,12 +119,37 @@ export function ProfileForm() {
       //form.reset();
   }
 
-  return (
+  return user && !isPending && error===null && (
     <>
-      <div>{user ? "Create User" : "Edit User"}</div>
-      <br/>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+            control={form.control}
+            name="pictureUrl"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <div className="flex flex-row gap-3 items-center">
+                    <Avatar>
+                      <AvatarImage src={user.pictureUrl} alt="Avatar" />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>  
+                    <div className="grid gap-1">
+                      <div className="font-medium">{user.name}</div>
+                      <div className="hidden text-sm text-muted-foreground md:inline">
+                          {user.email}
+                      </div>
+                    </div> 
+                  </div>              
+                </FormControl>
+                <FormDescription>
+                  This is the current logged in user.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )} 
+          />
           <FormField
             control={form.control}
             name="phoneNumber"
@@ -130,9 +171,9 @@ export function ProfileForm() {
             name="address"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Address</FormLabel>
+                <FormLabel id="address">Address</FormLabel>
                 <FormControl>
-                  <Textarea id="address" placeholder="your address" {...field} className="resize-none" />
+                  <Textarea placeholder="Your address" {...field} className="resize-none" />
                 </FormControl>
                 <FormDescription>
                   This is your address.
@@ -147,13 +188,7 @@ export function ProfileForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Country</FormLabel>
-                <Select
-                  onValueChange={(countryName: string) => {
-                    field.onChange(countryName)
-                    handleCountryChange(countryName)
-                  } }
-                  defaultValue={field.value}
-                >
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select a country" />
@@ -162,7 +197,7 @@ export function ProfileForm() {
                   {countries && (
                     <SelectContent>
                       {countries.map((country) => (
-                        <SelectItem key={country._id} value={country.name}>
+                        <SelectItem key={country._id} value={country._id}>
                           {country.name}
                         </SelectItem>
                       ))}
@@ -214,3 +249,7 @@ export function ProfileForm() {
     </>
   )
 }
+function fetchData() {
+  throw new Error("Function not implemented.");
+}
+
