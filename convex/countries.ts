@@ -12,7 +12,7 @@ export const getCountries = query({
         },
 });
 
-export const getUser = query({
+export const getCountry = query({
     args: {id: v.id("Country") },
     handler: async (ctx, args) => {
         return await ctx.db.get(args.id);

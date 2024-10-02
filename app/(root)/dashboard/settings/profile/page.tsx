@@ -1,14 +1,19 @@
-"use client";
-
 import { Separator } from "@/components/ui/separator";
-import { ProfileForm } from "../_components/ProfileForm";
-import { useQuery } from "@tanstack/react-query";
-import { convexQuery } from "@convex-dev/react-query";
+import { preloadQuery } from "convex/nextjs";
 import { api } from "@/convex/_generated/api"
-import { Country, User } from "@/app/types/definitions";
+import ProfileForm from "../_components/ProfileForm";
+import { notFound } from "next/navigation";
 
 
-export default function page() {
+export default async function page() {
+  const [user, countries] = await Promise.all([ 
+    preloadQuery(api.users.getCurrentUser), 
+    preloadQuery(api.countries.getCountries)
+  ]);
+
+  if (!user) {
+    notFound();
+  }
 
   return (
     <div className="space-y-6">
@@ -19,7 +24,7 @@ export default function page() {
         </p>
       </div>
       <Separator />
-      <ProfileForm />
+      <ProfileForm user={user} countries={countries}/>
     </div>
   )
 }

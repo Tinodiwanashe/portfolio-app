@@ -1,155 +1,121 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm, useFieldArray } from "react-hook-form"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { api } from "@/convex/_generated/api"
-import { Doc, Id } from "@/convex/_generated/dataModel"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { cn } from "@/lib/utils"
-import { useApiMutation } from "@/hooks/use-api-mutation"
-import { Textarea } from "@/components/ui/textarea"
-import { toast } from "sonner"
-import { ProfileFormValues, ProfileFormSchema, User, Country } from "@/app/types/definitions";
-import { Label } from "@/components/ui/label";
-import { convexQuery } from "@convex-dev/react-query";
-import { useQuery } from "@tanstack/react-query";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, useFieldArray } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { api } from "@/convex/_generated/api";
+import { cn } from "@/lib/utils";
+import { useApiMutation } from "@/hooks/use-api-mutation";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useEffect, useState } from "react";
+import { Preloaded, usePreloadedQuery } from "convex/react";
+import { Label } from "@/components/ui/label";
 
-/* interface CreateFormProps {
-  userId: Id<"User">;
-} */
+const ProfileFormSchema = z.object({
+  phoneNumber: z.string({
+    required_error: "Please add a phone number to display.",
+  }).optional(),
+  address: z.string({
+    message: "address must be at least 2 characters.",
+  }).optional(),
+  countryId: z.string({
+    required_error: "Please select a country."
+  }).optional(),
+  socialLinks: z.array(
+    z.object({
+      value: z.string().url({ message: "Please enter a valid URL." }),
+    })
+  ).optional()
+})
 
-export function ProfileForm(/* {
-  user,
-  countries
-}: {
-  user: User;
-  countries: Country[];
-} */) {
-  const { data:user, isPending, error } = useQuery(convexQuery(api.users.getCurrentUser,{}));
-  const { data: countries, isPending: isLoading } = useQuery(convexQuery(api.countries.getCountries,{}));
+type ProfileFormValues = z.infer<typeof ProfileFormSchema>;
 
-    const {
-      mutate,
-      pending
-    } = useApiMutation(api.users.updateUser);
+export default function ProfileForm(props: {
+  user: Preloaded<typeof api.users.getCurrentUser>;
+  countries: Preloaded<typeof api.countries.getCountries>;
+}) {
+  const user = usePreloadedQuery(props.user);
+  const countries = usePreloadedQuery(props.countries); 
 
-    console.log("error: ", error);
-
-/*     const [usert, setUserT] = useState<User| null>(null);
-    
-    useEffect(() => {
-      async function fetchPosts() {
-        setUserT(user);
-      }
-      fetchPosts()
-    }, []);
-    console.log("user: ", user); */
-
-    /*if (user === undefined) {
-      return <div>Loading...</div>
-    } */ 
-    //commented this if out because it was resulting in the following "Rendered more hooks than during the previous render."
+  const {
+    mutate,
+    pending
+  } = useApiMutation(api.users.updateUser); 
 
   // 1. Define your form and set default values. These values can come from database or API
+  const defaultValues: Partial<ProfileFormValues> = {
+    phoneNumber: user?.phoneNumber,
+    address: user?.address,
+    countryId: user?.countryId?.toString(), // default to empty string. Will be filled dynamically when selecting a country.
+    socialLinks: user?.socialLinks
+  }
+
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(ProfileFormSchema),
-    defaultValues: {
-      name: user?.name,
-      pictureUrl: user?.pictureUrl,
-      phoneNumber: "0848706127",
-      address: user?.address?.toString(),
-      countryId: user?.countryId?.toString(), // default to empty string. Will be filled dynamically when selecting a country.
-      socialLinks: user?.socialLinks
-    },
+    defaultValues,
     mode: "onChange"
   })
+
+  console.log("form data: " + JSON.stringify(form));
 
   const { fields, append } = useFieldArray({
     name: "socialLinks",
     control: form.control
   })
 
-
-/*   async function handleCountryChange(countryName: string) {
-    if (countries === undefined) return;
-    const selectedCategory = countries.find(country => country.name === countryName);
-  } */
-
   // 2. Define a submit handler.
-  async function onSubmit(data: ProfileFormValues) {
+  const onSubmit = async (values: ProfileFormValues) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(data)
-        // You can now use these values for mutation.
+    try {
+    console.log(values)
+
+      // You can now use these values for mutation.
       mutate({
         id: user?._id,
-        phoneNumber: data.phoneNumber,
-        address: data.address,
-        countryId: data.countryId,  
-        socialLinks: data.socialLinks
-      })
-          .then(() => {
+        phoneNumber: values.phoneNumber,
+        address: values.address,
+        countryId: values.countryId ,  
+        socialLinks: values.socialLinks
+      });
+      /*  .then(() => {
             toast.success("User updated successfully!")
           })
           .catch((error) => {
             toast.error(
-              <>
-                <span>Something is wrong! </span>
-                {/* <div>{error}</div> */}
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                  <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-                </pre>
-              </>
+              //{JSON.stringify(data, null, 2)}
             )
           });
-      //form.reset();
+      //form.res *///et();
+    } catch (error) {
+      
+    }
   }
 
-  return user && !isPending && error===null && (
+  return user && (
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-            control={form.control}
-            name="pictureUrl"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <div className="flex flex-row gap-3 items-center">
-                    <Avatar>
-                      <AvatarImage src={user.pictureUrl} alt="Avatar" />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>  
-                    <div className="grid gap-1">
-                      <div className="font-medium">{user.name}</div>
-                      <div className="hidden text-sm text-muted-foreground md:inline">
-                          {user.email}
-                      </div>
-                    </div> 
-                  </div>              
-                </FormControl>
-                <FormDescription>
-                  This is the current logged in user.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )} 
-          />
+          <>
+            <Label>Full Name</Label>
+            <div className="flex flex-row gap-3 items-center">
+              <Avatar>
+                <AvatarImage src={user.pictureUrl} alt="Avatar" />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>  
+              <div className="grid gap-1">
+                <div className="font-medium">{user.name}</div>
+                <div className="hidden text-sm text-muted-foreground md:inline">
+                  {user.email}
+                </div>
+              </div> 
+            </div>   
+          </>
           <FormField
             control={form.control}
             name="phoneNumber"
@@ -233,13 +199,7 @@ export function ProfileForm(/* {
                 )}
               />
             ))}
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              className="mt-2"
-              onClick={() => append({ value: "" })}
-            >
+            <Button type="button" variant="outline" size="sm"className="mt-2"onClick={() => append({ value: "" })}>
               Add URL
             </Button>
           </div>
@@ -249,7 +209,3 @@ export function ProfileForm(/* {
     </>
   )
 }
-function fetchData() {
-  throw new Error("Function not implemented.");
-}
-

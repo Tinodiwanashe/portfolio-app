@@ -7,7 +7,7 @@ import { Id } from "./_generated/dataModel";
 export const store = mutation(async ({ db, auth }) => {
   const identity = await auth.getUserIdentity();
   if (!identity) {
-    throw new Error("Called storeUser without authentication present");
+    throw new Error("Called store User without authentication present");
   }
 
   // Check if we've already stored this identity before.
@@ -147,8 +147,7 @@ export const getCurrentUser = query({
           )
           .unique();
 
-      const User = {...user}
-      return User;
+      return user;
   }
 });
 
