@@ -64,7 +64,8 @@ import TableOptions from "../_components/TableOptions";
                             </TableCell>
                             <TableCell>{record.user.address}</TableCell>
                             <TableCell>{record.country?.name}</TableCell>
-                            <TableCell className="hidden md:table-cell">{formatDateToLocal(record.user._creationTime.toString())}</TableCell>
+                            <TableCell className="hidden md:table-cell">{ new Date(record.user._creationTime).toLocaleTimeString()}</TableCell> 
+{/*                             formatDateToLocal(record.user._creationTime.toString()) */}
                             <TableCell className="text-right">
                                 <TableOptions id={record.user._id}/>
                             </TableCell>

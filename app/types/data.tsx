@@ -16,6 +16,7 @@ import {
       label: "Home",
       href: "/",
       icon: <FaHome/>,
+      isPrivateRoute: false,
       hasProductItem: true,
       SubMenuItems: [
 /*         {
@@ -35,9 +36,18 @@ import {
       ]
     },
     {
+      label: "Dashboard",
+      href: "/dashboard",
+      icon: <FaUserAstronaut/>,
+      isPrivateRoute: true,
+      hasProductItem: false,
+      SubMenuItems: []
+    },
+    {
       label: "Experience",
       href: "/experience",
       icon: <FaUserAstronaut/>,
+      isPrivateRoute: false,
       hasProductItem: false,
       SubMenuItems: []
     },
@@ -45,18 +55,21 @@ import {
       label: "Resume",
       href: "/resume",
       icon: <FaFilePdf/>,
+      isPrivateRoute: false,
       hasProductItem: false,
       SubMenuItems: [
 /*         {
           label: "About Us",
           description: "Learn more about us",
           icon: <FaUser/>, 
+          isPrivateRoute: false,
           href: "/about",
           src: "https://assets.aceternity.com/demos/Screenshot+2024-02-21+at+11.47.07%E2%80%AFPM.png",
         }, {
           label: "About our team",
           description: "Learn more about us",  
           icon: <FaUser/>,
+          isPrivateRoute: false,
           href: "/about",
           src: "https://assets.aceternity.com/demos/Screenshot+2024-02-21+at+11.47.07%E2%80%AFPM.png"
         } */
@@ -66,6 +79,7 @@ import {
       label: "Contact me",
       href: "/contact",
       icon: <FaPhone/>,
+      isPrivateRoute: false,
       hasProductItem: false,
       SubMenuItems: []
     },

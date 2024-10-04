@@ -48,16 +48,21 @@ export default function ProfileForm(props: {
   } = useApiMutation(api.users.updateUser); 
 
   // 1. Define your form and set default values. These values can come from database or API
-  const defaultValues: Partial<ProfileFormValues> = {
+/*   const defaultValues: Partial<ProfileFormValues> = {
     phoneNumber: user?.phoneNumber,
     address: user?.address,
-    countryId: user?.countryId?.toString(), // default to empty string. Will be filled dynamically when selecting a country.
+    countryId: user?.countryId, // default to empty string. Will be filled dynamically when selecting a country.
     socialLinks: user?.socialLinks
-  }
+  } */
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(ProfileFormSchema),
-    defaultValues,
+    defaultValues: {
+      phoneNumber: user?.phoneNumber,
+      address: user?.address,
+      countryId: user?.countryId ? user.countryId : undefined, // default to empty string. Will be filled dynamically when selecting a country.
+      socialLinks: user?.socialLinks
+    },
     mode: "onChange"
   })
 
@@ -123,7 +128,7 @@ export default function ProfileForm(props: {
               <FormItem>
                 <FormLabel>Phone Number</FormLabel>
                 <FormControl>
-                  <Input placeholder="your phone number" {...field} />
+                  <Input placeholder="your phone number" {...field} defaultValue={field.value} />
                 </FormControl>
                 <FormDescription>
                   This is your phone number.

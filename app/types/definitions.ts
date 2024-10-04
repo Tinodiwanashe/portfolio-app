@@ -45,6 +45,7 @@ export type Navlink = {
     label: string;
     href: string;
     icon?: React.ReactNode | JSX.Element | any;
+    isPrivateRoute: boolean,
     hasProductItem: boolean;
     SubMenuItems?: SubMenuItem[];
   }; 
@@ -53,6 +54,7 @@ export type Navlink = {
     label: string;
     description?: string; 
     icon?: React.ReactNode | JSX.Element | any;  
+    isPrivateRoute: boolean,
     href: string;
     src?: string;   
   };

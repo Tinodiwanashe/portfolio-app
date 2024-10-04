@@ -11,6 +11,7 @@ import {
 import Link from "next/link"
 import { forwardRef, ElementRef, ComponentPropsWithoutRef } from "react"
 import { MenuItem, SubMenuItem } from "@/app/types/definitions"
+import { SignedIn } from "@clerk/nextjs"
 
 const Menu = ({
     menuItems,
@@ -37,14 +38,28 @@ const Menu = ({
                   <SubMenu SubMenuItems={menuItem.SubMenuItems} />
                 </NavigationMenuItem>
               ) : (
-                <NavigationMenuItem key={index}>
-                  <Link href={menuItem.href} legacyBehavior passHref>
-                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                      {/* {menuItem.icon && <menuItem.icon className="h-5 w-5"/>} */}
-                      {menuItem.label} 
-                    </NavigationMenuLink>                    
-                  </Link>
-                </NavigationMenuItem>
+                menuItem.isPrivateRoute?
+                (
+                  <SignedIn>
+                    <NavigationMenuItem key={index}>
+                      <Link href={menuItem.href} legacyBehavior passHref>
+                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                          {/* {menuItem.icon && <menuItem.icon className="h-5 w-5"/>}  */}
+                          {menuItem.label} 
+                        </NavigationMenuLink>                    
+                      </Link>
+                    </NavigationMenuItem>
+                  </SignedIn>
+                ) : (
+                  <NavigationMenuItem key={index}>
+                    <Link href={menuItem.href} legacyBehavior passHref>
+                      <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                        {/* {menuItem.icon && <menuItem.icon className="h-5 w-5"/>} */}
+                        {menuItem.label} 
+                      </NavigationMenuLink>                    
+                    </Link>
+                  </NavigationMenuItem>
+                )
               ) 
             );
           })}

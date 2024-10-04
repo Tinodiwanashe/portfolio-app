@@ -1,8 +1,11 @@
 import { paginationOptsValidator } from "convex/server";
-import { query, mutation  } from "./_generated/server";
+import { query, mutation, internalQuery, QueryCtx  } from "./_generated/server";
 import { v } from "convex/values";
-import { Id } from "./_generated/dataModel";
-
+import { Doc, Id } from "./_generated/dataModel";
+import { zUser } from "./zod";
+import { z } from "zod";
+import { withSystemFields, zCustomAction, zCustomMutation, zCustomQuery } from "convex-helpers/server/zod";
+import { customCtx, NoOp } from "convex-helpers/server/customFunctions";
 
 export const store = mutation(async ({ db, auth }) => {
   const identity = await auth.getUserIdentity();
@@ -133,21 +136,20 @@ export const getUser = query({
 
 export const getCurrentUser = query({
   handler: async (ctx) => {
-      const identity = await ctx.auth.getUserIdentity();
-
-      if (!identity) {
-          return null;
-      }
-
-      // throw new Error("Unauthenticated call to query");
-      const user = await ctx.db
-          .query("User")
-          .withIndex("idx_token", (q) =>
-              q.eq("tokenIdentifier", identity.tokenIdentifier)
-          )
-          .unique();
-
-      return user;
+    const identity = await ctx.auth.getUserIdentity();
+    if (identity === null) {
+      throw new Error("Called getCurrentUser without authentication present");
+    }
+    console.log("token: ",identity.tokenIdentifier);
+    return await getUserByTokenIdentifier(ctx, identity.tokenIdentifier);
   }
 });
 
+const getUserByTokenIdentifier = async (ctx: QueryCtx, tokenIdentifier: string) => {
+  return await ctx.db
+  .query("User")
+  .withIndex("idx_token", (q) =>
+    q.eq("tokenIdentifier", tokenIdentifier),
+  )
+  .unique();
+}
