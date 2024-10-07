@@ -37,8 +37,7 @@ export const store = mutation(async ({ db, auth }) => {
     name: identity.name!,
     tokenIdentifier: identity.tokenIdentifier,
     email: identity.email,
-    address: identity.address,
-    countryId: null 
+    address: identity.address
   });
 });
 

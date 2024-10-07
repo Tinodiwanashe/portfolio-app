@@ -1,20 +1,18 @@
+"use client";
+
 import { Separator } from "@/components/ui/separator";
 import { preloadQuery } from "convex/nextjs";
 import { api } from "@/convex/_generated/api"
 import ProfileForm from "../_components/ProfileForm";
 import { notFound } from "next/navigation";
+import { useQuery } from "convex/react";
+import { ProfileFormValues } from "@/app/types/definitions";
 
 
-export default async function page() {
-   const [user, countries] = await Promise.all([ 
-    preloadQuery(api.users.getCurrentUser),
-    preloadQuery(api.countries.getCountries)
-  ]); 
+export default function page() {
+  
 
 
-  if (!user) {
-    notFound();
-  }
 
   return (
     <div className="space-y-6">
@@ -25,7 +23,7 @@ export default async function page() {
         </p>
       </div>
       <Separator />
-      <ProfileForm user={user} countries={countries}/>
+      <ProfileForm/>
     </div>
   )
 }

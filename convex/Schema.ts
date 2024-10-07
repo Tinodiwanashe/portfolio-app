@@ -18,7 +18,7 @@ export default defineSchema({
     email: v.optional(v.string()),
     phoneNumber: v.optional(v.string()),
     address: v.optional(v.string()),
-    countryId: v.union(v.id("Country"), v.null()),  
+    countryId: v.optional(v.union(v.id("Country"), v.null())),  
     socialLinks: v.optional(v.array(v.object({
       value: v.string()
     })))

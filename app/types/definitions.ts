@@ -113,3 +113,24 @@ export type Navlink = {
     providers: string[]
   }
   
+  export const ProfileFormSchema = z.object({
+    name: z.string().optional(),
+    email: z.string().email().optional(),
+    pictureUrl: z.string().optional(),
+    phoneNumber: z.string({
+      required_error: "Please add a phone number to display.",
+    }).optional(),
+    address: z.string({
+      message: "address must be at least 2 characters.",
+    }).optional(),
+    countryId: z.string({
+      required_error: "Please select a country."
+    }).optional(),
+    socialLinks: z.array(
+      z.object({
+        value: z.string().url({ message: "Please enter a valid URL." }),
+      })
+    ).optional()
+  })
+  
+  export type ProfileFormValues = z.infer<typeof ProfileFormSchema>;

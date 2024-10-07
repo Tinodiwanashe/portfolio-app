@@ -13,66 +13,75 @@ import { useApiMutation } from "@/hooks/use-api-mutation";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Preloaded, usePreloadedQuery } from "convex/react";
+import { Preloaded, usePreloadedQuery, useQuery } from "convex/react";
 import { Label } from "@/components/ui/label";
+import { Doc, Id } from "@/convex/_generated/dataModel";
+import { ProfileFormSchema, ProfileFormValues } from "@/app/types/definitions";
 
-const ProfileFormSchema = z.object({
-  phoneNumber: z.string({
-    required_error: "Please add a phone number to display.",
-  }).optional(),
-  address: z.string({
-    message: "address must be at least 2 characters.",
-  }).optional(),
-  countryId: z.string({
-    required_error: "Please select a country."
-  }).optional(),
-  socialLinks: z.array(
-    z.object({
-      value: z.string().url({ message: "Please enter a valid URL." }),
-    })
-  ).optional()
-})
+type props = {
+  formRecord: ProfileFormValues;
+  userId: Id<"User"> | undefined;
+}
 
-type ProfileFormValues = z.infer<typeof ProfileFormSchema>;
 
-export default function ProfileForm(props: {
-  user: Preloaded<typeof api.users.getCurrentUser>;
-  countries: Preloaded<typeof api.countries.getCountries>;
-}) {
-  const user = usePreloadedQuery(props.user);
-  const countries = usePreloadedQuery(props.countries); 
+/*  props: {
+  userData: Preloaded<typeof api.users.getCurrentUser>;
+  countriesData: Preloaded<typeof api.countries.getCountries>;
+} */
 
+/*   const user = usePreloadedQuery(props.userData);
+  const countries = usePreloadedQuery(props.countriesData);  */ 
+
+export default function ProfileForm() {  
+  
+  const user = useQuery(api.users.getCurrentUser);  
+  const countries = useQuery(api.countries.getCountries);   
   const {
     mutate,
     pending
-  } = useApiMutation(api.users.updateUser); 
-
-  // 1. Define your form and set default values. These values can come from database or API
-/*   const defaultValues: Partial<ProfileFormValues> = {
+  } = useApiMutation(api.users.updateUser);  
+  
+    // 1. Define your form and set default values. These values can come from database or API
+  const formRecord: Partial<ProfileFormValues> = {
+    name: user?.name,
+    email: user?.email,
+    pictureUrl: user?.pictureUrl,
     phoneNumber: user?.phoneNumber,
     address: user?.address,
-    countryId: user?.countryId, // default to empty string. Will be filled dynamically when selecting a country.
+    countryId: user?.countryId?.toString(), // default to empty string. Will be filled dynamically when selecting a country.
     socialLinks: user?.socialLinks
-  } */
+  } 
 
-    
+      // 1. Define your form and set default values. These values can come from database or API
+      const values: ProfileFormValues = {
+        name: user?.name,
+        email: user?.email,
+        pictureUrl: user?.pictureUrl,
+        phoneNumber: user?.phoneNumber,
+        address: user?.address,
+        countryId: user?.countryId?.toString(), // default to empty string. Will be filled dynamically when selecting a country.
+        socialLinks: user?.socialLinks
+      } 
 
   const form = useForm<ProfileFormValues>({
-    resolver: zodResolver(ProfileFormSchema),
-    defaultValues: {
-      phoneNumber: user?.phoneNumber,
-      address: user?.address,
-      countryId: user?.countryId ? user.countryId : undefined, // default to empty string. Will be filled dynamically when selecting a country.
-      socialLinks: user?.socialLinks
+    resolver: zodResolver(ProfileFormSchema), //Integrates with your preferred schema validation library.
+    defaultValues: formRecord,
+    values,  // will get updated once values returns - will get updated when values props updates    
+    resetOptions: {
+      keepDirtyValues: true, // user-interacted input will be retained
+      keepErrors: true, // input errors will be retained with value update
     },
     mode: "onChange"
   })
 
-  console.log("form data: " + JSON.stringify(form));
+  //form.setValue("phoneNumber", formRecord?.phoneNumber);
+  //form.setValue("address", formRecord?.address);
+  //form.setValue("countryId", formRecord?.countryId?.toString()); 
+  //form.setValue("socialLinks", formRecord?.socialLinks); 
 
-  const { fields, append } = useFieldArray({
-    name: "socialLinks",
-    control: form.control
+  const { append, fields } = useFieldArray({
+    name: "socialLinks", // unique name for your Field Array
+    control: form.control // control props comes from useForm (optional: if you are using FormContext)
   })
 
   // 2. Define a submit handler.
@@ -89,22 +98,20 @@ export default function ProfileForm(props: {
         address: values.address,
         countryId: values.countryId ,  
         socialLinks: values.socialLinks
-      });
-      /*  .then(() => {
+      }).then(() => {
             toast.success("User updated successfully!")
           })
           .catch((error) => {
-            toast.error(
-              //{JSON.stringify(data, null, 2)}
+            toast.error("Failed to update"
             )
           });
-      //form.res *///et();
+      form.reset();
     } catch (error) {
       
     }
   }
 
-  return user && (
+  return formRecord && (
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -112,13 +119,13 @@ export default function ProfileForm(props: {
             <Label>Full Name</Label>
             <div className="flex flex-row gap-3 items-center">
               <Avatar>
-                <AvatarImage src={user.pictureUrl} alt="Avatar" />
+                <AvatarImage src={formRecord.pictureUrl} alt="Avatar" />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>  
               <div className="grid gap-1">
-                <div className="font-medium">{user.name}</div>
+                <div className="font-medium">{formRecord.name}</div>
                 <div className="hidden text-sm text-muted-foreground md:inline">
-                  {user.email}
+                  {formRecord.email}
                 </div>
               </div> 
             </div>   
@@ -130,7 +137,7 @@ export default function ProfileForm(props: {
               <FormItem>
                 <FormLabel>Phone Number</FormLabel>
                 <FormControl>
-                  <Input placeholder="your phone number" {...field} defaultValue={user.phoneNumber} />
+                  <Input placeholder="your phone number" {...field}/>
                 </FormControl>
                 <FormDescription>
                   This is your phone number.
@@ -142,11 +149,11 @@ export default function ProfileForm(props: {
           <FormField
             control={form.control}
             name="address"
-            render={({ field }) => (
+            render={({ field }) => ( 
               <FormItem>
                 <FormLabel id="address">Address</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Your address" {...field} className="resize-none" defaultValue={user.address} />
+                  <Textarea placeholder="Your address" {...field} className="resize-none"  /> 
                 </FormControl>
                 <FormDescription>
                   This is your address.
@@ -161,7 +168,7 @@ export default function ProfileForm(props: {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Country</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={user.countryId?.toString()}>
+                <Select >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select a country" />
@@ -170,7 +177,7 @@ export default function ProfileForm(props: {
                   {countries && (
                     <SelectContent>
                       {countries.map((country) => (
-                        <SelectItem key={country._id} value={country._id}>
+                        <SelectItem key={country._id} value={country.name}>
                           {country.name}
                         </SelectItem>
                       ))}
@@ -188,7 +195,7 @@ export default function ProfileForm(props: {
             {fields.map((field,index) => (
               <FormField
                 control={form.control}
-                key={field.id}
+                key={field.id}  // important to include key with field's id
                 name={`socialLinks.${index}.value`}
                 render={({ field }) => (
                   <FormItem>
@@ -199,7 +206,7 @@ export default function ProfileForm(props: {
                       Add links to your website, blog, or social media profiles.
                     </FormDescription>
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field}/>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
