@@ -2,10 +2,6 @@ import { paginationOptsValidator } from "convex/server";
 import { query, mutation, internalQuery, QueryCtx  } from "./_generated/server";
 import { v } from "convex/values";
 import { Doc, Id } from "./_generated/dataModel";
-import { zUser } from "./zod";
-import { z } from "zod";
-import { withSystemFields, zCustomAction, zCustomMutation, zCustomQuery } from "convex-helpers/server/zod";
-import { customCtx, NoOp } from "convex-helpers/server/customFunctions";
 
 export const store = mutation(async ({ db, auth }) => {
   const identity = await auth.getUserIdentity();
@@ -142,7 +138,7 @@ export const getCurrentUser = query({
     }
     console.log("token: ",identity.tokenIdentifier);
     return await getUserByTokenIdentifier(ctx, identity.tokenIdentifier);
-  }
+  },
 });
 
 const getUserByTokenIdentifier = async (ctx: QueryCtx, tokenIdentifier: string) => {

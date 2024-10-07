@@ -1,4 +1,3 @@
-import { NextResponse, type NextRequest } from "next/server";
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 // createRouteMatcher() is a Clerk helper function that allows you to protect multiple routes. 

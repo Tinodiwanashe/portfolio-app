@@ -130,7 +130,7 @@ export default function ProfileForm(props: {
               <FormItem>
                 <FormLabel>Phone Number</FormLabel>
                 <FormControl>
-                  <Input placeholder="your phone number" {...field} defaultValue={field.value} />
+                  <Input placeholder="your phone number" {...field} defaultValue={user.phoneNumber} />
                 </FormControl>
                 <FormDescription>
                   This is your phone number.
@@ -146,7 +146,7 @@ export default function ProfileForm(props: {
               <FormItem>
                 <FormLabel id="address">Address</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Your address" {...field} className="resize-none" />
+                  <Textarea placeholder="Your address" {...field} className="resize-none" defaultValue={user.address} />
                 </FormControl>
                 <FormDescription>
                   This is your address.
@@ -161,7 +161,7 @@ export default function ProfileForm(props: {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Country</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select onValueChange={field.onChange} defaultValue={user.countryId?.toString()}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select a country" />
