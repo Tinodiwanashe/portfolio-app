@@ -6,11 +6,6 @@ import { v } from "convex/values";
 In addition to the fields listed, Convex will also automatically add _id and _creationTime fields.  */
 
 export default defineSchema({
-  SocialMediaLink: defineTable({
-    name: v.string(),
-    url: v.optional(v.string()),
-    createdBy: v.union(v.id("User"), v.null())
-  }).index("idx_social_name", ["name", "createdBy"]).index("createdBy", ["createdBy"]),
   User: defineTable({
     name: v.string(),
     tokenIdentifier: v.string(),

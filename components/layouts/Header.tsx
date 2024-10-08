@@ -5,31 +5,18 @@ import { FaBars } from "react-icons/fa"
 import Logo from '../Logo';
 import { Button } from "../ui/button"
 import { ModeToggle } from "../tutorial/ModeToggle"
-import { menuItems, socials } from "@/app/types/data"
+import { menuItems } from "@/app/types/data"
 import Menu from "./Menu"
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import SocialMediaIcon from "../tutorial/SocialMediaIcon";
+import { RootLayoutProps } from "@/app/types/definitions";
 
 //you cannot export an async functioon within a client component. The solution here is to use the use state and use effect hook
  const Header = ({
     children
-  }: {
-    children: React.ReactNode;
-  }) => {
-
-/*     //determines whether the user has an active session/user is logedIn
-    const [session, setSession] = useState<any | null>(null);
-
-    useEffect(() => {
-      const fetchSession = async () => {
-        const supabase = createClient();
-        const { data, error } =  await supabase.auth.refreshSession();
-        if (error) {
-          console.error("Error fetching session:", error);
-        } else {
-          setSession(data.session);
-        }
-      }
-      fetchSession();
-    }, []) */
+  }: RootLayoutProps) => {
+    const socialLinks = useQuery(api.users.getSocialLinks);
 
   return (
     <header className='sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex items-center gap-4 h-16 px-4 md:px-6' >
@@ -68,16 +55,9 @@ import Menu from "./Menu"
         </Sheet>
         <div className="flex flex-1 items-center justify-end gap-2 sm:gap-2 w-full">
           {
-            socials.map((item, index) => {
+            socialLinks && socialLinks.map((item, index) => {
               return (
-                <Button 
-                  className="h-[2.3rem] w-[2.3rem]"
-                  variant="outline" 
-                  size={"icon"}
-                  key={index}
-                >
-                  {item.icon}
-                </Button>
+                <SocialMediaIcon url={item.value}/>
               )
             })
           }

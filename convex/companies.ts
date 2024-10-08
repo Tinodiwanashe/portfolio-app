@@ -2,25 +2,31 @@ import { query, mutation  } from "./_generated/server";
 import { v } from "convex/values";
 
 
-    export const getSocialMediaLinks = query({
+    export const getCompanies = query({
     args: {},
     handler: async (ctx, args) => {
         return await ctx.db
-        .query("SocialMediaLink")
+        .query("Company")
         .order("asc")
         .collect();
         },
     });
 
-    export const getSocialMediaLink = query({
-        args: {SocialMediaLinkId: v.id("SocialMediaLink") },
+    export const getCompany = query({
+        args: {CompanyId: v.id("Company") },
         handler: async (ctx, args) => {
-            return await ctx.db.get(args.SocialMediaLinkId);
+            return await ctx.db.get(args.CompanyId);
         },
     });
 
-    export const createOrUpdateSocialMediaLink = mutation({
-        args: { id: v.id("SocialMediaLink"), name: v.string(), url: v.optional(v.string()) },
+    export const createOrUpdateCompany = mutation({
+        args: { 
+            id: v.id("Company"), 
+            name: v.string(),
+            description: v.optional(v.string()),
+            url: v.optional(v.string()),
+            createdBy: v.union(v.id("User"), v.null())
+        },
         handler: async (ctx, args) => {
             const identity = await ctx.auth.getUserIdentity();
             if (!identity) {
@@ -37,26 +43,29 @@ import { v } from "convex/values";
                 throw new Error("Unauthenticated call to mutation");
             }
 
-            const socialMediaLink = await ctx.db.get(args.id);
-            if (socialMediaLink) {
+            const Company = await ctx.db.get(args.id);
+            if (Company) {
                 await ctx.db.patch(args.id, {
                     name: args.name,
+                    description: args.description,
                     url: args.url,
+                    createdBy: args.createdBy
                 }); 
-                return socialMediaLink._id;
+                return Company._id;
             } else {
-                const socialMediaLinkId = await ctx.db.insert("SocialMediaLink", {
+                const CompanyId = await ctx.db.insert("Company", {
                     name: args.name,
+                    description: args.description,
                     url: args.url,
-                    createdBy: user._id
+                    createdBy: args.createdBy
                 });  
-                return socialMediaLinkId;      
+                return CompanyId;      
             }
             },
     });
 
-    export const deleteSocialMediaLink = mutation({
-    args: { id: v.id("SocialMediaLink") },
+    export const deleteCompany= mutation({
+    args: { id: v.id("Company") },
     handler: async (ctx, args) => {
         const identity = await ctx.auth.getUserIdentity();
         if (!identity) {
@@ -73,9 +82,9 @@ import { v } from "convex/values";
             throw new Error("Unauthenticated call to mutation");
         }
 
-        const socialMediaLink = await ctx.db.get(args.id);
-        if (!socialMediaLink) {
-            throw new Error("Social Media Link not found");
+        const Company = await ctx.db.get(args.id);
+        if (!Company) {
+            throw new Error("Company not found");
         } else {
             await ctx.db.delete(args.id);
         }

@@ -148,3 +148,22 @@ const getUserByTokenIdentifier = async (ctx: QueryCtx, tokenIdentifier: string) 
   )
   .unique();
 }
+
+export const getSocialLinks = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (identity === null) {
+      throw new Error("Called getSocialLinks without authentication present");
+    }
+
+    const users = await ctx.db
+    .query("User")
+    .withIndex("idx_token", (q) =>
+      q.eq("tokenIdentifier", identity.tokenIdentifier),
+    )
+    .unique();
+
+    return users?.socialLinks === undefined ? [] : users.socialLinks;
+
+  },
+});

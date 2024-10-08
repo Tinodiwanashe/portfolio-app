@@ -17,6 +17,7 @@ import { Preloaded, usePreloadedQuery, useQuery } from "convex/react";
 import { Label } from "@/components/ui/label";
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import { ProfileFormSchema, ProfileFormValues } from "@/app/types/definitions";
+import { getInitials } from "@/lib/utils";
 
 type props = {
   formRecord: ProfileFormValues;
@@ -39,9 +40,11 @@ export default function ProfileForm() {
   const {
     mutate,
     pending
-  } = useApiMutation(api.users.updateUser);  
+  } = useApiMutation(api.users.updateUser); 
   
-    // 1. Define your form and set default values. These values can come from database or API
+  const fullName =  user?.name === null || user?.name === undefined? "": user?.name;
+  
+  // 1. Define your form and set default values. These values can come from database or API
   const formRecord: Partial<ProfileFormValues> = {
     name: user?.name,
     email: user?.email,
@@ -52,16 +55,15 @@ export default function ProfileForm() {
     socialLinks: user?.socialLinks
   } 
 
-      // 1. Define your form and set default values. These values can come from database or API
-      const values: ProfileFormValues = {
-        name: user?.name,
-        email: user?.email,
-        pictureUrl: user?.pictureUrl,
-        phoneNumber: user?.phoneNumber,
-        address: user?.address,
-        countryId: user?.countryId?.toString(), // default to empty string. Will be filled dynamically when selecting a country.
-        socialLinks: user?.socialLinks
-      } 
+  const values: ProfileFormValues = {
+    name: user?.name,
+    email: user?.email,
+    pictureUrl: user?.pictureUrl,
+    phoneNumber: user?.phoneNumber,
+    address: user?.address,
+    countryId: user?.countryId?.toString(), // default to empty string. Will be filled dynamically when selecting a country.
+    socialLinks: user?.socialLinks
+  } 
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(ProfileFormSchema), //Integrates with your preferred schema validation library.
@@ -77,7 +79,6 @@ export default function ProfileForm() {
   //form.setValue("phoneNumber", formRecord?.phoneNumber);
   //form.setValue("address", formRecord?.address);
   //form.setValue("countryId", formRecord?.countryId?.toString()); 
-  //form.setValue("socialLinks", formRecord?.socialLinks); 
 
   const { append, fields } = useFieldArray({
     name: "socialLinks", // unique name for your Field Array
@@ -120,7 +121,7 @@ export default function ProfileForm() {
             <div className="flex flex-row gap-3 items-center">
               <Avatar>
                 <AvatarImage src={formRecord.pictureUrl} alt="Avatar" />
-                <AvatarFallback>CN</AvatarFallback>
+                <AvatarFallback>{getInitials(fullName)}</AvatarFallback>
               </Avatar>  
               <div className="grid gap-1">
                 <div className="font-medium">{formRecord.name}</div>
