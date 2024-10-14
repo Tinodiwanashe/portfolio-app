@@ -123,9 +123,13 @@ export const getUsers = query({
 });  
 
 export const getUser = query({
-    args: {id: v.id("User") },
+    args: {UserId: v.id("User") },
     handler: async (ctx, args) => {
-        return await ctx.db.get(args.id);
+        //return await ctx.db.get(args.UserId);
+        return await ctx.db
+        .query("User")
+        .filter((q) => q.eq(q.field("_id"), args.UserId))
+        .first();
     },
 });  
 
@@ -135,7 +139,6 @@ export const getCurrentUser = query({
     if (identity === null) {
       throw new Error("Called getCurrentUser without authentication present");
     }
-    console.log("token: ",identity.tokenIdentifier);
     return await getUserByTokenIdentifier(ctx, identity.tokenIdentifier);
   },
 });

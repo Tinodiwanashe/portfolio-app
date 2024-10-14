@@ -1,3 +1,4 @@
+import { Id } from "./_generated/dataModel";
 import { query, mutation  } from "./_generated/server";
 import { v } from "convex/values";
 
@@ -5,27 +6,43 @@ import { v } from "convex/values";
     export const getCompanies = query({
     args: {},
     handler: async (ctx, args) => {
-        return await ctx.db
+        const companies = await ctx.db
         .query("Company")
         .order("asc")
         .collect();
-        },
+
+        return Promise.all(
+            companies.map(async (company) => {
+              // For each user , fetch the `Country` he comes from and
+              // insert the name into the `Country name` field.
+              const user = await ctx.db.get(company.createdBy as Id<"User">);
+              const CompanyWithUser =  {
+                company: company,
+                user: user
+              };
+              return CompanyWithUser;
+            }),
+        );         
+    },
     });
 
     export const getCompany = query({
-        args: {CompanyId: v.id("Company") },
+        args: {CompanyId: v.union(v.id("Company"), v.null())},
         handler: async (ctx, args) => {
-            return await ctx.db.get(args.CompanyId);
+            //return await ctx.db.get(args.CompanyId);
+            return await ctx.db
+            .query("Company")
+            .filter((q) => q.eq(q.field("_id"), args.CompanyId))
+            .first();
         },
     });
 
     export const createOrUpdateCompany = mutation({
         args: { 
-            id: v.id("Company"), 
+            id: v.union(v.id("Company"), v.null()), 
             name: v.string(),
             description: v.optional(v.string()),
-            url: v.optional(v.string()),
-            createdBy: v.union(v.id("User"), v.null())
+            url: v.optional(v.string())
         },
         handler: async (ctx, args) => {
             const identity = await ctx.auth.getUserIdentity();
@@ -43,21 +60,22 @@ import { v } from "convex/values";
                 throw new Error("Unauthenticated call to mutation");
             }
 
-            const Company = await ctx.db.get(args.id);
-            if (Company) {
+            
+            if (args.id !== null) {
+                const Company = await ctx.db.get(args.id);
                 await ctx.db.patch(args.id, {
                     name: args.name,
                     description: args.description,
                     url: args.url,
-                    createdBy: args.createdBy
+                    createdBy: Company?.createdBy
                 }); 
-                return Company._id;
+                return Company?._id;
             } else {
                 const CompanyId = await ctx.db.insert("Company", {
                     name: args.name,
                     description: args.description,
                     url: args.url,
-                    createdBy: args.createdBy
+                    createdBy: user._id
                 });  
                 return CompanyId;      
             }

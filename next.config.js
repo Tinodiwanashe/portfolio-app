@@ -1,3 +1,4 @@
+const MillionLint = require("@million/lint");
 /** @type {import('next').NextConfig} */
 
 // Injected content via Sentry wizard below
@@ -7,18 +8,25 @@ const nextConfig = {
     images: {
         remotePatterns: [
           {
-            protocol: 'https',
-            hostname: 'assets.aceternity.com',
-            port: '',
-            pathname: '/demos/**',
+            protocol: "https",
+            hostname: "assets.aceternity.com",
+            port: "",
+            pathname: "/demos/**",
           },
         ],
       },
 };
 
+
+
 // module.exports = nextConfig;
 
-module.exports = withSentryConfig(
+module.exports = MillionLint.next({
+  rsc: true,
+  filter: {
+    include: "**/components/*.{mtsx,mjsx,tsx,jsx}",
+  },
+})(withSentryConfig(
   nextConfig,
   {
     // For all available options, see:
@@ -54,4 +62,4 @@ module.exports = withSentryConfig(
     // https://vercel.com/docs/cron-jobs
     automaticVercelMonitors: true,
   }
-);
+));

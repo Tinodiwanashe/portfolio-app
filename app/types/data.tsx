@@ -85,6 +85,29 @@ import {
     },
   ];
 
+  export const sidebarNavItems = [
+    {
+      title: "Profile",
+      href: "/dashboard/settings/profile",
+    },
+    {
+      title: "Projects",
+      href: "/dashboard/settings/projects",
+    },
+    {
+      title: "Users",
+      href: "/dashboard/settings/users",
+    },
+    {
+      title: "Companies",
+      href: "/dashboard/settings/companies",
+    },
+    {
+      title: "Occupations",
+      href: "/dashboard/settings/occupations",
+    },
+  ]
+
   export const socials = [
     {
       name: "Github",

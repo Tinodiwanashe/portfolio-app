@@ -11,9 +11,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import useMounted from "@/hooks/use-mounted"
 
 export function ModeToggle() {
-  const { setTheme } = useTheme()
+  const { setTheme } = useTheme();
+
+  const mounted = useMounted()
+  if (!mounted) return null
 
   return (
     <DropdownMenu>

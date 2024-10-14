@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from '@/components/ui/button';
 import { api } from '@/convex/_generated/api';
 import { Id } from '@/convex/_generated/dataModel';
@@ -8,8 +10,11 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import React from 'react';
 import { FaEllipsisVertical, FaPencil, FaTrash } from 'react-icons/fa6';
+import router from 'next/router';
+import { RootLayoutProps } from '@/app/types/definitions';
 
-export default function TableOptions({id}: {id: Id<"User"> }) {
+export default function TableOptions({children} : RootLayoutProps) {
+  //encodeURIComponent
   return (
     <>
         <DropdownMenu>
@@ -26,39 +31,11 @@ export default function TableOptions({id}: {id: Id<"User"> }) {
             <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <EditUser id={id}/>
-            <DeleteUser id={id}/>
+              <>
+                {children}
+              </>
             </DropdownMenuContent>
         </DropdownMenu>
     </>
   );
 };
-
-const EditUser = ({ id }: { id: Id<"User"> }) => {
-    function redirectToUserForm(){
-        const path =  `/dashboard/users/${id}/edit`;
-        revalidatePath(path);
-        redirect(path);
-    }
-    return (
-      <DropdownMenuItem
-        onClick={() => redirectToUserForm()}
-      >
-        <FaPencil className="mr-2 h-4 w-4" />
-        <span>Edit</span>
-      </DropdownMenuItem>
-    );
-  }
-
-  
-  
- const DeleteUser = ({ id }: { id: Id<"User"> }) => {
-    
-    const deleteUser = useMutation(api.users.deleteUser);
-    return (
-        <DropdownMenuItem onClick={() => {}}>
-            <FaTrash className="mr-2 h-4 w-4" />
-            <span>Delete</span>
-        </DropdownMenuItem>
-    );
-  }

@@ -5,21 +5,43 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { api } from "@/convex/_generated/api";
-import { useMutation, useQuery } from "convex/react";
+import { useMutation } from "convex/react";
 import Link from "next/link";
-import { FaArrowUpRightFromSquare, FaPencil, FaTrash, FaEllipsisVertical } from "react-icons/fa6";
+import { FaArrowUpRightFromSquare, FaPencil, FaTrash } from "react-icons/fa6";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { formatDateToLocal, getInitials } from "@/lib/utils";
+import { getInitials } from "@/lib/utils";
 import TableOptions from "../_components/TableOptions";
+import BlankSlate from "@/components/tutorial/BlankSlate";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { Id } from "@/convex/_generated/dataModel";
+import { convexQuery } from "@convex-dev/react-query";
+import { useQuery } from "@tanstack/react-query";
   
-  export default function usersTable() {
-    const usersList = useQuery(api.users.getUsers);
+  export default function page() {
+    const { data, isPending, error } = useQuery(convexQuery(api.users.getUsers,{}));
 
-    if (usersList === undefined) {
-      return <div>Loading...</div>
+    if (data === undefined || data.length === 0) {
+        return (
+        <BlankSlate 
+            icon={
+                <h3 className="text-2xl font-bold tracking-tight">
+                    You have no users
+                </h3>
+            }
+            content={
+                <p className="text-sm text-muted-foreground">
+                    You can start managing as soon as you add a user.
+                </p>
+            } 
+            actions={
+                <Button className="mt-4">Add User</Button>
+            }
+        />
+        )
     }
+
     return (
-        <Card>
+        <Card x-chunk="dashboard-04-chunk-1">
             <CardHeader>
                 <div className="grid gap-2">
                     <CardTitle>Users</CardTitle>
@@ -47,7 +69,7 @@ import TableOptions from "../_components/TableOptions";
                     </TableRow>
                     </TableHeader>
                     <TableBody>
-                    {usersList.map((record) => (
+                    {data.map((record) => (
                         <TableRow key={record.user._id}>
                             <TableCell className="font-medium">
                                 <Avatar className="hidden h-9 w-9 sm:flex">
@@ -64,10 +86,13 @@ import TableOptions from "../_components/TableOptions";
                             </TableCell>
                             <TableCell>{record.user.address}</TableCell>
                             <TableCell>{record.country?.name}</TableCell>
-                            <TableCell className="hidden md:table-cell">{ new Date(record.user._creationTime).toLocaleTimeString()}</TableCell> 
+                            <TableCell className="hidden md:table-cell">{ new Date(record.user._creationTime).toLocaleDateString()}</TableCell> 
 {/*                             formatDateToLocal(record.user._creationTime.toString()) */}
                             <TableCell className="text-right">
-                                <TableOptions id={record.user._id}/>
+                                <TableOptions>
+                                    <Edit destination={`/dashboard/settings/users/${encodeURIComponent(record.user._id)}/edit`}/>
+                                    <Delete id={record.user._id}/>
+                                </TableOptions>
                             </TableCell>
                         </TableRow>
                     ))}
@@ -81,6 +106,36 @@ import TableOptions from "../_components/TableOptions";
 
     )
   }
+
+    const Edit = ({destination}: {destination: string}) => {
+        function redirectToUserForm(){
+        /*         revalidatePath(path);
+            redirect(path);  */
+        }
+        return (
+            <Link href={destination}>
+                <DropdownMenuItem>
+                    <FaPencil className="mr-2 h-4 w-4" />
+                    <span>Edit</span>
+                </DropdownMenuItem>
+            </Link>
+        );
+    }
+
+
+
+    const Delete = ({id}: {id: Id<"User">}) => {
+
+        const deleteUser = useMutation(api.users.deleteUser);
+        return (
+            <DropdownMenuItem onClick={() => deleteUser({id})}>
+                <FaTrash className="mr-2 h-4 w-4" />
+                <span>Delete</span>
+            </DropdownMenuItem>
+        );
+    }
+
+  
 
 
   

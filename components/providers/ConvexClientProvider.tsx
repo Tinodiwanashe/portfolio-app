@@ -7,6 +7,7 @@ import { dark } from '@clerk/themes'
 import { RootLayoutProps } from "@/app/types/definitions";
 import { ConvexQueryClient } from "@convex-dev/react-query";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 
 
@@ -19,7 +20,6 @@ const clerkAppearance = {
   //appearance={clerkAppearance}bh
   
 const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
-
 const convexQueryClient = new ConvexQueryClient(convex);
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,6 +36,7 @@ export function ConvexClientProvider({ children }: RootLayoutProps) {
         <ClerkProvider  appearance={clerkAppearance} publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!}>
             <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
                 <QueryClientProvider client={queryClient}>
+                  
                     <Authenticated>
                         {children}
                     </Authenticated>
@@ -45,6 +46,7 @@ export function ConvexClientProvider({ children }: RootLayoutProps) {
                     <AuthLoading>
                         <div>Loading...</div>
                     </AuthLoading>
+                    <ReactQueryDevtools initialIsOpen={false} />
                 </QueryClientProvider>   
             </ConvexProviderWithClerk>
         </ClerkProvider>

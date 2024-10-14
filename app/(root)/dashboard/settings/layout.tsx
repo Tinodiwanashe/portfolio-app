@@ -3,35 +3,7 @@ import Image from "next/image"
 
 import { SidebarNav } from "./_components/side-nav"
 import { Separator } from "@/components/ui/separator"
-
-
-export const metadata: Metadata = {
-  title: "Forms",
-  description: "Advanced form example using react-hook-form and Zod.",
-}
-
-const sidebarNavItems = [
-  {
-    title: "Profile",
-    href: "/dashboard/settings/profile",
-  },
-  {
-    title: "projects",
-    href: "/dashboard/settings/projects",
-  },
-  {
-    title: "Users",
-    href: "/dashboard/settings/users",
-  },
-  {
-    title: "Companies",
-    href: "/dashboard/settings/companies",
-  },
-  {
-    title: "Occupation",
-    href: "/dashboard/settings/occupation",
-  },
-]
+import { sidebarNavItems } from "@/app/types/data"
 
 interface SettingsLayoutProps {
   children: React.ReactNode
@@ -52,7 +24,7 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
           <aside className="-mx-4 lg:w-1/5">
             <SidebarNav items={sidebarNavItems} />
           </aside>
-          <div className="flex-1 lg:max-w-2xl">{children}</div>
+          <div className="flex-1 lg:max-w-full">{children}</div>
         </div>
       </div>
     </>

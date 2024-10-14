@@ -10,17 +10,17 @@ export type UserWithCountry = Doc<"User"> & {
 };
 
 export type User = Doc<"User">;
+export type Occupation = Doc<"Occupation">;
 
 export type Country = Doc<"Country">;
 
-export type UserWithSocialMediaLink = Doc<"User"> & {
-  user: Doc<"SocialMediaLink">
-};
+export type Company = Doc<"Company">;
 
 export type CompanyWithOccupation = Doc<"Company"> & {
   company: Doc<"Occupation">,
   user: Doc<"User">
 };
+
 
 export type CompanyWithUser = Doc<"Company"> & {
   company: Doc<"User">
@@ -134,3 +134,47 @@ export type Navlink = {
   })
   
   export type ProfileFormValues = z.infer<typeof ProfileFormSchema>;
+
+  export const OccupationFormSchema = z.object({
+    title: z.string().optional(),
+    startDate: z.date({
+      required_error: "Start Date is required.",
+    }),
+    endDate: z.date({
+      required_error: "End Date is required.",
+    }),
+    responsibilities: z.array(
+      z.object({
+        value: z.string({message: "Please enter a valid responsibility." }),
+      })
+    ).optional(),
+    companyId: z.nullable(z.string()).optional()
+  })
+  
+  export type OccupationFormValues = z.infer<typeof OccupationFormSchema>;
+
+  export const ProjectFormSchema = z.object({
+    name: z.string().optional(),
+    description: z.string().optional(),
+    responsibilities: z.array(
+      z.object({
+        value: z.string({message: "Please enter a valid responsibility." }),
+      })
+    ).optional(),
+    skills: z.array(
+      z.object({
+        value: z.string({message: "Please enter a valid skill." }),
+      })
+    ).optional(),    
+    companyId: z.string().optional()
+  })
+  
+  export type ProjectFormValues = z.infer<typeof ProjectFormSchema>;
+
+  export const CompanyFormSchema = z.object({
+    name: z.string().optional(),
+    description: z.string().optional(),
+    url: z.string().url({ message: "Please enter a valid URL." }).optional(),
+  })
+  
+  export type CompanyFormValues = z.infer<typeof CompanyFormSchema>;

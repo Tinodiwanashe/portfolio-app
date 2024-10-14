@@ -1,3 +1,4 @@
+import { Id } from "./_generated/dataModel";
 import { query, mutation  } from "./_generated/server";
 import { v } from "convex/values";
 
@@ -5,11 +6,26 @@ import { v } from "convex/values";
     export const getOccupations = query({
     args: {},
     handler: async (ctx, args) => {
-        return await ctx.db
+        const occupations = await ctx.db
         .query("Occupation")
         .order("asc")
         .collect();
-        },
+
+        return Promise.all(
+            occupations.map(async (occupation) => {
+                // For each user , fetch the `Country` he comes from and
+                // insert the name into the `Country name` field.
+                const company = await ctx.db.get(occupation.companyId as Id<"Company">);
+                const user = await ctx.db.get(occupation.createdBy as Id<"User">);
+                const OccupationWithCompany =  {
+                occupation,
+                company: company,
+                user: user
+                };
+                return OccupationWithCompany;
+            }),
+        );         
+    },
     });
 
     export const getOccupation = query({
@@ -21,13 +37,14 @@ import { v } from "convex/values";
 
     export const createOrUpdateOccupation = mutation({
         args: { 
-            id: v.id("Occupation"), 
+            id: v.union(v.id("Occupation"), v.null()), 
             title: v.string(),
-            startDate: v.optional(v.string()),
-            endDate: v.optional(v.string()),
-            responsibilities: v.optional(v.array(v.string())),
-            companyId: v.union(v.id("Company"), v.null()),
-            createdBy: v.union(v.id("User"), v.null())
+            startDate: v.optional(v.number()),
+            endDate: v.optional(v.number()),
+            responsibilities: v.optional(v.array(v.object({
+                value: v.string()
+            }))),
+            companyId: v.union(v.id("Company"), v.null())
         },
         handler: async (ctx, args) => {
             const identity = await ctx.auth.getUserIdentity();
@@ -45,17 +62,18 @@ import { v } from "convex/values";
                 throw new Error("Unauthenticated call to mutation");
             }
 
-            const Occupation = await ctx.db.get(args.id);
-            if (Occupation) {
+            
+            if (args.id !== null) {
+                const Occupation = await ctx.db.get(args.id);
                 await ctx.db.patch(args.id, {
                     title: args.title,
                     startDate: args.startDate,
                     endDate: args.endDate,
                     responsibilities: args.responsibilities,
                     companyId: args.companyId,
-                    createdBy: args.createdBy
+                    createdBy: Occupation?.createdBy
                 }); 
-                return Occupation._id;
+                return Occupation?._id;
             } else {
                 const OccupationId = await ctx.db.insert("Occupation", {
                     title: args.title,

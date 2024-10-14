@@ -2,8 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFieldArray } from "react-hook-form";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
@@ -15,47 +14,31 @@ import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Preloaded, usePreloadedQuery, useQuery } from "convex/react";
 import { Label } from "@/components/ui/label";
-import { Doc, Id } from "@/convex/_generated/dataModel";
 import { ProfileFormSchema, ProfileFormValues } from "@/app/types/definitions";
 import { getInitials } from "@/lib/utils";
+import { SubmitButton } from "@/components/submit-button";
+import ErrorDetail from "@/components/ErrorDetail";
+import Link from "next/link";
+import { FaTrash } from "react-icons/fa6";
 
-type props = {
-  formRecord: ProfileFormValues;
-  userId: Id<"User"> | undefined;
+type PreloadedProps = {
+  preloadedUser: Preloaded<typeof api.users.getCurrentUser>;
+  preloadedCountries: Preloaded<typeof api.countries.getCountries>;
 }
 
+export default function ProfileForm(props: PreloadedProps) {  
 
-/*  props: {
-  userData: Preloaded<typeof api.users.getCurrentUser>;
-  countriesData: Preloaded<typeof api.countries.getCountries>;
-} */
-
-/*   const user = usePreloadedQuery(props.userData);
-  const countries = usePreloadedQuery(props.countriesData);  */ 
-
-export default function ProfileForm() {  
-  
-  const user = useQuery(api.users.getCurrentUser);  
-  const countries = useQuery(api.countries.getCountries);   
+  const user = usePreloadedQuery(props.preloadedUser);
+  const countries = usePreloadedQuery(props.preloadedCountries);  
   const {
     mutate,
-    pending
+    isPending
   } = useApiMutation(api.users.updateUser); 
   
   const fullName =  user?.name === null || user?.name === undefined? "": user?.name;
   
   // 1. Define your form and set default values. These values can come from database or API
-  const formRecord: Partial<ProfileFormValues> = {
-    name: user?.name,
-    email: user?.email,
-    pictureUrl: user?.pictureUrl,
-    phoneNumber: user?.phoneNumber,
-    address: user?.address,
-    countryId: user?.countryId?.toString(), // default to empty string. Will be filled dynamically when selecting a country.
-    socialLinks: user?.socialLinks
-  } 
-
-  const values: ProfileFormValues = {
+  const defaultValues: Partial<ProfileFormValues> = {
     name: user?.name,
     email: user?.email,
     pictureUrl: user?.pictureUrl,
@@ -67,8 +50,7 @@ export default function ProfileForm() {
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(ProfileFormSchema), //Integrates with your preferred schema validation library.
-    defaultValues: formRecord,
-    values,  // will get updated once values returns - will get updated when values props updates    
+    defaultValues, 
     resetOptions: {
       keepDirtyValues: true, // user-interacted input will be retained
       keepErrors: true, // input errors will be retained with value update
@@ -76,11 +58,7 @@ export default function ProfileForm() {
     mode: "onChange"
   })
 
-  //form.setValue("phoneNumber", formRecord?.phoneNumber);
-  //form.setValue("address", formRecord?.address);
-  //form.setValue("countryId", formRecord?.countryId?.toString()); 
-
-  const { append, fields } = useFieldArray({
+  const faSocialLinks = useFieldArray({
     name: "socialLinks", // unique name for your Field Array
     control: form.control // control props comes from useForm (optional: if you are using FormContext)
   })
@@ -100,11 +78,10 @@ export default function ProfileForm() {
         countryId: values.countryId ,  
         socialLinks: values.socialLinks
       }).then(() => {
-            toast.success("User updated successfully!")
+            toast.success("Profile updated successfully!")
           })
           .catch((error) => {
-            toast.error("Failed to update"
-            )
+            <ErrorDetail entity="Profile" error={error} jsonString={JSON.stringify(values, null, 2)}/>               
           });
       form.reset();
     } catch (error) {
@@ -112,7 +89,7 @@ export default function ProfileForm() {
     }
   }
 
-  return formRecord && (
+  return user && (
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -120,13 +97,13 @@ export default function ProfileForm() {
             <Label>Full Name</Label>
             <div className="flex flex-row gap-3 items-center">
               <Avatar>
-                <AvatarImage src={formRecord.pictureUrl} alt="Avatar" />
+                <AvatarImage src={user.pictureUrl} alt="Avatar" />
                 <AvatarFallback>{getInitials(fullName)}</AvatarFallback>
               </Avatar>  
               <div className="grid gap-1">
-                <div className="font-medium">{formRecord.name}</div>
+                <div className="font-medium">{user.name}</div>
                 <div className="hidden text-sm text-muted-foreground md:inline">
-                  {formRecord.email}
+                  {user.email}
                 </div>
               </div> 
             </div>   
@@ -169,7 +146,7 @@ export default function ProfileForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Country</FormLabel>
-                <Select >
+                <Select {...field}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select a country" />
@@ -178,7 +155,7 @@ export default function ProfileForm() {
                   {countries && (
                     <SelectContent>
                       {countries.map((country) => (
-                        <SelectItem key={country._id} value={country.name}>
+                        <SelectItem key={country._id} value={country._id}>
                           {country.name}
                         </SelectItem>
                       ))}
@@ -193,7 +170,7 @@ export default function ProfileForm() {
             )} 
           />
           <div>
-            {fields.map((field,index) => (
+            {faSocialLinks.fields.map((field,index) => (
               <FormField
                 control={form.control}
                 key={field.id}  // important to include key with field's id
@@ -207,18 +184,21 @@ export default function ProfileForm() {
                       Add links to your website, blog, or social media profiles.
                     </FormDescription>
                     <FormControl>
-                      <Input {...field}/>
+                      <Input {...field}/>                         
                     </FormControl>
                     <FormMessage />
+                    <Link className={buttonVariants({ variant: "ghost", size: "icon" })} href={""} onClick={() => faSocialLinks.remove(index)} >
+                      <FaTrash className="h-[1.2rem] w-[1.2rem]" />
+                    </Link>
                   </FormItem>
                 )}
               />
             ))}
-            <Button type="button" variant="outline" size="sm"className="mt-2"onClick={() => append({ value: "" })}>
+            <Button type="button" variant="outline" size="sm"className="mt-2"onClick={() => faSocialLinks.append({ value: "" })}>
               Add URL
             </Button>
           </div>
-          <Button type="submit">Submit</Button>
+          <SubmitButton type="submit">Submit</SubmitButton>
         </form>
       </Form>
     </>

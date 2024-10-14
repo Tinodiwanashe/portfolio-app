@@ -17,9 +17,12 @@ import type {
 } from "convex/server";
 import type * as companies from "../companies.js";
 import type * as countries from "../countries.js";
+import type * as files from "../files.js";
+import type * as fileStorage from "../fileStorage.js";
 import type * as occupations from "../occupations.js";
 import type * as projects from "../projects.js";
 import type * as Schema from "../Schema.js";
+import type * as Storage from "../Storage.js";
 import type * as users from "../users.js";
 
 /**
@@ -33,9 +36,12 @@ import type * as users from "../users.js";
 declare const fullApi: ApiFromModules<{
   companies: typeof companies;
   countries: typeof countries;
+  files: typeof files;
+  fileStorage: typeof fileStorage;
   occupations: typeof occupations;
   projects: typeof projects;
   Schema: typeof Schema;
+  Storage: typeof Storage;
   users: typeof users;
 }>;
 export declare const api: FilterApi<

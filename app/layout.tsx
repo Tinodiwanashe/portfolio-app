@@ -1,12 +1,11 @@
-
-
-import { Inter as FontSans } from "next/font/google"
-import "./styles/globals.css";
+import "./styles/globals.css"; //import the globals.css stylesheet to apply the styles to every route in your application.
+import './styles/prosemirror.css';
 import { cn } from "@/lib/utils";
-import { ThemeProvider } from "@/components/theme-provider";
+import { Inter as FontSans } from "next/font/google";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import { RootLayoutProps } from "./types/definitions";
 import { Metadata } from 'next';
-import { ConvexClientProvider } from "@/components/ui/ConvexClientProvider";
+import { ConvexClientProvider } from "@/components/providers/ConvexClientProvider";
 import { Toaster } from "@/components/ui/sonner";
 
 const fontSans = FontSans({
@@ -30,8 +29,8 @@ export const metadata: Metadata  = {
 export default function RootLayout({ children }: RootLayoutProps) {
 
   return (  
-      <html lang="en" suppressHydrationWarning>
-        <body className={cn("min-h-screen w-full flex flex-col bg-background text-foreground font-sans antialiased",fontSans.variable)}>
+      <html lang="en" className='scroll-smooth antialiased' suppressHydrationWarning>
+        <body className={cn("min-h-screen flex flex-col bg-background text-foreground font-sans",fontSans.variable)}>
           <Toaster />
           <ConvexClientProvider>
             <ThemeProvider
