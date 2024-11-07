@@ -14,10 +14,8 @@ import { OccupationFormSchema, OccupationFormValues } from "@/app/types/definiti
 import { useQuery } from "convex/react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon } from "@radix-ui/react-icons";
+import { Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
-import Editor from "@/components/editor/editor";
-import ErrorDetail from "@/components/custom/ErrorDetail";
 import { redirectToURL } from "@/utils/actions/miscellaneous ";
 import { FaTrash } from "react-icons/fa6";
 
@@ -232,23 +230,7 @@ export default function NewOccupationForm() {
                 <FormMessage />
               </FormItem>
             )} 
-          />    
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Title</FormLabel>
-                <FormControl>
-                  <Editor initialValue={defaultValue} onChange={field.onChange} />
-                </FormControl>
-                <FormDescription>
-                  This is your Occupation Title.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )} 
-          />                        
+          />                       
           <div id="responsibilities">
           
             {faResponsibilities.fields.map((field,index) => (

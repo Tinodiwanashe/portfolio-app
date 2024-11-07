@@ -116,10 +116,10 @@ export type Navlink = {
 
   export const OccupationFormSchema = z.object({
     title: z.string().optional(),
-    startDate: z.date({
+    startDate: z.coerce.date({
       required_error: "Start Date is required.",
     }),
-    endDate: z.date({
+    endDate: z.coerce.date({
       required_error: "End Date is required.",
     }),
     responsibilities: z.array(

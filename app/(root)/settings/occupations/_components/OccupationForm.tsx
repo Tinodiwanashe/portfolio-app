@@ -14,9 +14,8 @@ import { OccupationFormSchema, OccupationFormValues } from "@/app/types/definiti
 import { Preloaded, usePreloadedQuery } from "convex/react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon } from "@radix-ui/react-icons";
+import { Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
-import ErrorDetail from "@/components/custom/ErrorDetail";
 import { redirectToURL } from "@/utils/actions/miscellaneous ";
 import { FaTrash } from "react-icons/fa6";
 
