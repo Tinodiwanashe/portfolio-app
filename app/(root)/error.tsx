@@ -1,23 +1,22 @@
 'use client' // Error components must be Client Components
  
-import ErrorDisplay from '@/components/ErrorDisplay'
+import ErrorDisplay from '@/components/custom/ErrorDisplay'
 import { useEffect } from 'react'
  
-export default function Error({
-  error,
-  reset,
-}: {
+type ErrorProps = {
   error: Error & { digest?: string }
   reset: () => void
-}) {
+}
+
+export default function Error(props: ErrorProps) {
   useEffect(() => {
     // Log the error to an error reporting service
-    console.error(error)
-  }, [error])
+    console.error(props.error)
+  }, [props.error])
  
   return (
     <>
-     <ErrorDisplay message={error.message} reset={reset}/>
+     <ErrorDisplay message={props.error.message} reset={props.reset}/>
     </>
   )
 }

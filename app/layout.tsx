@@ -7,6 +7,8 @@ import { RootLayoutProps } from "./types/definitions";
 import { Metadata } from 'next';
 import { ConvexClientProvider } from "@/components/providers/ConvexClientProvider";
 import { Toaster } from "@/components/ui/sonner";
+import InfoDialog from "@/components/custom/InfoDialog";
+import ConfirmationDialog from "@/components/custom/ConfirmationDialog";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -22,6 +24,17 @@ export const metadata: Metadata  = {
   //metadataBase: new URL('https://next-learn-dashboard.vercel.sh'),
   icons: {
     icon: '/favicon.ico'
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    }
   }
 };
 //The %s in the template will be replaced with the specific page title. -----Is redirect working
@@ -31,7 +44,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (  
       <html lang="en" className='scroll-smooth antialiased' suppressHydrationWarning>
         <body className={cn("min-h-screen flex flex-col bg-background text-foreground font-sans",fontSans.variable)}>
-          <Toaster />
           <ConvexClientProvider>
             <ThemeProvider
                   attribute="class"
@@ -39,7 +51,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
                   enableSystem
                   disableTransitionOnChange
             >
+              
+
               {children}
+              <InfoDialog />
+              <ConfirmationDialog/>
+              <Toaster richColors/>
             </ThemeProvider>
           </ConvexClientProvider>
         </body>

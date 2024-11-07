@@ -3,6 +3,15 @@ import { query, mutation, internalQuery, QueryCtx  } from "./_generated/server";
 import { v } from "convex/values";
 import { Doc, Id } from "./_generated/dataModel";
 
+const getUserByTokenIdentifier = async (ctx: QueryCtx, tokenIdentifier: string) => {
+  return await ctx.db
+  .query("User")
+  .withIndex("idx_token", (q) =>
+    q.eq("tokenIdentifier", tokenIdentifier),
+  )
+  .unique();
+}
+
 export const store = mutation(async ({ db, auth }) => {
   const identity = await auth.getUserIdentity();
   if (!identity) {
@@ -16,6 +25,7 @@ export const store = mutation(async ({ db, auth }) => {
       q.eq("tokenIdentifier", identity.tokenIdentifier),
     )
     .unique();
+
   if (user !== null) {
     // If we've seen this identity before but the name has changed, patch the value.
     if (user.name !== identity.name) {
@@ -46,22 +56,37 @@ export const updateUser = mutation({
     id: v.id("User"),
     phoneNumber: v.optional(v.string()),
     address: v.optional(v.string()),
-    countryId: v.union(v.id("Country"), v.null()),  
+    countryId: v.optional(v.union(v.id("Country"), v.null())),  
+    latitude: v.optional(v.float64()),
+    longitude: v.optional(v.float64()),
     socialLinks: v.optional(v.array(v.object({
-      value: v.string()
-    })))
+      value: v.string(),
+      isSocialProfile: v.boolean()
+    }))),
   },
   handler: async (ctx, args) => {
     // Check if the user exists.
     const user = await ctx.db.get(args.id);
 
+    const localUser =  {
+      id: user?._id,
+      phoneNumber: user?.phoneNumber,
+      address: user?.address,
+      countryId: user?.countryId,
+      latitude: user?.latitude,
+      longitude: user?.longitude,
+      socialLinks: user?.socialLinks,
+    }
+
     if (user !== null) {
       // If the user exists but the inputs have changed, patch the values.
-      if (user.phoneNumber !== args.phoneNumber || user.address !== args.address ||  user.countryId !== args.countryId || user.socialLinks !== args.socialLinks) {
+      if (localUser !== args) {
           await ctx.db.patch(user._id, { 
             phoneNumber: args.phoneNumber,
             address: args.address,
             countryId: args.countryId,
+            latitude: args.latitude,
+            longitude: args.longitude,
             socialLinks: args.socialLinks
           });
       }
@@ -92,8 +117,7 @@ export const getUsersPaginated = query({
   handler: async (ctx, args) => {
     return await ctx.db
     .query("User")
-    .filter((q) => q.eq(q.field("name"), args.name))
-    .withIndex("idx_user_name")
+    .withIndex("idx_user_name", (q) => q.eq("name", args.name))
     .order("asc")
     .paginate(args.paginationOpts);
   },
@@ -143,30 +167,19 @@ export const getCurrentUser = query({
   },
 });
 
-const getUserByTokenIdentifier = async (ctx: QueryCtx, tokenIdentifier: string) => {
-  return await ctx.db
-  .query("User")
-  .withIndex("idx_token", (q) =>
-    q.eq("tokenIdentifier", tokenIdentifier),
-  )
-  .unique();
-}
-
-export const getSocialLinks = query({
+export const getUserSocialLinks = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
-    if (identity === null) {
-      throw new Error("Called getSocialLinks without authentication present");
-    }
+    const users  = identity === null
+      ? await ctx.db
+        .query("User")
+        .withIndex("idx_user_name", (q) =>
+          q.eq("name", "Munyaradzi Kandoro"),
+        )
+        .unique()
+      : await getUserByTokenIdentifier(ctx, identity?.tokenIdentifier);
 
-    const users = await ctx.db
-    .query("User")
-    .withIndex("idx_token", (q) =>
-      q.eq("tokenIdentifier", identity.tokenIdentifier),
-    )
-    .unique();
-
-    return users?.socialLinks === undefined ? [] : users.socialLinks;
+    return users?.socialLinks ?? [];
 
   },
 });

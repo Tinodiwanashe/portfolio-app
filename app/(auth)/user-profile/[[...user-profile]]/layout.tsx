@@ -1,7 +1,7 @@
 
-import Background from "@/components/tutorial/Background";
+import Background from "@/components/custom/Background";
 import { Footer } from "@/components/layouts/Footer";
-import AuthButton from "@/components/AuthButton";
+import AuthButton from "@/components/custom/AuthButton";
 import Header from "@/components/layouts/Header";
 import { RootLayoutProps } from "@/app/types/definitions";
 

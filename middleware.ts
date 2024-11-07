@@ -4,7 +4,7 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 // It accepts an array of routes and checks if the route the user is trying to visit matches one of the routes passed to it.
 // The createRouteMatcher() helper returns a function that, if called with the req object from the Middleware, will return true if the user is trying to access a route that matches one of the routes passed to createRouteMatcher().
 
-const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"]);
+const isProtectedRoute = createRouteMatcher(["/settings(.*)"]);
 
 // The clerkMiddleware() helper integrates Clerk authentication into your Next.js application through Middleware. 
 // clerkMiddleware() is compatible with both the App and Pages routers. 

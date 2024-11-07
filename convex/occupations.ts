@@ -44,6 +44,9 @@ import { v } from "convex/values";
             responsibilities: v.optional(v.array(v.object({
                 value: v.string()
             }))),
+            achievements: v.optional(v.array(v.object({
+                value: v.string()
+            }))),            
             companyId: v.union(v.id("Company"), v.null())
         },
         handler: async (ctx, args) => {
@@ -70,6 +73,7 @@ import { v } from "convex/values";
                     startDate: args.startDate,
                     endDate: args.endDate,
                     responsibilities: args.responsibilities,
+                    achievements: args.achievements,
                     companyId: args.companyId,
                     createdBy: Occupation?.createdBy
                 }); 
@@ -80,6 +84,7 @@ import { v } from "convex/values";
                     startDate: args.startDate,
                     endDate: args.endDate,
                     responsibilities: args.responsibilities,
+                    achievements: args.achievements,
                     companyId: args.companyId,
                     createdBy: user._id
                 });  

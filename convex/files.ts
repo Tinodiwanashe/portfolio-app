@@ -1,6 +1,7 @@
 import { v } from "convex/values";
-import { mutation } from "./_generated/server";
-import { fileFields } from "./Schema";
+import { mutation, query } from "./_generated/server";
+import { Doc, Id } from "./_generated/dataModel";
+import { FileCategoryValidator } from "./helpers";
 
 /* 
     **Uploading files via upload URLs**
@@ -26,14 +27,75 @@ export const generateUploadUrl = mutation(async (ctx) => {
 
 // 3. Writing the new storage ID to the database  
 export const createFileLink = mutation({
-    args: fileFields,
+    args: {
+        name: v.string(),
+        category: FileCategoryValidator,
+        storageId: v.id("_storage"),
+    },
     handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity();
+        if (identity === null) {
+          throw new Error("Called getCurrentUser without authentication present");
+        }
+          // Check if we've already stored this identity before.
+        const user = await ctx.db
+        .query("User")
+        .withIndex("idx_token", (q) =>
+            q.eq("tokenIdentifier", identity.tokenIdentifier),
+        )
+        .unique();
         // The file size is not limited, but upload POST request has a 2 minute timeout.
         await ctx.db.insert("File", {
             name: args.name,
             category: args.category,
-            tokenIdentifier: args.tokenIdentifier,
-            storageId: args.storageId
+            storageId: args.storageId,
+            uploadedBy: user?._id
         });
     },
 });
+
+//A file URL can be generated from a storage ID by the storage.getUrl function of the QueryCtx, MutationCtx, or ActionCtx object
+export const getFiles = query({
+    args: {
+        fileName: v.string()
+    },
+    handler: async (ctx, args) => {
+      const files = await ctx.db
+      .query("File")
+      .withIndex("idx_file_name", (q) => q.eq("name", args.fileName))
+      .collect();
+
+      return Promise.all(
+        files.map(async (file) => ({
+            ...file,
+            ...(await ctx.db.get(file.uploadedBy as Id<"User">)),
+            // If the message is an "image" its `body` is an `Id<"_storage">`
+            ...(file.category === "Resume" ?
+                { url: await ctx.storage.getUrl(file.storageId) } : {}
+            )
+        })),
+      );
+    },
+  });
+
+  export const getFile = query({
+    args: {
+        fileName: v.string()
+    },
+    handler: async (ctx, args) => {
+        const file = await ctx.db
+        .query("File")
+        .withIndex("idx_file_name", (q) => q.eq("name", args.fileName))
+        .unique();
+
+        return Promise.all([
+            {file: file},
+            {user: await ctx.db.get(file?.uploadedBy as Id<"User">)},
+            // If the message is an "image" its `body` is an `Id<"_storage">`
+            (file?.storageId === undefined ?
+                {} : { url: await ctx.storage.getUrl(file.storageId) } 
+            )
+        ]);
+    },
+  });
+

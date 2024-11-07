@@ -19,7 +19,7 @@ const Menu = ({
     className
   }: {
     menuItems: MenuItem[];
-    orientation?: "vertical" | "horizontal";
+    orientation?: Orientation | undefined;
     className?: string;
   }) => {
     return (

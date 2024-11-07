@@ -2,24 +2,32 @@
 
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { FaBars } from "react-icons/fa"
-import Logo from '../Logo';
+import Logo from '../custom/Logo';
 import { Button } from "../ui/button"
-import { ModeToggle } from "../tutorial/ModeToggle"
+import { ModeToggle } from "../custom/ModeToggle"
 import { menuItems } from "@/app/types/data"
 import Menu from "./Menu"
-import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import SocialMediaIcon from "../tutorial/SocialMediaIcon";
-import { RootLayoutProps } from "@/app/types/definitions";
+import SocialMediaIcon from "../custom/SocialMediaIcon";
+
+import { useQuery } from "convex/react";
+
+ type RootLayoutProps = {
+    readonly children: React.ReactNode;
+    socialLinks: {
+      value: string;
+    }[] | undefined
+}
 
 //you cannot export an async functioon within a client component. The solution here is to use the use state and use effect hook
  const Header = ({
-    children
+    children,
+    socialLinks
   }: RootLayoutProps) => {
-    const socialLinks = useQuery(api.users.getSocialLinks);
+    
 
   return (
-    <header className='sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex items-center gap-4 h-16 px-4 md:px-6' >
+    <header className='sticky z-50 flex items-center gap-4 top-0 h-16 w-full px-4 md:px-6 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60' >
       {/* <div className="container h-14 max-w-screen-2xl flex items-center"> */}
         <div className='mr-4 hidden md:flex lg:flex'>
           <Logo href= '/' classNames = 'mr-6 space-x-2'/> 
@@ -57,7 +65,7 @@ import { RootLayoutProps } from "@/app/types/definitions";
           {
             socialLinks && socialLinks.map((item, index) => {
               return (
-                <SocialMediaIcon url={item.value}/>
+                <SocialMediaIcon key={index} url={item.value}/>
               )
             })
           }

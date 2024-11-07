@@ -1,16 +1,17 @@
 
-import Hero from "@/components/tutorial/Hero";
-import Skills from "./_components/Skills";
+import Hero from "@/components/custom/Hero";
+import SkillsBentoGrid from "./_components/SkillsBentoGrid";
 import Experience from "./_components/Experience";
+import Projects from "@/components/custom/Projects";
 
 export default async function Index() {
-
-
-  return (
-    <div className="py-20">
-      <Hero/>
-      <Skills/>
+  return (    
+    <>
+      <Hero/>    
+       
       <Experience/>
-    </div>
+      <SkillsBentoGrid/>
+      <Projects/>
+    </>
   );
 }

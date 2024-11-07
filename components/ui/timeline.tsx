@@ -34,7 +34,7 @@ export const Timeline = ({ title, description, data }: { title: string; descript
 
   return (
     <div
-      className="w-full bg-white dark:bg-neutral-950 font-sans md:px-10"
+      className="w-full bg-white dark:bg-black-100 font-sans md:px-10"
       ref={containerRef}
     >
       <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10">
@@ -69,7 +69,7 @@ export const Timeline = ({ title, description, data }: { title: string; descript
             </div>
           </div>
         ))}
-        <div
+{/*         <div
           style={{
             height: height + "px",
           }}
@@ -82,7 +82,7 @@ export const Timeline = ({ title, description, data }: { title: string; descript
             }}
             className="absolute inset-x-0 top-0  w-[2px] bg-gradient-to-t from-purple-500 via-blue-500 to-transparent from-[0%] via-[10%] rounded-full"
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );

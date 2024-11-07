@@ -1,3 +1,4 @@
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Doc } from '@/convex/_generated/dataModel';
 import React from 'react'
 
@@ -10,23 +11,43 @@ export type WorkExperience = {
 const ExperienceEntry = (props: WorkExperience) => {
   return (
     <>
-        <p className="font-semibold bg-clip-text bg-gradient-to-r from-primary to-secondary text-lg md:text-lg lg:text-lg text-emerald-500 mb-8">
+        <p className="font-semibold bg-clip-text bg-gradient-to-r from-primary to-secondary text-lg md:text-lg lg:text-lg text-purple mb-8">
             {props.company?.name}
         </p>
         <p className="text-neutral-800 dark:text-neutral-200 text-xs md:text-sm font-semibold mb-8">
             {props.occupation?.title}
         </p>
-        
-        <p className="text-neutral-800 dark:text-neutral-200 text-xs md:text-sm font-normal mb-4">
-            Responsibilities
-        </p>
-        <div className="mb-8" >
-          {props.occupation?.responsibilities && props.occupation?.responsibilities.map((record) => (
-            <div className="flex gap-2 items-center text-neutral-700 dark:text-neutral-300 text-xs md:text-sm">
-              ✅ {record.value}
-            </div>
-          ))}
-        </div>
+        <Accordion type="multiple" className="w-full">
+        {props.occupation?.responsibilities &&
+          (
+            <AccordionItem value="item-1">
+              <AccordionTrigger>Responsibilities</AccordionTrigger>
+              <AccordionContent>
+                {props.occupation?.responsibilities && props.occupation?.responsibilities.map((record,index) => (
+                  <div key={index} className="flex gap-2 items-center text-xs md:text-sm">
+                    ☑️ {record.value}
+                  </div>
+                ))}
+              </AccordionContent>
+            </AccordionItem>
+          )
+        }
+        {props.occupation?.achievements && 
+          (
+          <AccordionItem value="item-2">
+            <AccordionTrigger>Achievements</AccordionTrigger>
+            <AccordionContent>
+              {props.occupation?.achievements && props.occupation?.achievements.map((record,index) => (
+                <div key={index} className="flex gap-2 items-center text-xs md:text-sm">
+                  🏆  {record.value}
+                </div>
+              ))}
+            </AccordionContent>
+          </AccordionItem>
+          )
+        }
+        </Accordion>
+
     </>
   )
 }

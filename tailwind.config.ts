@@ -20,7 +20,7 @@ const config = {
   prefix: "",
   theme: {
   	container: {
-		center: true,
+  		center: true,
   		padding: '2rem',
   		screens: {
   			'2xl': '1400px'
@@ -42,7 +42,9 @@ const config = {
   				'200': '#C1C2D3',
   				DEFAULT: '#FFF'
   			},
-  			purple: '#CBACF9',
+  			purple: {
+  				DEFAULT: '#CBACF9'
+  			},
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
   			ring: 'hsl(var(--ring))',
@@ -82,6 +84,11 @@ const config = {
   			'color-4': 'hsl(var(--color-4))',
   			'color-5': 'hsl(var(--color-5))'
   		},
+		backgroundImage: {
+		"gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+		"gradient-conic":
+			"conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
@@ -120,23 +127,52 @@ const config = {
   					'background-position': '200%'
   				}
   			},
-			spotlight: {
-				"0%": {
-					opacity: "0",
-					transform: "translate(-72%, -62%) scale(0.5)",
+  			spotlight: {
+  				'0%': {
+  					opacity: '0',
+  					transform: 'translate(-72%, -62%) scale(0.5)'
+  				},
+  				'100%': {
+  					opacity: '1',
+  					transform: 'translate(-50%,-40%) scale(1)'
+  				}
+  			},
+  			'border-beam': {
+  				'100%': {
+  					'offset-distance': '100%'
+  				}
+  			},
+  			aurora: {
+  				from: {
+  					backgroundPosition: '50% 50%, 50% 50%'
+  				},
+  				to: {
+  					backgroundPosition: '350% 50%, 350% 50%'
+  				}
+  			},
+			meteor: {
+				"0%": { 
+					transform: "rotate(215deg) translateX(0)", 
+					opacity: '1' 
+				},
+				"70%": { 
+					opacity: '1' 
 				},
 				"100%": {
-					opacity: "1",
-					transform: "translate(-50%,-40%) scale(1)",
-				},
-			}		
+					transform: "rotate(215deg) translateX(-500px)",
+					opacity: '0'
+				}
+			}
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out',
   			orbit: 'orbit calc(var(--duration)*1s) linear infinite',
   			rainbow: 'rainbow var(--speed, 2s) infinite linear',
-			spotlight: "spotlight 2s ease .75s 1 forwards",	
+  			spotlight: 'spotlight 2s ease .75s 1 forwards',
+  			'border-beam': 'border-beam calc(var(--duration)*1s) infinite linear',
+  			aurora: 'aurora 60s linear infinite',
+			meteor: "meteor 5s linear infinite",
   		}
   	}
   },

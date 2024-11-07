@@ -4,7 +4,7 @@ import { Timeline } from '@/components/ui/timeline';
 import { api } from '@/convex/_generated/api';
 import { convexQuery } from '@convex-dev/react-query';
 import { useQuery } from '@tanstack/react-query';
-import React from 'react'
+import React, { Suspense } from 'react'
 import ExperienceEntry from './ExperienceEntry';
 
 const Experience = () => {
@@ -26,12 +26,14 @@ const Experience = () => {
     }   
 
   return (
-    <section>
-        <Timeline 
-            title={"Work Experience"} 
-            description={"I've been working in the tech industry for a while now. Here's a timeline of my journey."}
-            data={arrTimeline} 
-        />
+    <section id="experience" className="container">
+        <Suspense fallback={<p>Loading experience...</p>}>
+            <Timeline 
+                title={"Work Experience"} 
+                description={"I've been working in the tech industry for a while now. Here's a timeline of my journey."}
+                data={arrTimeline} 
+            />
+        </Suspense>
     </section>
   )
 }

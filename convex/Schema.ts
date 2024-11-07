@@ -1,16 +1,6 @@
 import { defineSchema, defineTable } from "convex/server";
-import { v, Infer } from "convex/values";
-
-// Define a messages table with two indexes.
-/* Each table is defined using the defineTable function. Within each table, the document type is defined using the validator builder, v. 
-In addition to the fields listed, Convex will also automatically add _id and _creationTime fields.  */
-export const FileCategoryValidator = v.union(
-  v.literal("Resume"),
-  v.literal("Image"),
-  v.literal("Video")
-);
-
-export type FileCategory = Infer<typeof FileCategoryValidator>;
+import { v } from "convex/values";
+import { FileCategoryValidator } from "./helpers";
 
 export const userFields = {
   name: v.string(),
@@ -20,8 +10,11 @@ export const userFields = {
   phoneNumber: v.optional(v.string()),
   address: v.optional(v.string()),
   countryId: v.optional(v.union(v.id("Country"), v.null())),  
+  latitude: v.optional(v.float64()),
+  longitude: v.optional(v.float64()),
   socialLinks: v.optional(v.array(v.object({
-    value: v.string()
+    value: v.string(),
+    isSocialProfile: v.boolean()
   })))
 }
 
@@ -38,6 +31,9 @@ export const occupationFields = {
   startDate: v.optional(v.number()),
   endDate: v.optional(v.number()),
   responsibilities: v.optional(v.array(v.object({
+    value: v.string()
+  }))),
+  achievements: v.optional(v.array(v.object({
     value: v.string()
   }))),
   companyId: v.optional(v.union(v.id("Company"), v.null())),
@@ -67,15 +63,58 @@ export const projectFields = {
 export const fileFields = {
   name: v.string(),
   category: FileCategoryValidator,
-  tokenIdentifier: v.optional(v.string()),
-  storageId: v.id("_storage")
+  storageId: v.id("_storage"),
+  uploadedBy: v.optional(v.union(v.id("User"), v.null()))
+}
+
+export const skillFields = {
+  name: v.string(),
+  code: v.optional(v.string()), 
+  icon: v.optional(v.string()), 
+  createdBy: v.optional(v.union(v.id("User"), v.null()))
+}
+
+export const skillLinkFields = {
+  parentId: v.id("Skill"),
+  childId: v.id("Skill"),
+  createdBy: v.optional(v.union(v.id("User"), v.null()))
 }
 
 export default defineSchema({
-  User: defineTable(userFields).index("idx_user_name", ["name"]).index("idx_token", ["tokenIdentifier"]).index("countryId", ["countryId"]),
-  Country: defineTable(countryFields).index("idx_country_name", ["name", "iso2", "iso3"]), 
-  Occupation: defineTable(occupationFields).index("idx_occupation_title", ["title"]).index("createdBy", ["createdBy"]).index("companyId", ["companyId"]),
-  Company: defineTable(companyFields).index("idx_company_name", ["name"]).index("createdBy", ["createdBy"]), 
-  Project: defineTable(projectFields).index("idx_project_name", ["name"]).index("companyId", ["companyId"]),
-  File: defineTable(fileFields).index("idx_file_name", ["name"]).index("idx_token", ["tokenIdentifier"]).index("idx_category", ["category"]) 
-});
+  User: defineTable(userFields)
+  .index("idx_user_name", ["name"])
+  .index("idx_token", ["tokenIdentifier"])
+  .index("idx_country", ["countryId"]),
+  Country: defineTable(countryFields)
+  .index("idx_country_name", ["name", "iso2", "iso3"]), 
+  Occupation: defineTable(occupationFields)
+  .index("idx_occupation_title", ["title"])
+  .index("idx_company", ["companyId"])
+  .index("idx_createdBy", ["createdBy"]),
+  Company: defineTable(companyFields)
+  .index("idx_company_name", ["name"])
+  .index("idx_createdBy", ["createdBy"]), 
+  Project: defineTable(projectFields)
+  .index("idx_project_name", ["name"])
+  .index("idx_company", ["companyId"])
+  .index("idx_createdBy", ["createdBy"]),
+  File: defineTable(fileFields)
+  .index("idx_file_name", ["name"])
+  .index("idx_category", ["category"])
+  .index("idx_storage", ["storageId"])
+  .index("idx_uploadedBy", ["uploadedBy"]), 
+  Skill: defineTable(skillFields)
+  .index("idx_skill_name", ["name"])
+  .index("idx_code", ["code"])
+  .index("idx_createdBy", ["createdBy"]),
+  SkillLink: defineTable(skillLinkFields)
+  .index("idx_parent", ["parentId"])
+  .index("idx_child", ["childId"])
+  .index("createdBy", ["createdBy"])  
+  .index("idx_parent_child", ["parentId", "childId"])// Add indexes as needed for your specific use case.  // Define indexes on the fields that will be frequently queried.  // Indexing can improve query performance.  // Note: Indexes should be
+},
+{
+  schemaValidation: true //Whether Convex should validate at runtime that your documents match your schema.
+},);
+
+
