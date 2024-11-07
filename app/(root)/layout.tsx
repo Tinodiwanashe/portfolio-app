@@ -7,7 +7,6 @@ import AuthButton from "@/components/custom/AuthButton";
 import Header from "@/components/layouts/Header";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
-import { TracingBeam } from "@/components/ui/tracing-beam";
 
 const layout = ({children}: RootLayoutProps) => {
   const socialLinks = useQuery(api.users.getUserSocialLinks,{});

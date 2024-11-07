@@ -7,13 +7,10 @@ import { Button } from "../ui/button"
 import { ModeToggle } from "../custom/ModeToggle"
 import { menuItems } from "@/app/types/data"
 import Menu from "./Menu"
-import { api } from "@/convex/_generated/api";
 import SocialMediaIcon from "../custom/SocialMediaIcon";
+import { RootLayoutProps } from "@/app/types/definitions";
 
-import { useQuery } from "convex/react";
-
- type RootLayoutProps = {
-    readonly children: React.ReactNode;
+ type HeaderProps = RootLayoutProps & {
     socialLinks: {
       value: string;
     }[] | undefined
@@ -23,7 +20,7 @@ import { useQuery } from "convex/react";
  const Header = ({
     children,
     socialLinks
-  }: RootLayoutProps) => {
+  }: HeaderProps) => {
     
 
   return (
