@@ -21,7 +21,7 @@ const Experience = () => {
     for (const element of data) {
         arrTimeline.push({
             title: new Date(element.occupation.startDate|| Date.now()).getFullYear() + " - " + new Date(element.occupation.endDate|| Date.now()).getFullYear(),
-            content: <ExperienceEntry occupation={element.occupation} company={element.company} user={element.user}  /> 
+            content: <ExperienceEntry occupation={element.occupation} company={element.company}  /> 
         } )    
     }   
 

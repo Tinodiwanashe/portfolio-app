@@ -1,10 +1,8 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
-import { FileCategorySchema } from "./helpers";
+import { FileCategorySchema, TextObject } from "./helpers";
 
-const text = v.object({
-  value: v.string()
-});
+
 
 export const userFields = {
   name: v.string(),
@@ -34,8 +32,8 @@ export const occupationFields = {
   title: v.string(),
   startDate: v.optional(v.number()),
   endDate: v.optional(v.number()),
-  responsibilities: v.optional(v.array(text)),
-  achievements: v.optional(v.array(text)),
+  responsibilities: v.optional(v.array(TextObject)),
+  achievements: v.optional(v.array(TextObject)),
   companyId: v.optional(v.union(v.id("Company"), v.null())),
   createdBy: v.union(v.id("User"), v.null())
 }
@@ -50,8 +48,8 @@ export const companyFields = {
 export const projectFields = {
   name: v.string(),
   description: v.optional(v.string()),
-  responsibilities: v.optional(v.array(text)),
-  skills: v.optional(v.array(text)),
+  responsibilities: v.optional(v.array(TextObject)),
+  skills: v.optional(v.array(TextObject)),
   companyId: v.optional(v.union(v.id("Company"), v.null())),
   createdBy: v.union(v.id("User"), v.null())
 }

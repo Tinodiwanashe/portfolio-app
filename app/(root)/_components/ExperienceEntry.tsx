@@ -32,7 +32,7 @@ const ExperienceEntry = ({occupation, company}: WorkExperienceItem) => {
           <AccordionItem value="item-2">
             <AccordionTrigger>Achievements</AccordionTrigger>
             <AccordionContent>
-              {(occupation.achievements ?? []).map((text,index) => (
+              {(occupation.achievements ?? []).map((text, index) => (
                 <div key={index} className="flex gap-2 items-center text-xs md:text-sm">
                   🏆 {text.value}
                 </div>

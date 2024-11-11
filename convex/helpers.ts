@@ -32,6 +32,10 @@ type userInfo = {
   userPictureUrl: string;
 };
 
+export const TextObject = v.object({
+  value: v.string()
+});
+
 export type UserWithCountry = Doc<"User"> & {
   country: Doc<"Country">
 };
