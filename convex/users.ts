@@ -1,7 +1,7 @@
 import { paginationOptsValidator } from "convex/server";
-import { query, mutation, internalQuery, QueryCtx  } from "./_generated/server";
+import { query, mutation, QueryCtx  } from "./_generated/server";
 import { v } from "convex/values";
-import { Doc, Id } from "./_generated/dataModel";
+import { Id } from "./_generated/dataModel";
 
 const getUserByTokenIdentifier = async (ctx: QueryCtx, tokenIdentifier: string) => {
   return await ctx.db

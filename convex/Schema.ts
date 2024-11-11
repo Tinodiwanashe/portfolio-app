@@ -2,6 +2,10 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 import { FileCategorySchema } from "./helpers";
 
+const text = v.object({
+  value: v.string()
+});
+
 export const userFields = {
   name: v.string(),
   tokenIdentifier: v.string(),
@@ -14,7 +18,7 @@ export const userFields = {
   longitude: v.optional(v.float64()),
   socialLinks: v.optional(v.array(v.object({
     value: v.string(),
-    isSocialProfile: v.boolean()
+    isSocialProfile: v.optional(v.boolean())
   })))
 }
 
@@ -30,12 +34,8 @@ export const occupationFields = {
   title: v.string(),
   startDate: v.optional(v.number()),
   endDate: v.optional(v.number()),
-  responsibilities: v.optional(v.array(v.object({
-    value: v.string()
-  }))),
-  achievements: v.optional(v.array(v.object({
-    value: v.string()
-  }))),
+  responsibilities: v.optional(v.array(text)),
+  achievements: v.optional(v.array(text)),
   companyId: v.optional(v.union(v.id("Company"), v.null())),
   createdBy: v.union(v.id("User"), v.null())
 }
@@ -50,12 +50,8 @@ export const companyFields = {
 export const projectFields = {
   name: v.string(),
   description: v.optional(v.string()),
-  responsibilities: v.optional(v.array(v.object({
-    value: v.string()
-  }))),
-  skills: v.optional(v.array(v.object({
-    value: v.string()
-  }))),
+  responsibilities: v.optional(v.array(text)),
+  skills: v.optional(v.array(text)),
   companyId: v.optional(v.union(v.id("Company"), v.null())),
   createdBy: v.union(v.id("User"), v.null())
 }
@@ -115,6 +111,7 @@ export default defineSchema({
 },
 {
   schemaValidation: true //Whether Convex should validate at runtime that your documents match your schema.
-},);
+}
+);
 
 

@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { Doc, Id } from "./_generated/dataModel";
-import { FileCategoryValidator } from "./helpers";
+import { FileCategorySchema } from "./helpers";
 
 /* 
     **Uploading files via upload URLs**
@@ -29,7 +29,7 @@ export const generateUploadUrl = mutation(async (ctx) => {
 export const createFileLink = mutation({
     args: {
         name: v.string(),
-        category: FileCategoryValidator,
+        category: FileCategorySchema,
         storageId: v.id("_storage"),
     },
     handler: async (ctx, args) => {
