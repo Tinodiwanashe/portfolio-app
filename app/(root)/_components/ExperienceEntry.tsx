@@ -1,14 +1,11 @@
+
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Doc } from '@/convex/_generated/dataModel';
+import { WorkExperienceItem } from '@/convex/helpers';
 import React from 'react'
 
-export type WorkExperience = {
-    occupation: Doc<"Occupation"> | null;
-    company: Doc<"Company"> | null;
-    user: Doc<"User"> | null;
-  };
 
-const ExperienceEntry = (props: WorkExperience) => {
+
+const ExperienceEntry = (props: WorkExperienceItem) => {
   return (
     <>
         <p className="font-semibold bg-clip-text bg-gradient-to-r from-primary to-secondary text-lg md:text-lg lg:text-lg text-purple mb-8">
@@ -18,12 +15,12 @@ const ExperienceEntry = (props: WorkExperience) => {
             {props.occupation?.title}
         </p>
         <Accordion type="multiple" className="w-full">
-        {props.occupation?.responsibilities &&
+        {props.occupation.responsibilities &&
           (
             <AccordionItem value="item-1">
               <AccordionTrigger>Responsibilities</AccordionTrigger>
               <AccordionContent>
-                {props.occupation?.responsibilities && props.occupation?.responsibilities.map((record,index) => (
+                {props.occupation.responsibilities.map((record,index) => (
                   <div key={index} className="flex gap-2 items-center text-xs md:text-sm">
                     ☑️ {record.value}
                   </div>
@@ -32,12 +29,12 @@ const ExperienceEntry = (props: WorkExperience) => {
             </AccordionItem>
           )
         }
-        {props.occupation?.achievements && 
+        {props.occupation.achievements && 
           (
           <AccordionItem value="item-2">
             <AccordionTrigger>Achievements</AccordionTrigger>
             <AccordionContent>
-              {props.occupation?.achievements && props.occupation?.achievements.map((record,index) => (
+              {props.occupation.achievements.map((record,index) => (
                 <div key={index} className="flex gap-2 items-center text-xs md:text-sm">
                   🏆  {record.value}
                 </div>

@@ -11,30 +11,19 @@ import { useMutation } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import Link from "next/link"
 import NewSkillLinkForm from "./NewSkillLinkForm"
-import { Skill } from "@/app/types/definitions"
-import { Infer } from "convex/values";
-import { z } from "zod";
-
-const SkillSchema = z.object({
-    _id: z.string(), 
-    name: z.string(),
-    code: z.string().optional(),
-    createdBy: z.string().optional(),
-    _creationTime: z.number().optional()
-  });
+import { SkillSchema } from "@/app/types/definitions";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>
 }
 
-
 export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
     
+  //const record = SkillSchema.parse(row.original);
   const record = SkillSchema.parse(row.original);
   
-
   return (
     <TableOptions>
         <Edit destination={`/settings/skills/${encodeURIComponent(record._id as Id<"Skill">)}/edit`}/>

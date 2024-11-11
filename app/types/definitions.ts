@@ -2,6 +2,7 @@
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import React from "react";
 import { z } from "zod";
+import { ACCEPTED_FILE_TYPES, arrCategory, MAX_FILE_SIZE } from "./constants";
 
 export type RootLayoutProps = Readonly<{
     children: React.ReactNode;
@@ -30,60 +31,14 @@ export type Navlink = {
     href: string;
     src?: string;   
   };
-  
-  export type userData = 
-  {
-    data: {
-      user: {
-        id: string;
-        aud: string;
-        role: string;
-        email: string;
-        email_confirmed_at: string;
-        phone: string;
-        confirmed_at: string;
-        last_sign_in_at: string;
-        app_metadata: appMetadata,
-        user_metadata: userMetadata,
-        identities: identity[],
-        created_at: string;
-        updated_at: string;
-        is_anonymous: boolean;
-      }
-    },
-    error: null;
-  }
-  
-  type identity =  {
-    identity_id: string;
-    id: string;
-    user_id: string;
-    identity_data: identityData,
-    provider: string;
-    last_sign_in_at: string;
-    created_at: string;
-    updated_at: string;
-    email: string;
-  }
-  
-  type identityData = {
-    email: string;
-    email_verified: boolean;
-    phone_verified: boolean;
-    sub: string;
-  }
-  
-  type userMetadata = {
-    email: string;
-    email_verified: false;
-    phone_verified: false;
-    sub: string;
-  }
-  
-  type appMetadata = {
-    provider: string;
-    providers: string[]
-  }
+
+  export const SkillSchema = z.object({
+    _id: z.string(), 
+    name: z.string(),
+    code: z.string().optional(),
+    createdBy: z.string().optional(),
+    _creationTime: z.number().optional()
+  });
   
   export const ProfileFormSchema = z.object({
     name: z.string().optional(),
@@ -163,16 +118,6 @@ export type Navlink = {
   
   export type CompanyFormValues = z.infer<typeof CompanyFormSchema>;
 
-  const MAX_FILE_SIZE = 5000000; // 5MB
-  const ACCEPTED_FILE_TYPES = [
-    "application/pdf", 
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document" 
-  ];
-
-  export const ACCEPTED_FILE_MIMETYPES = "application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-
-  export const arrCategory = ["Resume", "Image", "Video"] as const; //  use as const to define your enum values as a tuple of strings
-
   export const FileSchema = z.object({
       category: z.enum(arrCategory).optional(), //a Zod-native way to declare a schema with a fixed set of allowable string values.
       file: z.instanceof(File, { message: "Please upload a file" })
@@ -202,37 +147,3 @@ export type Navlink = {
   
   export type SkillLinkFormValues = z.infer<typeof SkillLinkFormSchema>;
 
-  export type UserWithCountry = Doc<"User"> & {
-    country: Doc<"Country">
-  };
-  
-  export type User = Doc<"User">;
-  export type Occupation = Doc<"Occupation">;
-  
-  export type Country = Doc<"Country">;
-  
-  export type Company = Doc<"Company">;
-  export type Skill = Doc<"Skill">;
-  
-  export type CompanyWithOccupation = Doc<"Company"> & {
-    company: Doc<"Occupation">,
-    user: Doc<"User">
-  };
-  
-  export type UserSkill = Doc<"Skill"> & {
-    user: {
-      userName: string;
-      userEmail: string;
-      userPictureUrl: string;
-    };
-    linkedSkills: []
-  };
-  
-  export type CompanyWithUser = Doc<"Company"> & {
-    company: Doc<"User">
-  };
-  
-  export type CompanyWithProject = Doc<"Company"> & {
-    company: Doc<"Project">,
-    user: Doc<"User">,
-  };

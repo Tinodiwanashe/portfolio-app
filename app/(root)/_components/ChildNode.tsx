@@ -5,13 +5,13 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { getInitials } from '@/lib/utils'
 import React, { useRef } from 'react'
 
-type CircleProps = {
+type ChildNodeProps = {
     children?: React.ReactNode;
     parentDivRef: React.RefObject<HTMLDivElement>;
     containerDivRef: React.RefObject<HTMLDivElement>;
 }
 
-const ChildNode = (props: CircleProps) => {
+const ChildNode = (props: ChildNodeProps) => {
     const divChildRef = useRef<HTMLDivElement>(null);
   return ( 
       <>

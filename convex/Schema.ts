@@ -1,6 +1,6 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
-import { FileCategoryValidator } from "./helpers";
+import { FileCategorySchema } from "./helpers";
 
 export const userFields = {
   name: v.string(),
@@ -62,7 +62,7 @@ export const projectFields = {
 
 export const fileFields = {
   name: v.string(),
-  category: FileCategoryValidator,
+  category: FileCategorySchema,
   storageId: v.id("_storage"),
   uploadedBy: v.optional(v.union(v.id("User"), v.null()))
 }

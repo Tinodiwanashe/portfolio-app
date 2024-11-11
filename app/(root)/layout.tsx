@@ -15,8 +15,7 @@ const layout = ({children}: RootLayoutProps) => {
       <Header socialLinks={socialLinks}>
         <AuthButton/>
       </Header>
-      <Background/>
-      
+      <Background/>    
       <main className="flex-1 gap-4 md:gap-8 px-4 md:px-8">    
         {children}
       </main>

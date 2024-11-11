@@ -9,9 +9,7 @@ import { api } from "@/convex/_generated/api";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Doc, Id } from "@/convex/_generated/dataModel";
 import { CompanyFormSchema, CompanyFormValues } from "@/app/types/definitions";
-import { useQuery } from "convex/react";
 import { redirectToURL } from "@/utils/actions/miscellaneous ";
 
 export default function NewCompanyForm() {  

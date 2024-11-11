@@ -1,31 +1,30 @@
-import { Id } from "./_generated/dataModel";
+import { Doc, Id } from "./_generated/dataModel";
 import { query, mutation  } from "./_generated/server";
 import { v } from "convex/values";
-
+import { WorkExperienceItem } from "./helpers";
 
     export const getOccupations = query({
-    args: {},
-    handler: async (ctx, args) => {
-        const occupations = await ctx.db
-        .query("Occupation")
-        .order("asc")
-        .collect();
+        args: {},
+        handler: async (ctx, args) => {
+            const occupations = await ctx.db
+            .query("Occupation")
+            .order("asc")
+            .collect();
 
-        return Promise.all(
-            occupations.map(async (occupation) => {
-                // For each user , fetch the `Country` he comes from and
-                // insert the name into the `Country name` field.
-                const company = await ctx.db.get(occupation.companyId as Id<"Company">);
-                const user = await ctx.db.get(occupation.createdBy as Id<"User">);
-                const OccupationWithCompany =  {
-                occupation,
-                company: company,
-                user: user
-                };
-                return OccupationWithCompany;
-            }),
-        );         
-    },
+            return Promise.all(
+                occupations.map(async (occupation) => {
+                    // For each user , fetch the `Country` he comes from and
+                    // insert the name into the `Country name` field.
+                    const company = await ctx.db.get(occupation.companyId as Id<"Company">);
+                    const user = await ctx.db.get(occupation.createdBy as Id<"User">);
+                    return {
+                    occupation,
+                    company: company,
+                    user: user
+                    } as WorkExperienceItem;
+                }),
+            );         
+        },
     });
 
     export const getOccupation = query({
@@ -94,29 +93,29 @@ import { v } from "convex/values";
     });
 
     export const deleteOccupation= mutation({
-    args: { id: v.id("Occupation") },
-    handler: async (ctx, args) => {
-        const identity = await ctx.auth.getUserIdentity();
-        if (!identity) {
-            throw new Error("Unauthenticated call to mutation");
-        }
+        args: { id: v.id("Occupation") },
+        handler: async (ctx, args) => {
+            const identity = await ctx.auth.getUserIdentity();
+            if (!identity) {
+                throw new Error("Unauthenticated call to mutation");
+            }
 
-        const user = await ctx.db
-        .query("User")
-        .withIndex("idx_token", (q) =>
-            q.eq("tokenIdentifier", identity.tokenIdentifier),
-        )
-        .unique();
-        if (!user) {
-            throw new Error("Unauthenticated call to mutation");
-        }
+            const user = await ctx.db
+            .query("User")
+            .withIndex("idx_token", (q) =>
+                q.eq("tokenIdentifier", identity.tokenIdentifier),
+            )
+            .unique();
+            if (!user) {
+                throw new Error("Unauthenticated call to mutation");
+            }
 
-        const Occupation = await ctx.db.get(args.id);
-        if (!Occupation) {
-            throw new Error("Occupation not found");
-        } else {
-            await ctx.db.delete(args.id);
-        }
-        
-    },
+            const Occupation = await ctx.db.get(args.id);
+            if (!Occupation) {
+                throw new Error("Occupation not found");
+            } else {
+                await ctx.db.delete(args.id);
+            }
+            
+        },
     });

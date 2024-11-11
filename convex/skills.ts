@@ -1,15 +1,7 @@
 import { Doc, Id } from "./_generated/dataModel";
 import { query, mutation, QueryCtx  } from "./_generated/server";
 import { v } from "convex/values";
-
-type UserSkill = Doc<"Skill"> & {
-    user: {
-        userName: string;
-        userEmail: string;
-        userPictureUrl: string;
-    };
-    linkedSkills: [];
-};
+import { UserSkill } from "./helpers";
 
 const getLinkedSkills = async (ctx: QueryCtx, parentId: Id<"Skill">) => {
     const linkedSkills = await ctx.db
