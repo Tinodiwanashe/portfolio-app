@@ -18,7 +18,7 @@ const ExperienceEntry = ({occupation, company}: WorkExperienceItem) => {
             <AccordionItem value="item-1">
               <AccordionTrigger>Responsibilities</AccordionTrigger>
               <AccordionContent>
-                {occupation.responsibilities.map((text,index) => (
+                {(occupation.responsibilities ?? []).map((text,index) => (
                   <div key={index} className="flex gap-2 items-center text-xs md:text-sm">
                     ☑️ {text.value}
                   </div>
@@ -32,9 +32,9 @@ const ExperienceEntry = ({occupation, company}: WorkExperienceItem) => {
           <AccordionItem value="item-2">
             <AccordionTrigger>Achievements</AccordionTrigger>
             <AccordionContent>
-              {occupation.achievements.map((text,index) => (
+              {(occupation.achievements ?? []).map((text,index) => (
                 <div key={index} className="flex gap-2 items-center text-xs md:text-sm">
-                  🏆  {text.value}
+                  🏆 {text.value}
                 </div>
               ))}
             </AccordionContent>
