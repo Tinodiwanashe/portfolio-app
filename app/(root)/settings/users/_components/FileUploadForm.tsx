@@ -6,11 +6,12 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
-import { FileSchema, FileFormValues, ACCEPTED_FILE_MIMETYPES, arrCategory } from "@/app/types/definitions";
+import { FileSchema, FileFormValues} from "@/app/types/definitions";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DialogClose, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { ACCEPTED_FILE_MIMETYPES, arrCategory } from "@/app/types/constants";
 
 export default function FileUploadForm() {
   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
