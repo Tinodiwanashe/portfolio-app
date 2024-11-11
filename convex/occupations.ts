@@ -4,8 +4,7 @@ import { v } from "convex/values";
 import { WorkExperienceItem } from "./helpers";
 
     export const getOccupations = query({
-        args: {},
-        handler: async (ctx, args) => {
+        handler: async (ctx) => {
             const occupations = await ctx.db
             .query("Occupation")
             .order("asc")
@@ -13,14 +12,17 @@ import { WorkExperienceItem } from "./helpers";
 
             return Promise.all(
                 occupations.map(async (occupation) => {
-                    // For each user , fetch the `Country` he comes from and
-                    // insert the name into the `Country name` field.
+                    // For each occupation , fetch the `company` he comes from and
                     const company = await ctx.db.get(occupation.companyId as Id<"Company">);
                     const user = await ctx.db.get(occupation.createdBy as Id<"User">);
                     return {
-                    occupation,
-                    company: company,
-                    user: user
+                        occupation,
+                        ...company,
+                        user: {
+                            userName: user?.name,
+                            userEmail: user?.email,
+                            userPictureUrl: user?.pictureUrl
+                        }
                     } as WorkExperienceItem;
                 }),
             );         
