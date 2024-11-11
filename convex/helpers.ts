@@ -66,9 +66,9 @@ export type CompanyWithProject = Doc<"Company"> & {
 };
 
 export type WorkExperienceItem = {
-  occupation: Doc<"Occupation">;
-  company: Doc<"Company">;
-  user: Doc<"User">;
+  occupation: Doc<"Occupation">,
+  company?: Doc<"Company">,
+  user?: Doc<"User">
 };
 
 
