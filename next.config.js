@@ -1,6 +1,4 @@
-const MillionLint = require("@million/lint");
 /** @type {import('next').NextConfig} */
-
 // Injected content via Sentry wizard below
 const { withSentryConfig } = require("@sentry/nextjs");
 
@@ -21,12 +19,7 @@ const nextConfig = {
 
 // module.exports = nextConfig;
 
-module.exports = MillionLint.next({
-  rsc: true,
-  filter: {
-    include: "**/components/*.{mtsx,mjsx,tsx,jsx}",
-  },
-})(withSentryConfig(
+module.exports = withSentryConfig(
   nextConfig,
   {
     // For all available options, see:
@@ -62,4 +55,4 @@ module.exports = MillionLint.next({
     // https://vercel.com/docs/cron-jobs
     automaticVercelMonitors: true,
   }
-));
+);
