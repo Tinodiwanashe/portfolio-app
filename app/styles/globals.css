@@ -112,6 +112,12 @@
   }
 }
 
+@layer utilities {
+  .black-gradient {
+    background: linear-gradient(90deg, #161a31 0%, #06091f 100%);
+  }
+}
+
 pre {
   background: #0d0d0d;
   border-radius: 0.5rem;

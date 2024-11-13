@@ -42,6 +42,9 @@ const config = {
   				'200': '#C1C2D3',
   				DEFAULT: '#FFF'
   			},
+			blue: {
+			"100": "#E4ECFF",
+			},			
   			purple: {
   				DEFAULT: '#CBACF9'
   			},
