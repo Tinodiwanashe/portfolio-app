@@ -1,7 +1,5 @@
-import Link from "next/link";
-import Image from "next/image";
-import { buttonVariants } from "@/components/ui/button";
-import { SignedIn, SignIn, UserProfile } from "@clerk/nextjs";
+
+import { SignedIn, UserProfile } from "@clerk/nextjs";
 
 export default function Page({
   searchParams,
