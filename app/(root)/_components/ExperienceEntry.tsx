@@ -3,6 +3,10 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { WorkExperienceItem } from '@/convex/helpers';
 import React from 'react'
 
+interface RecordType { 
+  value: string; // Add other properties if needed 
+}
+
 const ExperienceEntry = ({occupation, company}: WorkExperienceItem) => {
   return (
     <>
@@ -19,9 +23,9 @@ const ExperienceEntry = ({occupation, company}: WorkExperienceItem) => {
               <AccordionTrigger>Responsibilities</AccordionTrigger>
               <AccordionContent>
                 {
-                  occupation.responsibilities.map((text,index) => (
+                  occupation.responsibilities.map((item: RecordType,index: number) => (
                     <div key={index} className="flex gap-2 items-center text-xs md:text-sm">
-                      ☑️ {text.value}
+                      ☑️ {item.value}
                     </div>
                   ))
                 }
@@ -35,9 +39,9 @@ const ExperienceEntry = ({occupation, company}: WorkExperienceItem) => {
             <AccordionTrigger>Achievements</AccordionTrigger>
             <AccordionContent>
               {
-                occupation.achievements.map((text, index) => (
+                occupation.achievements.map((item: RecordType, index: number) => (
                   <div key={index} className="flex gap-2 items-center text-xs md:text-sm">
-                    🏆 {text.value}
+                    🏆 {item.value}
                   </div>
                 ))
               }
