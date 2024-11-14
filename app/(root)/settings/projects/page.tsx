@@ -16,6 +16,7 @@ import { convexQuery } from "@convex-dev/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
 import { useAlertDialog } from "@/hooks/use-alert-dialog";
+import { TextObject } from "@/convex/helpers";
   
   export default function page() {
     const { data, isPending, error } = useQuery(convexQuery(api.projects.getProjects,{}));
@@ -77,8 +78,8 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog";
                                 <TableCell className="font-medium">{record.project.name}</TableCell>
                                 <TableCell>
                                     <div className="flex gap-2 flex-wrap">
-                                        {record.project.skills?.map((subrecord) => (
-                                            <Badge variant="secondary">{subrecord.value}</Badge>
+                                        {record.project.skills?.map((text: TextObject, index: number) => (
+                                            <Badge key={index} variant="secondary">{text.value}</Badge>
                                         ))}                                    
                                     </div>
                                 </TableCell>
