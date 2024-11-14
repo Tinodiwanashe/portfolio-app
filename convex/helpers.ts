@@ -32,9 +32,11 @@ type userInfo = {
   userPictureUrl: string;
 };
 
-export const TextObject = v.object({
+export const TextSchema = v.object({
   value: v.string()
 });
+
+export type TextObject = Infer<typeof TextSchema>;
 
 export type UserWithCountry = Doc<"User"> & {
   country: Doc<"Country">

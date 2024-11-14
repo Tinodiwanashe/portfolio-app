@@ -80,7 +80,7 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog";
                                 <TableCell>{ new Date(record.occupation.startDate || Date.now()).toLocaleDateString()}</TableCell>
                                 <TableCell>{ new Date(record.occupation.endDate || Date.now()).toLocaleDateString()}</TableCell>
                                 <TableCell>{record.company?.name}</TableCell>
-                                <TableCell>{record.user?.name}</TableCell>
+                                <TableCell>{record.user?.userName}</TableCell>
                                 <TableCell className="hidden md:table-cell">{ new Date(record.occupation._creationTime).toLocaleDateString()}</TableCell> 
     {/*                             formatDateToLocal(record.project._creationTime.toString()) */}
                                 <TableCell className="text-right">
