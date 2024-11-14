@@ -1,5 +1,5 @@
+import Code from "./Code";
 import Step from "./Step";
-import Code from "../Code";
 import Link from "next/link";
 
 const create = `
