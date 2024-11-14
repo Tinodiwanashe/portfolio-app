@@ -24,7 +24,7 @@ type PreloadedProps = {
 export default function NewSkillLinkForm(props: PreloadedProps) {  
   const skills = useQuery(api.skills.getOtherSkills,{id: props.parentId});  
   const parentSkill = useQuery(api.skills.getSkill,{SkillId: props.parentId});  
-  const childskills = useQuery(api.skillLinks.getChildSkills,{parentId: props.parentId}); 
+  const childSkills = useQuery(api.skillLinks.getChildSkills,{parentId: props.parentId}); 
   const {
     mutate,
     isPending
@@ -99,7 +99,7 @@ export default function NewSkillLinkForm(props: PreloadedProps) {
                 <FormDescription>
                   Select a skill most relevant to the Skill {parentSkill?.name}.
                   <div className="mt-4 flex flex-row gap-2">
-                    {(childskills ?? []).map((item, index) =>(
+                    {(childSkills ?? []).map((item, index) =>(
                       <Badge 
                         variant="default"
                         className="align-middle"
