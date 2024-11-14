@@ -8,11 +8,11 @@ import { api } from '@/convex/_generated/api';
 import { Badge } from '../ui/badge';
 import BlurFade from '../ui/blur-fade';
 import Meteors from '../ui/meteors';
-import { BorderBeam } from '../ui/border-beam';
 import { BLUR_FADE_DELAY } from '@/app/types/constants';
 import { SkeletonCard } from './SkeletonCard';
 import { textEllipsis } from '@/lib/utils';
 import { FaGithub, FaGlobe } from 'react-icons/fa6';
+import { TextObject } from '@/convex/helpers';
 
 
 
@@ -53,7 +53,7 @@ const Projects = () => {
                                     <CardFooter>
                                         <div className='flex flex-col gap-2'>
                                             <div className='flex flex-row flex-wrap gap-2'>
-                                                {record.project.skills && record.project.skills.map((record,index) => ( 
+                                                {record.project.skills && record.project.skills.map((record: TextObject,index: number) => ( 
                                                     <Badge key={index} variant="secondary">{record.value}</Badge>
                                                 ))}
                                             </div>
