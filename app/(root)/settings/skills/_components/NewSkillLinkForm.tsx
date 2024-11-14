@@ -14,6 +14,7 @@ import { redirectToURL } from "@/utils/actions/miscellaneous ";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DialogClose, DialogFooter } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
+import { Skill } from "@/convex/helpers";
 
 type PreloadedProps = {
   parentId: Id<"Skill">;
@@ -87,7 +88,7 @@ export default function NewSkillLinkForm(props: PreloadedProps) {
                   </FormControl>
                   {skills && (
                     <SelectContent>
-                      {skills.map((item, index) => (
+                      {skills.map((item: Skill, index) => (
                         <SelectItem key={index} value={item._id}>
                           {item.name}
                         </SelectItem>

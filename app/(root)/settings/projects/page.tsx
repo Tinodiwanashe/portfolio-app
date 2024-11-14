@@ -85,7 +85,6 @@ import { TextObject } from "@/convex/helpers";
                                 </TableCell>
                                 <TableCell>{record.company?.name}</TableCell>
                                 <TableCell className="hidden md:table-cell">{ new Date(record.project._creationTime).toLocaleDateString()}</TableCell> 
-    {/*                             formatDateToLocal(record.project._creationTime.toString()) */}
                                 <TableCell className="text-right">
                                     <TableOptions>
                                         <Edit destination={`/settings/projects/${encodeURIComponent(record.project._id)}/edit`}/>
