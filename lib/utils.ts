@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx"
 import he from 'he';
+import { useFormatter, useNow } from "next-intl";
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
@@ -16,23 +17,51 @@ export const getInitials = (name: string) => {
 };
 
 export const formatDateToLocal = (
-  dateStr: string,
-  locale: string = 'en-US',
+  date: string | number
 ) => {
-  const date = new Date(dateStr);
-  const options: Intl.DateTimeFormatOptions = {
+  const format = useFormatter();
+  const dateObj = new Date(date);
+
+  return format.dateTime(dateObj, {
     day: 'numeric',
     month: 'short',
-    year: 'numeric',
-  };
-  const formatter = new Intl.DateTimeFormat(locale, options);
-  return formatter.format(date);
+    year: 'numeric'
+  });
 };
 
-export const formatCurrency = (amount: number) => {
-  return (amount / 100).toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD',
+export function dateTimePrettyFormat(date: string | number) {
+  // Use the global now value initially …
+  const now = useNow({
+    // … and update it every 60 seconds
+    updateInterval: 1000 * 60
+  });  
+
+  // Use the formatted date value to render the relative time.
+  const format = useFormatter();
+  const dateObj = new Date(date);
+  
+  // Renders "2 hours ago" and updates continuously
+  return format.relativeTime(dateObj, now);
+}
+
+export function dateRangePrettyFormat(startDate: string | number, endDate: string | number) {
+
+  // Use the formatted date value to render the relative time.
+  const format = useFormatter();
+  const startOnObj = new Date(startDate);
+  const endOnObj = new Date(endDate);
+  
+  // Renders "Nov 20, 2020 – Jan 24, 2021"
+  return format.dateTimeRange(startOnObj, endOnObj, 'short');
+}
+
+export const formatCurrency = (amount: number, currency = 'ZAR') => {
+  const format = useFormatter();
+
+  // Renders "R499.90"
+  return format.number(amount, {
+    style: 'currency', 
+    currency
   });
 };
 
@@ -51,44 +80,6 @@ export const sizeInMB = (sizeInBytes: number, decimalsNum = 2) => {
   const result = sizeInBytes / (1024 * 1024);
   return +result.toFixed(decimalsNum);
 };
-
-
-export function formatDate(date: string, includeRelative = false) {
-  const currentDate = new Date();
-
-  if (!date.includes('T')) {
-      date = `${date}T00:00:00`;
-  }
-
-  const targetDate = new Date(date);
-  const yearsAgo = currentDate.getFullYear() - targetDate.getFullYear();
-  const monthsAgo = currentDate.getMonth() - targetDate.getMonth();
-  const daysAgo = currentDate.getDate() - targetDate.getDate();
-
-  let formattedDate = '';
-
-  if (yearsAgo > 0) {
-      formattedDate = `${yearsAgo}y ago`;
-  } else if (monthsAgo > 0) {
-      formattedDate = `${monthsAgo}mo ago`;
-  } else if (daysAgo > 0) {
-      formattedDate = `${daysAgo}d ago`;
-  } else {
-      formattedDate = 'Today';
-  }
-
-  const fullDate = targetDate.toLocaleString('en-us', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
-  });
-
-  if (!includeRelative) {
-      return fullDate;
-  }
-
-  return `${fullDate} (${formattedDate})`;
-}
 
 export function textEllipsis(text: string, numberOfChars: number): string {
   return text.length > numberOfChars? `${text.slice(0, numberOfChars)}...` : text;

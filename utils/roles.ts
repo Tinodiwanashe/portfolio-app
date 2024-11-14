@@ -1,6 +1,5 @@
 import { Roles } from '@/app/types/globals';
 import { auth } from '@clerk/nextjs/server';
-import React from 'react'
 
 export const checkRole = async (role: Roles) => {
     const { sessionClaims } = await auth();

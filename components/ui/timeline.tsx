@@ -7,7 +7,7 @@ import {
 } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 
-interface TimelineEntry {
+export interface TimelineEntry {
   title: string;
   content: React.ReactNode;
 }
