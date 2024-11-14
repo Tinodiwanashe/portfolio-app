@@ -1,5 +1,4 @@
 import React from 'react'
-import { Spotlight } from '../ui/spotlight'
 import GridPattern from '../ui/grid-pattern'
 import { cn } from '@/lib/utils'
 
