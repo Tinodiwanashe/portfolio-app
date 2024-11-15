@@ -15,11 +15,14 @@ const isProtectedRoute = createRouteMatcher(["/settings(.*)"]);
 // See https://clerk.com/docs/references/nextjs/clerk-middleware for more information about configuring your Middleware
 
 export default clerkMiddleware(async (auth,req) => {
-  if (isProtectedRoute(req) && (await checkRole("admin"))) {
-    await auth().protect(); // used if you want to redirect unauthenticated users to the sign-in route automatically.
-  } else {
-    const url = new URL('/', req.url);
-    return NextResponse.redirect(url);
+
+  if (isProtectedRoute(req)) {
+    if (await checkRole("admin")){
+      await auth().protect(); // used if you want to redirect unauthenticated users to the sign-in route automatically.
+    } else {
+      const url = new URL('/', req.url)
+      return NextResponse.redirect(url)      
+    }
   }
   //Use auth().userId if you want more control over what your app does based on user authentication status.
 });
