@@ -1,42 +1,65 @@
-import { Inter as FontSans } from "next/font/google"
-import "./styles/globals.css";
+import "./styles/globals.css"; //import the globals.css stylesheet to apply the styles to every route in your application.
+import './styles/prosemirror.css';
 import { cn } from "@/lib/utils";
-import { ThemeProvider } from "@/components/theme-provider";
-import Head from "next/head";
+import { Inter as FontSans } from "next/font/google";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import { RootLayoutProps } from "./types/definitions";
-import { Metadata } from 'next'
+import { Metadata } from 'next';
+import { ConvexClientProvider } from "@/components/providers/ConvexClientProvider";
+import { Toaster } from "@/components/ui/sonner";
+import InfoDialog from "@/components/custom/InfoDialog";
+import ConfirmationDialog from "@/components/custom/ConfirmationDialog";
 
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 })
 
-/* const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000"; */
-
 export const metadata: Metadata  = {
-  // metadataBase: new URL(defaultUrl),
-  title: "Munyaradzi Kandoro Portfolio",
-  description: "A Tech Enthusiast Portfolio Website"
+  title: {
+    template: '%s | Portfolio',
+    default: 'Munyaradzi Kandoro Portfolio'
+  },
+  description: "A Tech Enthusiast Portfolio Website",
+  //metadataBase: new URL('https://next-learn-dashboard.vercel.sh'),
+  icons: {
+    icon: '/favicon.ico'
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    }
+  }
 };
+//The %s in the template will be replaced with the specific page title. -----Is redirect working
 
 export default function RootLayout({ children }: RootLayoutProps) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <Head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-      </Head>
-      <body className={cn("min-h-screen bg-background text-foreground font-sans antialiased",fontSans.variable)}>
-        <ThemeProvider
-              attribute="class"
-              defaultTheme="dark"
-              enableSystem
-              disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
+
+  return (  
+      <html lang="en" className='scroll-smooth antialiased' suppressHydrationWarning>
+        <body className={cn("min-h-screen flex flex-col bg-background text-foreground font-sans",fontSans.variable)}>
+          <ConvexClientProvider>
+            <ThemeProvider
+                  attribute="class"
+                  defaultTheme="dark"
+                  enableSystem
+                  disableTransitionOnChange
+            >
+              
+
+              {children}
+              <InfoDialog />
+              <ConfirmationDialog/>
+              <Toaster richColors/>
+            </ThemeProvider>
+          </ConvexClientProvider>
+        </body>
+      </html>   
   );
 }

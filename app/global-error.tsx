@@ -1,6 +1,6 @@
 'use client'
 
-import ErrorDisplay from "@/components/ErrorDisplay";
+import ErrorDisplay from "@/components/custom/ErrorDisplay";
 import * as Sentry from "@sentry/nextjs";
 import Error from "next/error";
 import { useEffect } from "react";
