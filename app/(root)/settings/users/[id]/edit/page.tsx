@@ -7,7 +7,7 @@ import { api } from "@/convex/_generated/api";
 export default async function page({ params }: { params: { id: Id<"User"> } }) {
   const { id } = params;
   const [user, countries] = await Promise.all([
-    preloadQuery(api.users.getUser,{UserId: id}),  
+    preloadQuery(api.users.getUser,{id: id}),  
     preloadQuery(api.countries.getCountries)
   ]); //Promise.all makes all my API calls in parallel and returns an array of the results.
 
