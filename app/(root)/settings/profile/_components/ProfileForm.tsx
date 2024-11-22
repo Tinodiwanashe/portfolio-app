@@ -21,6 +21,7 @@ import ErrorDetail from "@/components/custom/ErrorDetail";
 import Link from "next/link";
 import { FaTrash } from "react-icons/fa6";
 import { PhoneInput } from "@/components/ui/phone-input";
+import UserAvatar from "@/components/custom/UserAvatar";
 
 type PreloadedProps = {
   preloadedUser: Preloaded<typeof api.users.getCurrentUser>;
@@ -100,18 +101,7 @@ export default function ProfileForm(props: PreloadedProps) {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <>
             <Label>Full Name</Label>
-            <div className="flex flex-row gap-3 items-center">
-              <Avatar>
-                <AvatarImage src={user.pictureUrl} alt="Avatar" />
-                <AvatarFallback>{getInitials(fullName)}</AvatarFallback>
-              </Avatar>  
-              <div className="grid gap-1">
-                <div className="font-medium">{user.name}</div>
-                <div className="hidden text-sm text-muted-foreground md:inline">
-                  {user.email}
-                </div>
-              </div> 
-            </div>   
+            <UserAvatar name={fullName} email={user.email} pictureUrl={user.pictureUrl}/>  
           </>
           <FormField
             control={form.control}

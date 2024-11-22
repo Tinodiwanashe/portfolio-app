@@ -1,6 +1,6 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
-import { FileCategorySchema, TextSchema } from "./helpers";
+import { FileCategorySchema, SocialLinkSchema, TextSchema } from "./helpers";
 
 
 
@@ -14,10 +14,7 @@ export const userFields = {
   countryId: v.optional(v.union(v.id("Country"), v.null())),  
   latitude: v.optional(v.float64()),
   longitude: v.optional(v.float64()),
-  socialLinks: v.optional(v.array(v.object({
-    value: v.string(),
-    isSocialProfile: v.optional(v.boolean())
-  })))
+  socialLinks: v.optional(v.array(SocialLinkSchema))
 }
 
 export const countryFields = {

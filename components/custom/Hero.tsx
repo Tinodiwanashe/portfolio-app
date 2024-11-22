@@ -13,6 +13,7 @@ import { SubmitButton } from './submitFormButton';
 import { LoadingButton } from './loading-button';
 import { useState } from 'react';
 import Link from 'next/link';
+import SocialMediaIcon from './SocialMediaIcon';
 
 type FileProps = {
   name: string | undefined; 
@@ -38,12 +39,13 @@ const Hero = () => {
   const [isDownloadPending, setIsDownloadPending] = useState(false);
 
   const fileName = "Munyaradzi Kandoro Resume.pdf"
-  const { data, isPending, error } = useQuery(convexQuery(api.files.getFile,{fileName}));
-  console.log("Retrieve file: ", data);
+  const resume = useQuery(convexQuery(api.files.getFileByName,{fileName}));
+  const socialLinks = useQuery(convexQuery(api.users.getUserSocialLinks,{name: "Munyaradzi Kandoro"}));
+  console.log("Retrieve file: ", resume.data);
 
   const fileInfo = {
-    name: data?.[0].file?.name,
-    url: data?.[2].url
+    name: resume.data?.[0].file?.name,
+    url: resume.data?.[2].url
   }
 
 
@@ -88,6 +90,18 @@ const Hero = () => {
               Contact me <FaPhone className='ml-2 h-4 w-4'/>
             </Link>
           </div>
+          {
+            socialLinks.data &&
+            <div className="mt-5 w-full flex flex-1 items-center gap-3 ">
+              {
+                socialLinks.data.map((item, index) => {
+                  return (
+                    <SocialMediaIcon key={index} url={item.value}/>
+                  )
+                })
+              }
+            </div>            
+          }
         </div>
         <HeroImage className='order-1 xl:order-none mb-8 xl:mb-0'/>
       </div>

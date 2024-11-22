@@ -1,18 +1,10 @@
-
-import { Doc, Id } from "@/convex/_generated/dataModel";
 import React from "react";
 import { z } from "zod";
 import { ACCEPTED_FILE_TYPES, arrCategory, MAX_FILE_SIZE } from "./constants";
 
-export type RootLayoutProps = Readonly<{
+  export type RootLayoutProps = Readonly<{
     children: React.ReactNode;
-}>
-
-export type Navlink = {
-    href: string;
-    label: string;
-    icon?: React.ReactNode | JSX.Element | any;
-  };
+  }>
 
   export type MenuItem = {
     label: string;

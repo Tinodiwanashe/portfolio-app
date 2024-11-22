@@ -19,7 +19,7 @@ import Ecosystems from './Ecosystems';
       href: "/",
       cta: "Learn more",
       background: <SkillsCloud/>,
-      className: "col-span-3 lg:col-span-2 row-span-2"
+      className: "col-span-3 lg:col-span-2 row-span-2 sm:col-span-6 sm:row-span-4"
     },
     {
       Icon: <FaLocationArrow/>,
@@ -28,7 +28,7 @@ import Ecosystems from './Ecosystems';
       href: "/",
       cta: "Learn more",
       background: <Ecosystems/>,
-      className: "col-span-3 lg:col-span-1 row-span-1"
+      className: "col-span-3 lg:col-span-1 row-span-1 md:col-span-3 md:row-span-1"
     },
     {
       Icon: <FaLocationArrow/>,
@@ -37,7 +37,7 @@ import Ecosystems from './Ecosystems';
       href: "/",
       cta: "Learn more",
       background: <Location/>,
-      className: "col-span-3 lg:col-span-1 row-span-1  "
+      className: "col-span-3 lg:col-span-1 row-span-1 md:col-span-3 md:row-span-1"
     },    
   ]
 

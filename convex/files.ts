@@ -78,7 +78,7 @@ export const getFiles = query({
     },
   });
 
-  export const getFile = query({
+  export const getFileByName = query({
     args: {
         fileName: v.string()
     },

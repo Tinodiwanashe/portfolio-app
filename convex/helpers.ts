@@ -38,9 +38,12 @@ export const TextSchema = v.object({
 
 export type TextObject = Infer<typeof TextSchema>;
 
-export type UserWithCountry = Doc<"User"> & {
-  country: Doc<"Country">
-};
+export const SocialLinkSchema = v.object({
+  value: v.string(),
+  isSocialProfile: v.union(v.boolean(),v.boolean())
+})
+
+export type SocialLinkObject = Infer<typeof SocialLinkSchema>;
 
 export type User = Doc<"User">;
 
@@ -51,6 +54,10 @@ export type Country = Doc<"Country">;
 export type Company = Doc<"Company">;
 
 export type Skill = Doc<"Skill">;
+
+export type UserWithCountry = Doc<"User"> & {
+  country: Doc<"Country">
+};
 
 export type CompanyWithOccupation = Doc<"Company"> & {
   company: Doc<"Occupation">,

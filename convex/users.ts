@@ -2,6 +2,7 @@ import { paginationOptsValidator } from "convex/server";
 import { query, mutation, QueryCtx  } from "./_generated/server";
 import { v } from "convex/values";
 import { Id } from "./_generated/dataModel";
+import { UserWithCountry } from "./helpers";
 
 const getUserByTokenIdentifier = async (ctx: QueryCtx, tokenIdentifier: string) => {
   return await ctx.db
@@ -131,31 +132,44 @@ export const getUsers = query({
     .order("asc")
     .collect();
 
-      return Promise.all(
+    return Promise.all(
       users.map(async (user) => {
         // For each user , fetch the `Country` he comes from and
         // insert the name into the `Country name` field.
         const country = await ctx.db.get(user.countryId as Id<"Country">);
-        const UserWithCountry =  {
-          user: user,
-          country: country
-        };
-        return UserWithCountry;
+        return {
+          ...user,
+          ...country
+        } as UserWithCountry;
+
       }),
     ); 
   },
 });  
 
 export const getUser = query({
-    args: {UserId: v.id("User") },
+    args: {id: v.id("User") },
     handler: async (ctx, args) => {
-        //return await ctx.db.get(args.UserId);
-        return await ctx.db
-        .query("User")
-        .filter((q) => q.eq(q.field("_id"), args.UserId))
-        .first();
+      //return await ctx.db.get(args.UserId);
+      return await ctx.db
+      .query("User")
+      .withIndex("by_id", (q) =>
+        q.eq("_id", args.id))
+      .first();
     },
-});  
+}); 
+
+export const getUserByName = query({
+  args: {name: v.string() },
+  handler: async (ctx, args) => {
+    //return await ctx.db.get(args.UserId);
+    return await ctx.db
+    .query("User")
+    .withIndex("idx_user_name", (q) =>
+      q.eq("name", args.name))
+    .first();
+  },
+});
 
 export const getCurrentUser = query({
   handler: async (ctx) => {
@@ -168,18 +182,19 @@ export const getCurrentUser = query({
 });
 
 export const getUserSocialLinks = query({
-  handler: async (ctx) => {
+  args: {name: v.string() },
+  handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
-    const users  = identity === null
+    const user = identity === null
       ? await ctx.db
         .query("User")
         .withIndex("idx_user_name", (q) =>
-          q.eq("name", "Munyaradzi Kandoro"),
+          q.eq("name", args.name),
         )
-        .unique()
+        .first()
       : await getUserByTokenIdentifier(ctx, identity?.tokenIdentifier);
 
-    return users?.socialLinks ?? [];
+    return user?.socialLinks ?? [];
 
   },
 });
