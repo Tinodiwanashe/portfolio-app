@@ -14,6 +14,7 @@ import { LoadingButton } from './loading-button';
 import { useState } from 'react';
 import Link from 'next/link';
 import SocialMediaIcon from './SocialMediaIcon';
+import { SocialLinkObject } from '@/convex/helpers';
 
 type FileProps = {
   name: string | undefined; 
@@ -94,7 +95,7 @@ const Hero = () => {
             socialLinks.data &&
             <div className="mt-5 w-full flex flex-1 items-center gap-3 ">
               {
-                socialLinks.data.map((item, index) => {
+                socialLinks.data.map((item: SocialLinkObject, index: number) => {
                   return (
                     <SocialMediaIcon key={index} url={item.value}/>
                   )
