@@ -23,7 +23,7 @@ type PreloadedProps = {
 
 export default function NewSkillLinkForm(props: PreloadedProps) {  
   const skills = useQuery(api.skills.getOtherSkills,{id: props.parentId});  
-  const parentSkill = useQuery(api.skills.getSkill,{SkillId: props.parentId});  
+  const parentSkill = useQuery(api.skills.getSkill,{id: props.parentId});  
   const childSkills = useQuery(api.skillLinks.getChildSkills,{parentId: props.parentId}); 
   const {
     mutate,
