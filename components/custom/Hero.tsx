@@ -3,18 +3,18 @@
 import { TextGenerateEffect } from '../ui/text-generate-effect'
 import { FaPhone, FaDownload } from 'react-icons/fa6'
 import { FlipWords } from '../ui/flip-words'
-import { Button, buttonVariants } from '../ui/button'
 import HeroImage from './HeroImage'
 import Stats from './Stats'
 import { convexQuery } from '@convex-dev/react-query'
 import { useQuery } from '@tanstack/react-query'
 import { api } from '@/convex/_generated/api'
-import { SubmitButton } from './submitFormButton';
 import { LoadingButton } from './loading-button';
 import { useState } from 'react';
 import Link from 'next/link';
 import SocialMediaIcon from './SocialMediaIcon';
 import { SocialLinkObject } from '@/convex/helpers';
+import { Preloaded, usePreloadedQuery } from 'convex/react';
+import { buttonVariants } from '../ui/button';
 
 type FileProps = {
   name: string | undefined; 
@@ -36,17 +36,19 @@ const words = [
 
 const words_ = ["Outsystems", "Next.js", ".Net"];
 
-const Hero = () => {
-  const [isDownloadPending, setIsDownloadPending] = useState(false);
+type PreloadedProps = {
+  preloadedUser: Preloaded<typeof api.users.getUserByName>;
+}
 
-  const fileName = "Munyaradzi Kandoro Resume.pdf"
-  const resume = useQuery(convexQuery(api.files.getFileByName,{fileName}));
-  const socialLinks = useQuery(convexQuery(api.users.getUserSocialLinks,{name: "Munyaradzi Kandoro"}));
-  console.log("Retrieve file: ", resume.data);
+const Hero = (props: PreloadedProps) => {
+  const [isDownloadPending, setIsDownloadPending] = useState(false);
+  const user = usePreloadedQuery(props.preloadedUser);
+  const resume = useQuery(convexQuery(api.files.getResumeByUserId,{userId: user._id}));
+  const socialLinks = useQuery(convexQuery(api.users.getUserSocialLinksByUserId,{userId: user._id}));
 
   const fileInfo = {
-    name: resume.data?.[0].file?.name,
-    url: resume.data?.[2].url
+    name: resume.data?.file.name,
+    url: resume.data?.url
   }
 
 

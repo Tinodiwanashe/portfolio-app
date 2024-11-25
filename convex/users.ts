@@ -2,7 +2,7 @@ import { paginationOptsValidator } from "convex/server";
 import { query, mutation, QueryCtx  } from "./_generated/server";
 import { v } from "convex/values";
 import { Id } from "./_generated/dataModel";
-import { UserWithCountry } from "./helpers";
+import { SocialLinkSchema, User, UserWithCountry } from "./helpers";
 
 const getUserByTokenIdentifier = async (ctx: QueryCtx, tokenIdentifier: string) => {
   return await ctx.db
@@ -60,10 +60,7 @@ export const updateUser = mutation({
     countryId: v.optional(v.union(v.id("Country"), v.null())),  
     latitude: v.optional(v.float64()),
     longitude: v.optional(v.float64()),
-    socialLinks: v.optional(v.array(v.object({
-      value: v.string(),
-      isSocialProfile: v.boolean()
-    }))),
+    socialLinks: v.optional(v.array(SocialLinkSchema)),
   },
   handler: async (ctx, args) => {
     // Check if the user exists.
@@ -138,8 +135,8 @@ export const getUsers = query({
         // insert the name into the `Country name` field.
         const country = await ctx.db.get(user.countryId as Id<"Country">);
         return {
-          ...user,
-          ...country
+          user,
+          country
         } as UserWithCountry;
 
       }),
@@ -151,23 +148,25 @@ export const getUser = query({
     args: {id: v.id("User") },
     handler: async (ctx, args) => {
       //return await ctx.db.get(args.UserId);
-      return await ctx.db
+      const user = await ctx.db
       .query("User")
       .withIndex("by_id", (q) =>
         q.eq("_id", args.id))
-      .first();
+      .unique();
+      return user as User;
     },
 }); 
 
 export const getUserByName = query({
   args: {name: v.string() },
   handler: async (ctx, args) => {
-    //return await ctx.db.get(args.UserId);
-    return await ctx.db
+    const user = await ctx.db
     .query("User")
     .withIndex("idx_user_name", (q) =>
       q.eq("name", args.name))
     .first();
+
+    return user as User;
   },
 });
 
@@ -181,15 +180,15 @@ export const getCurrentUser = query({
   },
 });
 
-export const getUserSocialLinks = query({
-  args: {name: v.string() },
+export const getUserSocialLinksByUserId = query({
+  args: {userId: v.id("User") },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     const user = identity === null
       ? await ctx.db
         .query("User")
-        .withIndex("idx_user_name", (q) =>
-          q.eq("name", args.name),
+        .withIndex("by_id", (q) =>
+          q.eq("_id", args.userId),
         )
         .first()
       : await getUserByTokenIdentifier(ctx, identity?.tokenIdentifier);

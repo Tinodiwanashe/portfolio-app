@@ -9,8 +9,16 @@ import { BentoGrid, BentoGridItem } from '@/components/ui/bento-grid';
 import BlurFade from '@/components/ui/blur-fade';
 import { BLUR_FADE_DELAY } from '@/app/types/constants';
 import Ecosystems from './Ecosystems';
+import { Preloaded, usePreloadedQuery } from 'convex/react';
+import { api } from '@/convex/_generated/api';
 
-  
+type PreloadedProps = {
+  preloadedUser: Preloaded<typeof api.users.getUserByName>;
+}
+
+const SkillsBentoGrid = (props: PreloadedProps) => {
+  const user = usePreloadedQuery(props.preloadedUser);
+
   const features = [
     {
       Icon: <FaShield/>,
@@ -18,16 +26,16 @@ import Ecosystems from './Ecosystems';
       description: "These are some to the technologies and and frameworks I have used on my journey.",
       href: "/",
       cta: "Learn more",
-      background: <SkillsCloud/>,
-      className: "col-span-3 lg:col-span-2 row-span-2 sm:col-span-6 sm:row-span-4"
+      background: <SkillsCloud id={user._id }/>,
+      className: "col-span-3 lg:col-span-2 row-span-2 "
     },
     {
       Icon: <FaLocationArrow/>,
       name: "My Skill Ecosystems",
-      description: "Outsystems a low-code tool enable developers to integrate multible programming languages.",
+      description: "Outsystems a low-code tool enable developers to integrate multiple programming languages.",
       href: "/",
       cta: "Learn more",
-      background: <Ecosystems/>,
+      background: <Ecosystems id={user._id} parentSkill={"Outsystems"}/>,
       className: "col-span-3 lg:col-span-1 row-span-1 md:col-span-3 md:row-span-1"
     },
     {
@@ -36,12 +44,11 @@ import Ecosystems from './Ecosystems';
       description: "I am currently based in South Africa.",
       href: "/",
       cta: "Learn more",
-      background: <Location/>,
+      background: <Location id={user._id }/>,
       className: "col-span-3 lg:col-span-1 row-span-1 md:col-span-3 md:row-span-1"
     },    
   ]
 
-const SkillsBentoGrid = () => {
   return (
     <section id="skills" className="container  ">
       <BlurFade delay={BLUR_FADE_DELAY * 11}>

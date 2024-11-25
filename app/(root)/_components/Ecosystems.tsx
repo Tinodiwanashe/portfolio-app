@@ -8,13 +8,18 @@ import ChildNode from './ChildNode';
 import ParentNode from './ParentNode';
 import StringToHtml from '@/components/custom/StringToHtml';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Id } from '@/convex/_generated/dataModel';
 
-const Ecosystems = () => {
-    const skill = useQuery(convexQuery(api.skills.getSkillByName,{name: "Outsystems"}));
-    const childSkills = useQuery(convexQuery(api.skillLinks.getChildSkillsByName,{name: "Outsystems"}));
+type EcosystemsProps = {
+  id: Id<"User">;
+  parentSkill: string;
+}
+
+const Ecosystems = (props: EcosystemsProps) => {
+    const skill = useQuery(convexQuery(api.skills.getSkillByName,{name: props.parentSkill, userId: props.id}));
+    const childSkills = useQuery(convexQuery(api.skillLinks.getChildSkillsByName,{name: props.parentSkill, userId: props.id}));
     const containerRef = useRef<HTMLDivElement>(null);
     const divParentRef = useRef<HTMLDivElement>(null);
-    const divGrandParentRef = useRef<HTMLDivElement>(null);
   return (
     <div
       className="relative flex w-full max-w-[500px] items-center justify-center overflow-hidden rounded-lg border bg-background p-10 md:shadow-xl"
@@ -25,7 +30,7 @@ const Ecosystems = () => {
                 {
                     childSkills.data?.map((item, index) => {
                         return (
-                            <TooltipProvider>
+                          <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <ChildNode parentDivRef={divParentRef} containerDivRef={containerRef} >

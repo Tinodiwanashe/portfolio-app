@@ -12,12 +12,16 @@ import { BLUR_FADE_DELAY } from '@/app/types/constants';
 import { SkeletonCard } from './SkeletonCard';
 import { textEllipsis } from '@/lib/utils';
 import { FaGithub, FaGlobe } from 'react-icons/fa6';
-import { TextObject } from '@/convex/helpers';
+import { CompanyWithProject, TextObject } from '@/convex/helpers';
+import { Preloaded, usePreloadedQuery } from 'convex/react';
 
+type PreloadedProps = {
+    preloadedUser: Preloaded<typeof api.users.getUserByName>;
+  }
 
-
-const Projects = () => {
-    const { data, isPending, error } = useQuery(convexQuery(api.projects.getProjects,{}));
+const Projects = (props: PreloadedProps) => {
+    const user = usePreloadedQuery(props.preloadedUser);
+    const projects = useQuery(convexQuery(api.projects.getProjectsByUserId,{userId: user._id}));
   return (
     <section id="projects" className="container h-max bg-white dark:bg-black-100 ">
         
@@ -35,7 +39,7 @@ const Projects = () => {
                     </div>
                 </BlurFade>
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-3  mx-auto">
-                    {data && data.map((record, index) => (
+                    {projects.data && projects.data.map((record: CompanyWithProject, index: number) => (
                         <Suspense fallback={<SkeletonCard/>}>
                             <BlurFade
                                 key={record.project.name}

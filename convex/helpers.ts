@@ -55,7 +55,8 @@ export type Company = Doc<"Company">;
 
 export type Skill = Doc<"Skill">;
 
-export type UserWithCountry = Doc<"User"> & {
+export type UserWithCountry = {
+  user: Doc<"User">,
   country: Doc<"Country">
 };
 
@@ -73,15 +74,22 @@ export type CompanyWithUser = Doc<"Company"> & {
   company: Doc<"User">
 };
 
-export type CompanyWithProject = Doc<"Company"> & {
-  company: Doc<"Project">,
-  user: Doc<"User">,
+export type CompanyWithProject = {
+  project: Doc<"Project">,
+  company: Doc<"Company">,
+  user: Doc<"User">
 };
 
 export type WorkExperienceItem = {
   occupation: Doc<"Occupation">,
-  company?: Doc<"Company">,
+  company: Doc<"Company">,
   user?: userInfo
+};
+
+export type FileItem = {
+  file: Doc<"File">,
+  user: Doc<"User">,
+  url?: string | null
 };
 
 

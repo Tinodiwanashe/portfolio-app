@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { Doc, Id } from "./_generated/dataModel";
-import { FileCategorySchema } from "./helpers";
+import { FileCategorySchema, FileItem } from "./helpers";
 
 /* 
     **Uploading files via upload URLs**
@@ -54,27 +54,30 @@ export const createFileLink = mutation({
     },
 });
 
-//A file URL can be generated from a storage ID by the storage.getUrl function of the QueryCtx, MutationCtx, or ActionCtx object
-export const getFiles = query({
+  export const getResumeByUserId = query({
     args: {
-        fileName: v.string()
+        userId: v.id("User")
     },
     handler: async (ctx, args) => {
-      const files = await ctx.db
-      .query("File")
-      .withIndex("idx_file_name", (q) => q.eq("name", args.fileName))
-      .collect();
+        const file = await ctx.db
+        .query("File")
+        .withIndex("idx_uploadedBy", (q) => q.eq("uploadedBy", args.userId))
+        .filter((q) => q.eq(q.field("category"), "Resume"))
+        .unique();
 
-      return Promise.all(
-        files.map(async (file) => ({
-            ...file,
-            ...(await ctx.db.get(file.uploadedBy as Id<"User">)),
-            // If the message is an "image" its `body` is an `Id<"_storage">`
-            ...(file.category === "Resume" ?
-                { url: await ctx.storage.getUrl(file.storageId) } : {}
+        const [user, url] =  await Promise.all([
+            await ctx.db.get(file?.uploadedBy as Id<"User">),
+            (file?.storageId === undefined ?
+                null : await ctx.storage.getUrl(file.storageId)
             )
-        })),
-      );
+        ]);
+
+        return {
+            file,
+            user,
+            url
+        } as FileItem;
+
     },
   });
 
@@ -88,14 +91,83 @@ export const getFiles = query({
         .withIndex("idx_file_name", (q) => q.eq("name", args.fileName))
         .unique();
 
-        return Promise.all([
-            {file: file},
-            {user: await ctx.db.get(file?.uploadedBy as Id<"User">)},
-            // If the message is an "image" its `body` is an `Id<"_storage">`
+        const [user, url] =  await Promise.all([
+            await ctx.db.get(file?.uploadedBy as Id<"User">),
             (file?.storageId === undefined ?
-                {} : { url: await ctx.storage.getUrl(file.storageId) } 
+                null : await ctx.storage.getUrl(file.storageId)
             )
         ]);
+
+        return {
+            file,
+            user,
+            url
+        } as FileItem;
+    },
+  });
+
+  export const getFiles = query({
+    handler: async (ctx) => {
+        const files = await ctx.db
+        .query("File")
+        .withIndex("by_creation_time")
+        .order("desc")
+        .collect();
+
+        return Promise.all(
+            files.map(async (file) => {
+                const user = await ctx.db.get(file.uploadedBy as Id<"User">);
+                const url = (file?.storageId === undefined
+                    ? null 
+                    : await ctx.storage.getUrl(file.storageId)
+                );
+                return {
+                    file,
+                    user,
+                    url
+                } as FileItem;
+              }),            
+        );
+    },
+  });
+
+  export const getFilesByCurrentUser = query({
+    handler: async (ctx) => {
+        const identity = await ctx.auth.getUserIdentity();
+        if (!identity) {
+            throw new Error("Unauthenticated call to getOccupationsForCurrentUser");
+        }
+
+        const user = await ctx.db
+        .query("User")
+        .withIndex("idx_token", (q) =>
+            q.eq("tokenIdentifier", identity.tokenIdentifier),
+        )
+        .unique();
+        
+        const files = user
+        ? await ctx.db
+            .query("File")
+            .withIndex("idx_uploadedBy", (q) =>
+                q.eq("uploadedBy", user?._id),
+            )
+            .collect()
+        : undefined;
+
+        return Promise.all(
+            (files ?? []).map(async (file) => {
+                const user = await ctx.db.get(file.uploadedBy as Id<"User">);
+                const url = (file?.storageId === undefined
+                    ? null 
+                    : await ctx.storage.getUrl(file.storageId)
+                );
+                return {
+                    file,
+                    user,
+                    url
+                } as FileItem;
+              }),            
+        );
     },
   });
 
