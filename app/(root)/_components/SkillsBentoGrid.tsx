@@ -44,7 +44,7 @@ const SkillsBentoGrid = (props: PreloadedProps) => {
       description: "I am currently based in South Africa.",
       href: "/",
       cta: "Learn more",
-      background: <Location id={user._id }/>,
+      background: <Ecosystems id={user._id} parentSkill={"Next.js"}/>,
       className: "col-span-3 lg:col-span-1 row-span-1 md:col-span-3 md:row-span-1"
     },    
   ]

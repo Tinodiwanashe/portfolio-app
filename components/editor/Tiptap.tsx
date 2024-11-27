@@ -32,9 +32,9 @@ const Editor = ({ onDataChange, content, disabled , ref}: TipTapProps) => {
 
   return (
     <div className="w-full relative border border-input bg-transparent rounded-md shadow-sm transition-colors">
-        {!disabled && <MenuBar editor={editor} />}
+        {!disabled && editor && <MenuBar editor={editor} />}
         <Separator className="my-1"/>
-        <EditorContent ref={ref} editor={editor} />       
+        {editor && <EditorContent ref={ref} editor={editor} />}      
     </div>
 )
 }
