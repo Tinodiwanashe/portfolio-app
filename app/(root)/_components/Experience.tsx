@@ -6,9 +6,16 @@ import { convexQuery } from '@convex-dev/react-query';
 import { useQuery } from '@tanstack/react-query';
 import React, { Suspense } from 'react'
 import ExperienceEntry from './ExperienceEntry';
+import Loading from '@/components/custom/loading';
+import { Preloaded, usePreloadedQuery } from 'convex/react';
 
-const Experience = () => {
-    const occupations = useQuery(convexQuery(api.occupations.getOccupations,{}));
+type PreloadedProps = {
+    preloadedUser: Preloaded<typeof api.users.getUserByName>;
+  }
+
+const Experience = (props: PreloadedProps) => {
+    const user = usePreloadedQuery(props.preloadedUser);
+    const occupations = useQuery(convexQuery(api.occupations.getOccupationsByUserId,{userId: user._id}));
     if(occupations.data === undefined){
         return;
     }
@@ -23,7 +30,7 @@ const Experience = () => {
 
   return (
     <section id="experience" className="container">
-        <Suspense fallback={<p>Loading experience...</p>}>
+        <Suspense fallback={<Loading/>}>
             <Timeline 
                 title={"Work Experience"} 
                 description={"I've been working in the tech industry for a while now. Here's a timeline of my journey."}

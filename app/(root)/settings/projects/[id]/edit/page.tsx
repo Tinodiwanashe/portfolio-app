@@ -8,7 +8,7 @@ import { api } from "@/convex/_generated/api";
 export default async function page({ params }: { params: { id: Id<"Project"> } }) {
   const { id } = params;
   const [project,companies] = await Promise.all([
-    preloadQuery(api.projects.getProject,{ProjectId: id}),
+    preloadQuery(api.projects.getProject,{id: id}),
     preloadQuery(api.companies.getCompanies)
   ]);
   return (

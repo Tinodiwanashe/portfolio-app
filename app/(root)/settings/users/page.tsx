@@ -73,7 +73,7 @@ import { useQuery } from "@tanstack/react-query";
                         <TableRow key={record.user._id}>
                             <TableCell className="font-medium">
                                 <Avatar className="hidden h-9 w-9 sm:flex">
-                                    <AvatarImage src={record.user.pictureUrl} alt="Avatar" />
+                                    <AvatarImage src={record.user.pictureUrl || ""} alt="Avatar" />
                                     <AvatarFallback>{getInitials(record.user.name)}</AvatarFallback>
                                 </Avatar>
                                 <div className="grid gap-1">

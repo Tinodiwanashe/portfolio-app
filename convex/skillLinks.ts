@@ -13,8 +13,7 @@ import { v } from "convex/values";
     }
 
     export const getSkillLinks = query({
-    args: {},
-    handler: async (ctx, args) => {
+    handler: async (ctx) => {
         const SkillLinks = await ctx.db
         .query("SkillLink")
         .order("asc")
@@ -60,7 +59,10 @@ import { v } from "convex/values";
     });
 
     export const getChildSkillsByName = query({
-        args: {name: v.string()},
+        args: {
+            name: v.string(),
+            userId: v.id("User") 
+        },
         handler: async (ctx, args) => {
             const skill = await getSkillbyName(ctx, args.name);
 
@@ -68,6 +70,7 @@ import { v } from "convex/values";
             .query("SkillLink")
             .withIndex("idx_parent", (q) =>
                 q.eq("parentId", skill?._id as Id<"Skill">))
+            .filter((q) => q.eq(q.field("createdBy"), args.userId))
             .order("asc")
             .collect();
     

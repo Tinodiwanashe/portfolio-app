@@ -3,8 +3,80 @@ import { query, mutation  } from "./_generated/server";
 import { v } from "convex/values";
 import { WorkExperienceItem } from "./helpers";
 
+    export const getOccupationsByUserId = query({
+        args: {userId: v.union(v.id("User"), v.null()) },
+        handler: async (ctx, args) => {
+            const occupations = await ctx.db
+            .query("Occupation")
+            .withIndex("idx_createdBy", (q) =>
+                q.eq("createdBy", args.userId))
+            .order("asc")
+            .collect();
+
+            return Promise.all(
+                occupations.map(async (occupation) => {
+                    // For each occupation , fetch the `company` he comes from and
+                    const company = await ctx.db.get(occupation.companyId as Id<"Company">);
+                    const user = await ctx.db.get(occupation.createdBy as Id<"User">);
+                    return {
+                        occupation,
+                        company,
+                        user: {
+                            userName: user?.name,
+                            userEmail: user?.email,
+                            userPictureUrl: user?.pictureUrl
+                        }
+                    } as WorkExperienceItem;
+                }),
+            );         
+        },
+    });
+
+    export const getOccupationsForCurrentUser = query({
+        handler: async (ctx, ) => {
+            const identity = await ctx.auth.getUserIdentity();
+            if (!identity) {
+                throw new Error("Unauthenticated call to getOccupationsForCurrentUser");
+            }
+
+            const user = await ctx.db
+            .query("User")
+            .withIndex("idx_token", (q) =>
+                q.eq("tokenIdentifier", identity.tokenIdentifier),
+            )
+            .unique();
+
+            const occupations = user 
+            ? await ctx.db
+                .query("Occupation")
+                .withIndex("idx_createdBy", (q) =>
+                    q.eq("createdBy", user._id))
+                .order("asc")
+                .collect()
+            : undefined;
+
+            return Promise.all(
+                (occupations?? []).map(async (occupation) => {
+                    // For each occupation , fetch the `company` he comes from and
+                    const company = await ctx.db.get(occupation.companyId as Id<"Company">);
+                    const user = await ctx.db.get(occupation.createdBy as Id<"User">);
+                    return {
+                        occupation,
+                        company,
+                        user: {
+                            userName: user?.name,
+                            userEmail: user?.email,
+                            userPictureUrl: user?.pictureUrl
+                        }
+                    } as WorkExperienceItem;
+                }),
+            ); 
+        
+        },
+    }); 
+    
     export const getOccupations = query({
-        handler: async (ctx) => {
+        handler: async (ctx, ) => {
             const occupations = await ctx.db
             .query("Occupation")
             .order("asc")
@@ -17,7 +89,7 @@ import { WorkExperienceItem } from "./helpers";
                     const user = await ctx.db.get(occupation.createdBy as Id<"User">);
                     return {
                         occupation,
-                        ...company,
+                        company,
                         user: {
                             userName: user?.name,
                             userEmail: user?.email,
@@ -25,14 +97,14 @@ import { WorkExperienceItem } from "./helpers";
                         }
                     } as WorkExperienceItem;
                 }),
-            );         
+            )    
         },
     });
 
     export const getOccupation = query({
-        args: {OccupationId: v.id("Occupation") },
+        args: {id: v.id("Occupation") },
         handler: async (ctx, args) => {
-            return await ctx.db.get(args.OccupationId);
+            return await ctx.db.get(args.id);
         },
     });
 
@@ -62,6 +134,7 @@ import { WorkExperienceItem } from "./helpers";
                 q.eq("tokenIdentifier", identity.tokenIdentifier),
             )
             .unique();
+
             if (!user) {
                 throw new Error("Unauthenticated call to mutation");
             }

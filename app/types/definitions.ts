@@ -1,18 +1,10 @@
-
-import { Doc, Id } from "@/convex/_generated/dataModel";
 import React from "react";
 import { z } from "zod";
 import { ACCEPTED_FILE_TYPES, arrCategory, MAX_FILE_SIZE } from "./constants";
 
-export type RootLayoutProps = Readonly<{
+  export type RootLayoutProps = Readonly<{
     children: React.ReactNode;
-}>
-
-export type Navlink = {
-    href: string;
-    label: string;
-    icon?: React.ReactNode | JSX.Element | any;
-  };
+  }>
 
   export type MenuItem = {
     label: string;
@@ -53,10 +45,10 @@ export type Navlink = {
     countryId: z.string({
       required_error: "Please select a country."
     }).optional(),
-    latitude: z.number().gte(-360, { message: "must be greater than or equal to -360" })
+    latitude: z.coerce.number().gte(-360, { message: "must be greater than or equal to -360" })
       .lte(360, {message: "must be less than or equal to 360"})
       .optional(),
-    longitude: z.number().gte(-360, { message: "must be greater than or equal to -360" })
+    longitude: z.coerce.number().gte(-360, { message: "must be greater than or equal to -360" })
       .lte(360, {message: "must be less than or equal to 360"})
       .optional(),     
     socialLinks: z.array(

@@ -12,7 +12,11 @@ const nextConfig = {
             pathname: "/demos/**",
           },
         ],
-      },
+    },
+    i18n: {
+      locales: ["en", "es",  "fr", "it"],
+      defaultLocale: "en"
+    }
 };
 
 const sentryWebpackPluginOptions = {

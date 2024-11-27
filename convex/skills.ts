@@ -48,12 +48,16 @@ export const getSkills = query({
 });
 
 export const getSkillByName = query({
-    args: {name: v.string() },
+    args: {
+        name: v.string(), 
+        userId: v.id("User") 
+    },
     handler: async (ctx, args) => {
         const skill = await ctx.db
         .query("Skill")
         .withIndex("idx_skill_name", (q) =>
             q.eq("name", args.name))
+        .filter((q) => q.eq(q.field("createdBy"), args.userId))
         .order("asc")
         .first() ;
 
@@ -87,7 +91,6 @@ export const getOtherSkills = query({
         const joinedChildIds = linkedSkills.length > 0 
         ? linkedSkills.map((skill) => skill.childId).join("#") 
         : "";
-        console.log("Linked Child Ids:", joinedChildIds);
         // map() is used to create a new array containing only the childId properties of each Skill object.
         // join('#') is then used to concatenate these childIds into a single string, separated by #.
 
@@ -111,10 +114,12 @@ export const getOtherSkills = query({
     },
 });
 
-export const getSkillCodes = query({
-    handler: async (ctx) => {
+export const getSkillCodesForUser = query({
+    args: {userId: v.id("User") },
+    handler: async (ctx,args) => {
         const skills = await ctx.db
         .query("Skill")
+        .withIndex("idx_createdBy", (q) => q.eq("createdBy", args.userId))
         .order("asc")
         .collect() ;
 
@@ -129,9 +134,9 @@ export const getSkillCodes = query({
 });
 
 export const getSkill = query({
-    args: {SkillId: v.id("Skill") },
+    args: {id: v.id("Skill") },
     handler: async (ctx, args) => {
-        return await ctx.db.get(args.SkillId);
+        return await ctx.db.get(args.id);
     },
 });
 

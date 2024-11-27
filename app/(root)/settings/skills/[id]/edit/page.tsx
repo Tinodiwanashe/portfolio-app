@@ -8,7 +8,7 @@ import SkillForm from "../../_components/SkillForm";
 
 export default async function page({ params }: { params: { id: Id<"Skill"> } }) {
   const {id} = params;
-  const skill = await preloadQuery(api.skills.getSkill,{SkillId: id});
+  const skill = await preloadQuery(api.skills.getSkill,{id: id});
   return (
     <div className="space-y-6 lg:max-w-2xl">
       <div>

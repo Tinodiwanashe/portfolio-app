@@ -51,7 +51,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
                   enableSystem
                   disableTransitionOnChange
             >
-              
+{/*               <div className="main">
+                  <div className="gradient"/>
+              </div>   */}            
 
               {children}
               <InfoDialog />
