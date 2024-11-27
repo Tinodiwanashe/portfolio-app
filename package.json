@@ -1,7 +1,8 @@
 {
+  "name": "portfolio-app",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start"
   },
