@@ -10,8 +10,8 @@ export async function setRole(formData: FormData) {
   }
 
   try {
-    const clerk = await clerkClient();
-    const res = await clerk.users.updateUser(formData.get('id') as string, {
+    const { users } = await clerkClient();
+    const res = await users.updateUser(formData.get('id') as string, {
       publicMetadata: { role: formData.get('role') },
     })
     return { message: res.publicMetadata }
@@ -22,8 +22,8 @@ export async function setRole(formData: FormData) {
 
 export async function removeRole(formData: FormData) {
   try {
-    const clerk = await clerkClient();
-    const res = await clerk.users.updateUser(formData.get('id') as string, {
+    const { users } = await clerkClient();
+    const res = await users.updateUser(formData.get('id') as string, {
       publicMetadata: { role: null },
     })
     return { message: res.publicMetadata }
