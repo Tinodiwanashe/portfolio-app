@@ -17,7 +17,8 @@ export default clerkMiddleware(async (auth,req) => {
 
   if (isProtectedRoute(req)) {
     if ((await auth()).sessionClaims?.metadata?.role === 'admin'){
-      await auth().protect(); // used if you want to redirect unauthenticated users to the sign-in route automatically.
+       await auth.protect(); // used if you want to redirect unauthenticated users to the sign-in route automatically.
+       //new changes
     } else {
       const url = new URL('/', req.url)
       return NextResponse.redirect(url)      
