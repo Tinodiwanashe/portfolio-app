@@ -1,11 +1,10 @@
 "use client";
 
-import { useUser } from "@clerk/clerk-react";
-import { useConvexAuth } from "convex/react";
 import { useEffect, useState } from "react";
-import { useMutation } from "convex/react";
+import { useConvexAuth, useMutation } from "convex/react";
 import { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
+import { useUser } from "@clerk/nextjs";
 
 export function useAuthUser() {
   const { isLoading, isAuthenticated } = useConvexAuth();
