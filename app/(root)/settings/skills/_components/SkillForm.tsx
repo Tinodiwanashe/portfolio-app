@@ -11,8 +11,8 @@ import { toast } from "sonner";
 import { SkillFormSchema, SkillFormValues } from "@/app/types/definitions";
 import { Preloaded, usePreloadedQuery } from "convex/react";
 import { redirectToURL } from "@/utils/actions/miscellaneous ";
-import { useState } from "react";
 import Editor from "@/components/editor/Tiptap";
+import React from 'react';
 
 type PreloadedProps = {
   preloadedSkill: Preloaded<typeof api.skills.getSkill>;
@@ -20,11 +20,7 @@ type PreloadedProps = {
 
 export default function SkillForm(props: PreloadedProps) {  
   const skill =  usePreloadedQuery(props.preloadedSkill);//useQuery(api.skills.getSkill,{SkillId: id});
-  const {
-    mutate,
-    isPending
-  } = useApiMutation(api.skills.createOrUpdateSkill); 
-  const [content, setContent] = useState(null);
+  const createOrUpdateSkill = useApiMutation(api.skills.createOrUpdateSkill); 
   
   // 1. Define your form and set default values. These values can come from database or API
   const defaultValues: Partial<SkillFormValues> = {
@@ -54,7 +50,7 @@ export default function SkillForm(props: PreloadedProps) {
     }
 
     try {
-      mutate({
+      createOrUpdateSkill.mutate({
         id: skill?._id,
         name: values.name,
         code: values.code,

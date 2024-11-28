@@ -15,11 +15,12 @@ import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { convexQuery } from "@convex-dev/react-query";
 import { useQuery } from "@tanstack/react-query";
 import { useAlertDialog } from "@/hooks/use-alert-dialog";
+import React from 'react';
   
   export default function page() {
-    const { data, isPending, error } = useQuery(convexQuery(api.occupations.getOccupations,{}));
+    const occupations = useQuery(convexQuery(api.occupations.getOccupations,{}));
 
-    if (data === undefined || data.length === 0) {
+    if (occupations.data === undefined || occupations.data.length === 0) {
         return (
         <BlankSlate 
             title={
@@ -74,7 +75,7 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog";
                         </TableRow>
                         </TableHeader>
                         <TableBody>
-                        {data.map((record) => (
+                        {occupations.data.map((record) => (
                             <TableRow key={record.occupation._id}>
                                 <TableCell className="font-medium">{record.occupation.title}</TableCell>
                                 <TableCell>{ new Date(record.occupation.startDate || Date.now()).toLocaleDateString()}</TableCell>

@@ -1,16 +1,14 @@
 "use client"
 
-import React, { Suspense } from 'react'
-
 import { FaLocationArrow, FaShield } from 'react-icons/fa6';
 import {SkillsCloud} from './SkillsCloud';
-import {Location} from './Location';
 import { BentoGrid, BentoGridItem } from '@/components/ui/bento-grid';
 import BlurFade from '@/components/ui/blur-fade';
 import { BLUR_FADE_DELAY } from '@/app/types/constants';
 import Ecosystems from './Ecosystems';
 import { Preloaded, usePreloadedQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
+import React from 'react';
 
 type PreloadedProps = {
   preloadedUser: Preloaded<typeof api.users.getUserByName>;

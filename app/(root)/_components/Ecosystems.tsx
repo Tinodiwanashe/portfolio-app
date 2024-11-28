@@ -30,7 +30,7 @@ const Ecosystems = (props: EcosystemsProps) => {
                 {
                     childSkills.data?.map((item, index) => {
                         return (
-                          <TooltipProvider>
+                          <TooltipProvider key={index}>
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <ChildNode parentDivRef={divParentRef} containerDivRef={containerRef} >

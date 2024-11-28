@@ -7,13 +7,14 @@ import { useAuthUser } from "@/hooks/useAuthUser"
 import { AuthRequiredError } from "@/lib/exceptions"
 import { SignedIn } from "@clerk/nextjs"
 import { motion } from "framer-motion";
+import React from 'react'
 
 interface SettingsLayoutProps {
   children: React.ReactNode
 }
 
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
-  const { isLoading, isAuthenticated, userId } = useAuthUser();
+  const { isLoading, isAuthenticated } = useAuthUser();
   if (isLoading===false && !isAuthenticated) {
     throw new AuthRequiredError();
   }

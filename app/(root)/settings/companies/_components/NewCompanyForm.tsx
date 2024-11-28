@@ -11,13 +11,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { CompanyFormSchema, CompanyFormValues } from "@/app/types/definitions";
 import { redirectToURL } from "@/utils/actions/miscellaneous ";
+import React from 'react';
 
 export default function NewCompanyForm() {  
     
-  const {
-    mutate,
-    isPending
-  } = useApiMutation(api.companies.createOrUpdateCompany); 
+  const createOrUpdateCompany = useApiMutation(api.companies.createOrUpdateCompany); 
   
   // 1. Define your form and set default values. These values can come from database or API
   const defaultValues: Partial<CompanyFormValues> = {
@@ -44,7 +42,7 @@ export default function NewCompanyForm() {
 
     try {
       // You can now use these values for mutation.
-      mutate({
+      createOrUpdateCompany.mutate({
         id: null,
         name: values.name,
         description: values.description,

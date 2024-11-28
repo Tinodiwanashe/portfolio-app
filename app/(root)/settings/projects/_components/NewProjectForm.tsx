@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFieldArray } from "react-hook-form";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
@@ -13,17 +13,14 @@ import { toast } from "sonner";
 import { ProjectFormSchema, ProjectFormValues } from "@/app/types/definitions";
 import { useQuery } from "convex/react";
 import { Textarea } from "@/components/ui/textarea";
-import Link from "next/link";
 import { FaTrash } from "react-icons/fa6";
 import { redirectToURL } from "@/utils/actions/miscellaneous ";
+import React from 'react';
 
 export default function NewProjectForm() {  
   const companies = useQuery(api.companies.getCompanies);
     
-  const {
-    mutate,
-    isPending
-  } = useApiMutation(api.projects.createOrUpdateProject);
+  const createOrUpdateProject = useApiMutation(api.projects.createOrUpdateProject);
   
   // 1. Define your form and set default values. These values can come from database or API
   const formRecord: Partial<ProjectFormValues> = {
@@ -59,7 +56,7 @@ export default function NewProjectForm() {
       // You can now use these values for mutation.
       const result = ProjectFormSchema.safeParse(data);
       if (result.success) {
-        mutate({
+        createOrUpdateProject.mutate({
           id: null,
           name: data?.name,
           description: data?.description,

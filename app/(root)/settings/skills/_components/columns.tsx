@@ -5,6 +5,7 @@ import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { Badge } from "@/components/ui/badge";
 import { UserSkill } from "@/convex/helpers";
+import React from 'react';
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.

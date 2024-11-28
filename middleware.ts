@@ -1,6 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { checkRole } from "./utils/roles";
 
 // createRouteMatcher() is a Clerk helper function that allows you to protect multiple routes. 
 // It accepts an array of routes and checks if the route the user is trying to visit matches one of the routes passed to it.

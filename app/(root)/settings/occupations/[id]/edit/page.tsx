@@ -3,13 +3,13 @@ import { Id } from "@/convex/_generated/dataModel";
 import OccupationForm from "../../_components/OccupationForm";
 import { preloadQuery } from "convex/nextjs";
 import { api } from "@/convex/_generated/api";
-
+import React from 'react';
 
 export default async function page({ params }: { params: { id: Id<"Occupation"> } }) {
   const { id } = params;
   const [occupation, companies] = await Promise.all([
-    await preloadQuery(api.occupations.getOccupation, { id: id }),
-    await preloadQuery(api.companies.getCompanies)
+    preloadQuery(api.occupations.getOccupation, { id: id }),
+    preloadQuery(api.companies.getCompanies)
   ]); //Promise.all makes all my API calls in parallel and returns an array of the results.
 
   return (

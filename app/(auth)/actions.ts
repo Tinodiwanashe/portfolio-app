@@ -8,11 +8,10 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { AuthRequiredError } from "@/lib/exceptions";
 
 
 export const signInWithGoogle = async () => {
-    const origin = headers().get("origin");
+    //const origin = headers().get("origin");
     console.log("Begin Google login...");
 /*     const supabase = createClient();
 

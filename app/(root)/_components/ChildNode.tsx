@@ -1,8 +1,5 @@
 import { Circle } from '@/components/custom/Circle'
-import CustomToolTip from '@/components/custom/CustomToolTip'
 import { AnimatedBeam } from '@/components/ui/animated-beam'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { getInitials } from '@/lib/utils'
 import React, { useRef } from 'react'
 
 type ChildNodeProps = {

@@ -52,7 +52,11 @@ import { v } from "convex/values";
                 (SkillLinks ?? []).map(async (SkillLink) => {
                     // For each user , fetch the `Country` he comes from and
                     // insert the name into the `Country name` field.
-                    return await ctx.db.get(SkillLink.childId as Id<"Skill">);
+                    const skill = await ctx.db.get(SkillLink.childId as Id<"Skill">);
+                    return {
+                        skillLinkId: SkillLink._id,
+                        skill,
+                    }
                 })
             );         
         },

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { RootLayoutProps } from "../types/definitions";
+import React from 'react'
 
 export default function Template({ children }: RootLayoutProps) {
   return (

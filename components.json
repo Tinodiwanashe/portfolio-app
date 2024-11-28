@@ -17,5 +17,6 @@
     "lib": "@/lib",
     "hooks": "@/hooks",
     "magicui": "@/components/magicui"
-  }
+  },
+  "iconLibrary": "lucide"
 }

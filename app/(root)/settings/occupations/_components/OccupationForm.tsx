@@ -18,6 +18,7 @@ import { Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { redirectToURL } from "@/utils/actions/miscellaneous ";
 import { FaTrash } from "react-icons/fa6";
+import React from 'react';
 
 type PreloadedProps = {
   preloadedOccupation: Preloaded<typeof api.occupations.getOccupation>;
@@ -28,10 +29,7 @@ export default function OccupationForm(props: PreloadedProps) {
   const occupation = usePreloadedQuery(props.preloadedOccupation);
   const companies = usePreloadedQuery(props.preloadedCompanies);
     
-  const {
-    mutate,
-    isPending
-  } = useApiMutation(api.occupations.createOrUpdateOccupation); 
+  const createOrUpdateOccupation = useApiMutation(api.occupations.createOrUpdateOccupation); 
   
   const defaultValues: Partial<OccupationFormValues> = {
     title: occupation?.title,
@@ -73,7 +71,7 @@ export default function OccupationForm(props: PreloadedProps) {
     console.log(values)
 
       // You can now use these values for mutation.
-      mutate({
+      createOrUpdateOccupation.mutate({
         id: occupation?._id,
         title: values?.title,
         startDate: new Date(values?.startDate).getTime(),
@@ -90,7 +88,7 @@ export default function OccupationForm(props: PreloadedProps) {
           });
       //form.reset();
     } catch (error) {
-      
+      toast.error("Failed to update the Occupation: " + JSON.stringify(error, null, 2));  
     }
   }
 

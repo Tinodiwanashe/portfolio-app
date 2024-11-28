@@ -16,11 +16,12 @@ import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Id } from "@/convex/_generated/dataModel";
 import { convexQuery } from "@convex-dev/react-query";
 import { useQuery } from "@tanstack/react-query";
+import React from 'react'
   
   export default function page() {
-    const { data, isPending, error } = useQuery(convexQuery(api.users.getUsers,{}));
+    const users = useQuery(convexQuery(api.users.getUsers,{}));
 
-    if (data === undefined || data.length === 0) {
+    if (users.data === undefined || users.data.length === 0) {
         return (
         <BlankSlate 
             icon={
@@ -69,7 +70,7 @@ import { useQuery } from "@tanstack/react-query";
                     </TableRow>
                     </TableHeader>
                     <TableBody>
-                    {data.map((record) => (
+                    {users.data.map((record) => (
                         <TableRow key={record.user._id}>
                             <TableCell className="font-medium">
                                 <Avatar className="hidden h-9 w-9 sm:flex">

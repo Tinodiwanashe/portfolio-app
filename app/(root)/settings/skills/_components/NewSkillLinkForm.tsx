@@ -9,12 +9,14 @@ import { useApiMutation } from "@/hooks/use-api-mutation";
 import { toast } from "sonner";
 import { Id } from "@/convex/_generated/dataModel";
 import { SkillLinkFormSchema, SkillLinkFormValues } from "@/app/types/definitions";
-import { Preloaded, usePreloadedQuery, useQuery } from "convex/react";
+import { useQuery } from "convex/react";
 import { redirectToURL } from "@/utils/actions/miscellaneous ";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DialogClose, DialogFooter } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Skill } from "@/convex/helpers";
+import React from 'react';
+import { FaXmark } from "react-icons/fa6";
 
 type PreloadedProps = {
   parentId: Id<"Skill">;
@@ -25,10 +27,8 @@ export default function NewSkillLinkForm(props: PreloadedProps) {
   const skills = useQuery(api.skills.getOtherSkills,{id: props.parentId});  
   const parentSkill = useQuery(api.skills.getSkill,{id: props.parentId});  
   const childSkills = useQuery(api.skillLinks.getChildSkills,{parentId: props.parentId}); 
-  const {
-    mutate,
-    isPending
-  } = useApiMutation(api.skillLinks.createOrUpdateSkillLink); 
+  const createOrUpdateSkillLink = useApiMutation(api.skillLinks.createOrUpdateSkillLink); 
+  const deleteSkillLink = useApiMutation(api.skillLinks.deleteSkillLink); 
   
   // 1. Define your form and set default values. These values can come from database or API
   const defaultValues: Partial<SkillLinkFormValues> = {
@@ -53,7 +53,7 @@ export default function NewSkillLinkForm(props: PreloadedProps) {
 
     try {
       // You can now use these values for mutation.
-      mutate({
+      createOrUpdateSkillLink.mutate({
         id: null,
         parentId: props.parentId,
         childId: values.childId  
@@ -98,14 +98,24 @@ export default function NewSkillLinkForm(props: PreloadedProps) {
                 </Select>
                 <FormDescription>
                   Select a skill most relevant to the Skill {parentSkill?.name}.
-                  <div className="mt-4 flex flex-row gap-2">
+                  <div className="mt-4 flex flex-row flex-wrap gap-2">
                     {(childSkills ?? []).map((item, index) =>(
                       <Badge 
                         variant="default"
                         className="align-middle"
                         key={index}
                       >
-                        {item?.name}
+                        {item.skill?.name} <Button variant={"ghost"} size="icon" onClick={() =>{
+                          deleteSkillLink.mutate({
+                            id: item?.skillLinkId
+                          }).then(() => {
+                            toast.success("SkillLink deleted successfully!");
+                          })
+                          .catch((error) => {
+                            toast.error("Failed to delete the SkillLink: ", error);
+                          });
+                          form.reset();
+                        }}><FaXmark/></Button>
                       </Badge>
                     ))}
                   </div>

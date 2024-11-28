@@ -23,7 +23,8 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { useState } from "react"
-import { DataTablePagination } from "./data-table-pagination"
+import { DataTablePagination } from "./data-table-pagination";
+import React from 'react';
 
 //  If you find yourself using <DataTable /> in multiple places, this is the component you could make reusable by extracting it to components/ui/data-table.tsx.
 
