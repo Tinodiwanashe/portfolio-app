@@ -15,11 +15,12 @@ import TableOptions from "../_components/TableOptions";
 import { useQuery } from "@tanstack/react-query";
 import { convexQuery } from "@convex-dev/react-query";
 import { useAlertDialog } from "@/hooks/use-alert-dialog";
+import React from 'react';
   
   export default function page() {
-    const { data, isPending, error } = useQuery(convexQuery(api.companies.getCompanies,{}));
+    const companies = useQuery(convexQuery(api.companies.getCompanies,{}));
 
-    if (data === undefined || data.length === 0) {
+    if (companies.data === undefined || companies.data.length === 0) {
         return (
         <BlankSlate 
             title={
@@ -71,7 +72,7 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog";
                         </TableRow>
                         </TableHeader>
                         <TableBody>
-                        {data.map((record) => (
+                        {companies.data.map((record) => (
                             <TableRow key={record.company._id}>
                                 <TableCell className="font-medium"><Link href={record.company.url || "#"}>{record.company.name}</Link></TableCell>
                                 <TableCell>{record.company.description}</TableCell>
@@ -111,10 +112,6 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog";
   }
 
   const Edit = ({destination}: {destination: string}) => {
-    function redirectToForm(){
-    /*         revalidatePath(path);
-        redirect(path);  */
-    }
     return (
         <Link href={destination}>
             <DropdownMenuItem 

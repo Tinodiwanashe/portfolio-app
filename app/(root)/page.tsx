@@ -6,6 +6,7 @@ import Experience from "./_components/Experience";
 import Projects from "@/components/custom/Projects";
 import { api } from "@/convex/_generated/api";
 import { preloadQuery } from "convex/nextjs";
+import React from 'react'
 
 export default async function Index() {
   const [user] = await Promise.all([preloadQuery(api.users.getUserByName, {name: "Munyaradzi Kandoro"})]);

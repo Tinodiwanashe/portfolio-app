@@ -4,193 +4,193 @@
  * This injects Tailwind's base styles and any base styles registered by
  * plugins.
  */
-@tailwind base;
-/**
- * This injects Tailwind's component classes and any component classes
- * registered by plugins.
+ @tailwind base;
+ /**
+  * This injects Tailwind's component classes and any component classes
+  * registered by plugins.
+  */
+ @tailwind components;
+ /**
+  * This injects Tailwind's utility classes and any utility classes
+  * registered by plugins.
+  */
+ @tailwind utilities;
+ 
+ 
+ @layer base {
+   :root {
+     --background: 0 0% 100%;
+     --foreground: 224 71.4% 4.1%;
+     --card: 0 0% 100%;
+     --card-foreground: 224 71.4% 4.1%;
+     --popover: 0 0% 100%;
+     --popover-foreground: 224 71.4% 4.1%;
+     --primary: 262.1 83.3% 57.8%;
+     --primary-foreground: 210 20% 98%;
+     --secondary: 220 14.3% 95.9%;
+     --secondary-foreground: 220.9 39.3% 11%;
+     --muted: 220 14.3% 95.9%;
+     --muted-foreground: 220 8.9% 46.1%;
+     --accent: 220 14.3% 95.9%;
+     --accent-foreground: 220.9 39.3% 11%;
+     --destructive: 0 84.2% 60.2%;
+     --destructive-foreground: 210 20% 98%;
+     --border: 220 13% 91%;
+     --input: 220 13% 91%;
+     --ring: 262.1 83.3% 57.8%;
+     --radius: 1rem;
+     --chart-1: 12 76% 61%;
+     --chart-2: 173 58% 39%;
+     --chart-3: 197 37% 24%;
+     --chart-4: 43 74% 66%;
+     --chart-5: 27 87% 67%;
+     --color-1: 0 100% 63%;
+     --color-2: 270 100% 63%;
+     --color-3: 210 100% 63%;
+     --color-4: 195 100% 63%;
+     --color-5: 90 100% 63%;
+     --novel-highlight-default: #ffffff;
+     --novel-highlight-purple: #f6f3f8;
+     --novel-highlight-red: #fdebeb;
+     --novel-highlight-yellow: #fbf4a2;
+     --novel-highlight-blue: #c1ecf9;
+     --novel-highlight-green: #acf79f;
+     --novel-highlight-orange: #faebdd;
+     --novel-highlight-pink: #faf1f5;
+     --novel-highlight-gray: #f1f1ef;    
+   }
+ 
+   .dark {
+     --background: 224 71.4% 4.1%;
+     --foreground: 210 20% 98%;
+     --card: 224 71.4% 4.1%;
+     --card-foreground: 210 20% 98%;
+     --popover: 224 71.4% 4.1%;
+     --popover-foreground: 210 20% 98%;
+     --primary: 263.4 70% 50.4%;
+     --primary-foreground: 210 20% 98%;
+     --secondary: 215 27.9% 16.9%;
+     --secondary-foreground: 210 20% 98%;
+     --muted: 215 27.9% 16.9%;
+     --muted-foreground: 217.9 10.6% 64.9%;
+     --accent: 215 27.9% 16.9%;
+     --accent-foreground: 210 20% 98%;
+     --destructive: 0 62.8% 30.6%;
+     --destructive-foreground: 210 20% 98%;
+     --border: 215 27.9% 16.9%;
+     --input: 215 27.9% 16.9%;
+     --ring: 263.4 70% 50.4%;
+     --chart-1: 220 70% 50%;
+     --chart-2: 160 60% 45%;
+     --chart-3: 30 80% 55%;
+     --chart-4: 280 65% 60%;
+     --chart-5: 340 75% 55%;
+     --color-1: 0 100% 63%;
+     --color-2: 270 100% 63%;
+     --color-3: 210 100% 63%;
+     --color-4: 195 100% 63%;
+     --color-5: 90 100% 63%;
+     --novel-highlight-default: #000000;
+     --novel-highlight-purple: #3f2c4b;
+     --novel-highlight-red: #5c1a1a;
+     --novel-highlight-yellow: #5c4b1a;
+     --novel-highlight-blue: #1a3d5c;
+     --novel-highlight-green: #1a5c20;
+     --novel-highlight-orange: #5c3a1a;
+     --novel-highlight-pink: #5c1a3a;
+     --novel-highlight-gray: #3a3a3a;
+   }
+ }
+ 
+ 
+ @layer base {
+   * {
+     @apply border-border;
+   }
+   body {
+     @apply bg-background text-foreground;
+   }
+ }
+ 
+ @layer utilities {
+   .black-gradient {
+     background: linear-gradient(90deg, #161a31 0%, #06091f 100%);
+   }
+ }
+ 
+ /* 
+   Note: The styles for this gradient grid background is heavily inspired by the creator of this amazing site (https://dub.sh) – all credits go to them! 
  */
-@tailwind components;
-/**
- * This injects Tailwind's utility classes and any utility classes
- * registered by plugins.
+ 
+ /* Tailwind Styles */
+ 
+ /**
+ * Use @apply to inline any existing utility classes into your own custom CSS.
+ * This is useful when you need to write custom CSS.
  */
-@tailwind utilities;
-
-
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 224 71.4% 4.1%;
-    --card: 0 0% 100%;
-    --card-foreground: 224 71.4% 4.1%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 224 71.4% 4.1%;
-    --primary: 262.1 83.3% 57.8%;
-    --primary-foreground: 210 20% 98%;
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 220.9 39.3% 11%;
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
-    --accent: 220 14.3% 95.9%;
-    --accent-foreground: 220.9 39.3% 11%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 262.1 83.3% 57.8%;
-    --radius: 1rem;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --color-1: 0 100% 63%;
-    --color-2: 270 100% 63%;
-    --color-3: 210 100% 63%;
-    --color-4: 195 100% 63%;
-    --color-5: 90 100% 63%;
-    --novel-highlight-default: #ffffff;
-    --novel-highlight-purple: #f6f3f8;
-    --novel-highlight-red: #fdebeb;
-    --novel-highlight-yellow: #fbf4a2;
-    --novel-highlight-blue: #c1ecf9;
-    --novel-highlight-green: #acf79f;
-    --novel-highlight-orange: #faebdd;
-    --novel-highlight-pink: #faf1f5;
-    --novel-highlight-gray: #f1f1ef;    
-  }
-
-  .dark {
-    --background: 224 71.4% 4.1%;
-    --foreground: 210 20% 98%;
-    --card: 224 71.4% 4.1%;
-    --card-foreground: 210 20% 98%;
-    --popover: 224 71.4% 4.1%;
-    --popover-foreground: 210 20% 98%;
-    --primary: 263.4 70% 50.4%;
-    --primary-foreground: 210 20% 98%;
-    --secondary: 215 27.9% 16.9%;
-    --secondary-foreground: 210 20% 98%;
-    --muted: 215 27.9% 16.9%;
-    --muted-foreground: 217.9 10.6% 64.9%;
-    --accent: 215 27.9% 16.9%;
-    --accent-foreground: 210 20% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 215 27.9% 16.9%;
-    --input: 215 27.9% 16.9%;
-    --ring: 263.4 70% 50.4%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-    --color-1: 0 100% 63%;
-    --color-2: 270 100% 63%;
-    --color-3: 210 100% 63%;
-    --color-4: 195 100% 63%;
-    --color-5: 90 100% 63%;
-    --novel-highlight-default: #000000;
-    --novel-highlight-purple: #3f2c4b;
-    --novel-highlight-red: #5c1a1a;
-    --novel-highlight-yellow: #5c4b1a;
-    --novel-highlight-blue: #1a3d5c;
-    --novel-highlight-green: #1a5c20;
-    --novel-highlight-orange: #5c3a1a;
-    --novel-highlight-pink: #5c1a3a;
-    --novel-highlight-gray: #3a3a3a;
-  }
-}
-
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
-@layer utilities {
-  .black-gradient {
-    background: linear-gradient(90deg, #161a31 0%, #06091f 100%);
-  }
-}
-
-/* 
-  Note: The styles for this gradient grid background is heavily inspired by the creator of this amazing site (https://dub.sh) – all credits go to them! 
-*/
-
-/* Tailwind Styles */
-
-/**
-* Use @apply to inline any existing utility classes into your own custom CSS.
-* This is useful when you need to write custom CSS.
-*/
-
-.main {
-  width: 100vw;
-  min-height: 100vh;
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  padding: 120px 24px 160px 24px;
-  pointer-events: none;
-}
-
-.main:before {
-  background: radial-gradient(circle, rgba(2, 0, 36, 0) 0, #fafafa 100%);
-  position: absolute;
-  content: "";
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  top: 0;
-}
-
-.gradient {
-  height: fit-content;
-  z-index: 3;
-  width: 100%;
-  max-width: 640px;
-  background-image: radial-gradient(
-      at 27% 37%,
-      text-blue-400 0px,
-      transparent 0%
-    ),
-    radial-gradient(at 97% 21%, hsla(125, 98%, 72%, 1) 0px, transparent 0%),
-    radial-gradient(at 52% 99%, hsla(354, 98%, 61%, 1) 0px, transparent 50%),
-    radial-gradient(at 10% 29%, hsla(256, 96%, 67%, 1) 0px, transparent 50%),
-    radial-gradient(at 97% 96%, hsla(38, 60%, 74%, 1) 0px, transparent 50%),
-    radial-gradient(at 33% 50%, hsla(222, 67%, 73%, 1) 0px, transparent 50%),
-    radial-gradient(at 79% 53%, hsla(343, 68%, 79%, 1) 0px, transparent 50%);
-  position: absolute;
-  content: "";
-  width: 100%;
-  height: 100%;
-  filter: blur(100px) saturate(150%);
-  top: 80px;
-  opacity: 0.15;
-}
-
-.orange_gradient {
-  @apply bg-gradient-to-r from-amber-500 via-orange-600 to-yellow-500 bg-clip-text text-transparent;
-}
-
-.fuchsia_gradient {
-  @apply bg-gradient-to-r from-pink-500 via-fuchsia-600 to-rose-500 bg-clip-text text-transparent;
-}
-
-.green_gradient {
-  @apply bg-gradient-to-r from-green-400 to-green-500 bg-clip-text text-transparent;
-}
-
-.blue_gradient {
-  @apply bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent;
-}
-
-.glassmorphism {
-  @apply bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60;
-
-}
+ 
+ .main {
+   width: 100vw;
+   min-height: 100vh;
+   position: fixed;
+   display: flex;
+   justify-content: center;
+   padding: 120px 24px 160px 24px;
+   pointer-events: none;
+ }
+ 
+ .main:before {
+   background: radial-gradient(circle, rgba(2, 0, 36, 0) 0, #fafafa 100%);
+   position: absolute;
+   content: "";
+   z-index: 2;
+   width: 100%;
+   height: 100%;
+   top: 0;
+ }
+ 
+ .gradient {
+   height: fit-content;
+   z-index: 3;
+   width: 100%;
+   max-width: 640px;
+   background-image: radial-gradient(
+       at 27% 37%,
+       text-blue-400 0px,
+       transparent 0%
+     ),
+     radial-gradient(at 97% 21%, hsla(125, 98%, 72%, 1) 0px, transparent 0%),
+     radial-gradient(at 52% 99%, hsla(354, 98%, 61%, 1) 0px, transparent 50%),
+     radial-gradient(at 10% 29%, hsla(256, 96%, 67%, 1) 0px, transparent 50%),
+     radial-gradient(at 97% 96%, hsla(38, 60%, 74%, 1) 0px, transparent 50%),
+     radial-gradient(at 33% 50%, hsla(222, 67%, 73%, 1) 0px, transparent 50%),
+     radial-gradient(at 79% 53%, hsla(343, 68%, 79%, 1) 0px, transparent 50%);
+   position: absolute;
+   content: "";
+   width: 100%;
+   height: 100%;
+   filter: blur(100px) saturate(150%);
+   top: 80px;
+   opacity: 0.15;
+ }
+ 
+ .orange_gradient {
+   @apply bg-gradient-to-r from-amber-500 via-orange-600 to-yellow-500 bg-clip-text text-transparent;
+ }
+ 
+ .fuchsia_gradient {
+   @apply bg-gradient-to-r from-pink-500 via-fuchsia-600 to-rose-500 bg-clip-text text-transparent;
+ }
+ 
+ .green_gradient {
+   @apply bg-gradient-to-r from-green-400 to-green-500 bg-clip-text text-transparent;
+ }
+ 
+ .blue_gradient {
+   @apply bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent;
+ }
+ 
+ .glassmorphism {
+   @apply bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60;
+ 
+ }

@@ -2,5 +2,6 @@
 import { auth } from "@clerk/nextjs/server";
 
 export async function getAuthToken() {
-  return (await auth().getToken({ template: "convex" })) ?? undefined;
+  const { getToken } = await auth();
+  return (await getToken({ template: 'convex' })) ?? undefined;
 }

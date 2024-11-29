@@ -1,6 +1,7 @@
 import { Id } from "./_generated/dataModel";
 import { query, mutation, QueryCtx  } from "./_generated/server";
 import { v } from "convex/values";
+import { Skill } from "./helpers";
 
     const getSkillbyName = async (ctx: QueryCtx, name: string) => {
         return await ctx.db
@@ -52,7 +53,11 @@ import { v } from "convex/values";
                 (SkillLinks ?? []).map(async (SkillLink) => {
                     // For each user , fetch the `Country` he comes from and
                     // insert the name into the `Country name` field.
-                    return await ctx.db.get(SkillLink.childId as Id<"Skill">);
+                    const skill = await ctx.db.get(SkillLink.childId as Id<"Skill">);
+                    return {
+                        skillLinkId: SkillLink._id,
+                        skill,
+                    }
                 })
             );         
         },
@@ -78,9 +83,12 @@ import { v } from "convex/values";
                 (SkillLinks ?? []).map(async (SkillLink) => {
                     // For each user , fetch the `Country` he comes from and
                     // insert the name into the `Country name` field.
-                    return await ctx.db.get(SkillLink.childId as Id<"Skill">);
+                    const skill = await ctx.db.get(SkillLink.childId as Id<"Skill">);
+                    return {
+                        ...skill
+                    } as Skill;
                 })
-            );         
+            );  
         },
     });
 

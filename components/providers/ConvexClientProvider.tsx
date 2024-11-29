@@ -9,6 +9,7 @@ import { ConvexQueryClient } from "@convex-dev/react-query";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Loading from "@/components/custom/loading";
+import React from 'react';
 
 
 
@@ -33,6 +34,7 @@ const queryClient = new QueryClient({
 convexQueryClient.connect(queryClient);
 
 export function ConvexClientProvider({ children }: RootLayoutProps) {
+
     return (
         <ClerkProvider appearance={clerkAppearance} publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY!}>
             <ConvexProviderWithClerk client={convex} useAuth={useAuth}>

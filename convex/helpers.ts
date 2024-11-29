@@ -15,17 +15,6 @@ export const FileCategorySchema = v.union(
 export type FileCategory = Infer<typeof FileCategorySchema>;
 // is inferred as `'Resume' | 'Image' | 'Video'`
 
-/* export const SkillSchema = v.object({
-  _id: v.id("Skill"), 
-  name: v.string(),
-  code: v.optional(v.string()), 
-  icon: v.optional(v.string()), 
-  createdBy: v.optional(v.union(v.id("User"), v.null())),
-  _creationTime: v.optional(v.number())
-});
-
-export type SkillObject = Infer<typeof SkillSchema>; */
-
 type userInfo = {
   userName: string;
   userEmail: string;

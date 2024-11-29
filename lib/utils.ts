@@ -1,4 +1,4 @@
-import { type ClassValue, clsx } from "clsx"
+import { clsx, type ClassValue } from "clsx"
 import he from 'he';
 import { useFormatter, useNow } from "next-intl";
 import { twMerge } from "tailwind-merge"
@@ -6,7 +6,6 @@ import { twMerge } from "tailwind-merge"
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
-
 export const getInitials = (name: string) => {
   return name
     .trim()

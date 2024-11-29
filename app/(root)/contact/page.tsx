@@ -1,9 +1,7 @@
 import { contactMethods } from '@/app/types/data'
 import { SubmitButton } from '@/components/custom/submitFormButton'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { contact } from '@/utils/actions/miscellaneous '
 import React from 'react'
@@ -19,7 +17,7 @@ const page = () => {
                     Contact
                   </h3>
                   <p className="text-3xl font-semibold sm:text-4xl">
-                    Let's connect
+                    Let&apos;s connect
                   </p>
                   <p>
                     Are you looking forward to building better solutions now or attract fresh talent for your team, contact me and lets get started! Please fill out the form, or use the contact information bellow .

@@ -1,7 +1,7 @@
 'use client' // Error components must be Client Components
  
 import ErrorDisplay from '@/components/custom/ErrorDisplay'
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
  
 type ErrorProps = {
   error: Error & { digest?: string }

@@ -17,11 +17,12 @@ import { useQuery } from "@tanstack/react-query";
 import { Badge } from "@/components/ui/badge";
 import { useAlertDialog } from "@/hooks/use-alert-dialog";
 import { TextObject } from "@/convex/helpers";
+import React from 'react';
   
   export default function page() {
-    const { data, isPending, error } = useQuery(convexQuery(api.projects.getProjects,{}));
+    const projects = useQuery(convexQuery(api.projects.getProjects,{}));
 
-    if (data === undefined || data.length === 0) {
+    if (projects.data === undefined || projects.data.length === 0) {
         return (
         <BlankSlate 
             title={
@@ -73,7 +74,7 @@ import { TextObject } from "@/convex/helpers";
                         </TableRow>
                         </TableHeader>
                         <TableBody>
-                        {data.map((record) => (
+                        {projects.data.map((record) => (
                             <TableRow key={record.project._id}>
                                 <TableCell className="font-medium">{record.project.name}</TableCell>
                                 <TableCell>

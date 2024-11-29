@@ -2,6 +2,7 @@
 
 import { Separator } from "@/components/ui/separator";
 import NewOccupationForm from "../_components/NewOccupationForm";
+import React from 'react';
 
 
 export default function page() {

@@ -12,6 +12,7 @@ import { DialogClose, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { ACCEPTED_FILE_MIMETYPES, arrCategory } from "@/app/types/constants";
+import React from 'react'
 
 export default function FileUploadForm() {
   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
@@ -22,8 +23,6 @@ export default function FileUploadForm() {
   const form = useForm<FileFormValues>({
     resolver: zodResolver(FileSchema)
   })
-
-  const fileRef = form.register("file");
 
   // 2. Define a submit handler.
   const onSubmit = async (values: FileFormValues) => {

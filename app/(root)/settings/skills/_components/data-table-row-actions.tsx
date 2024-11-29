@@ -12,6 +12,7 @@ import { api } from "@/convex/_generated/api"
 import Link from "next/link"
 import NewSkillLinkForm from "./NewSkillLinkForm"
 import { SkillSchema } from "@/app/types/definitions";
+import React from 'react';
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>

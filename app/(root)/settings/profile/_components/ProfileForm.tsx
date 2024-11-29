@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFieldArray } from "react-hook-form";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
@@ -11,17 +11,15 @@ import { cn } from "@/lib/utils";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Preloaded, usePreloadedQuery, useQuery } from "convex/react";
+import { Preloaded, usePreloadedQuery } from "convex/react";
 import { Label } from "@/components/ui/label";
 import { ProfileFormSchema, ProfileFormValues } from "@/app/types/definitions";
-import { getInitials } from "@/lib/utils";
 import { SubmitButton } from "@/components/custom/submitFormButton";
 import ErrorDetail from "@/components/custom/ErrorDetail";
-import Link from "next/link";
 import { FaTrash } from "react-icons/fa6";
 import { PhoneInput } from "@/components/ui/phone-input";
 import UserAvatar from "@/components/custom/UserAvatar";
+import React from 'react';
 
 type PreloadedProps = {
   preloadedUser: Preloaded<typeof api.users.getCurrentUser>;
@@ -32,10 +30,7 @@ export default function ProfileForm(props: PreloadedProps) {
 
   const user = usePreloadedQuery(props.preloadedUser);
   const countries = usePreloadedQuery(props.preloadedCountries);  
-  const {
-    mutate,
-    isPending
-  } = useApiMutation(api.users.updateUser); 
+  const updateUser = useApiMutation(api.users.updateUser); 
   
   const fullName =  user?.name ?? "";
   
@@ -75,7 +70,7 @@ export default function ProfileForm(props: PreloadedProps) {
     console.log(values)
 
       // You can now use these values for mutation.
-      mutate({
+      updateUser.mutate({
         id: user?._id,
         phoneNumber: values.phoneNumber,
         address: values.address,
@@ -91,7 +86,7 @@ export default function ProfileForm(props: PreloadedProps) {
           });
       form.reset();
     } catch (error) {
-      
+      toast.error("Failed to update the Profile: " + JSON.stringify(error, null, 2));  
     }
   }
 

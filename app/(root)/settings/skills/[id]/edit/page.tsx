@@ -5,6 +5,7 @@ import { Id } from "@/convex/_generated/dataModel";
 import { preloadQuery } from "convex/nextjs";
 import { api } from "@/convex/_generated/api";
 import SkillForm from "../../_components/SkillForm";
+import React from 'react';
 
 export default async function page({ params }: { params: { id: Id<"Skill"> } }) {
   const {id} = params;

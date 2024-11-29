@@ -13,7 +13,8 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-  } from "@/components/ui/select"
+  } from "@/components/ui/select";
+  import React from 'react';
   
   interface DataTablePaginationProps<TData> {
     table: Table<TData>

@@ -4,8 +4,7 @@ import { v } from "convex/values";
 
 
     export const getCompanies = query({
-    args: {},
-    handler: async (ctx, args) => {
+    handler: async (ctx) => {
         const companies = await ctx.db
         .query("Company")
         .order("asc")

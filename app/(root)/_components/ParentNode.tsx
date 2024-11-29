@@ -1,6 +1,5 @@
 import { Circle } from '@/components/custom/Circle'
-import { AnimatedBeam } from '@/components/ui/animated-beam'
-import React, { useRef } from 'react'
+import React from 'react'
 
 type ParentNodeProps = {
     children?: React.ReactNode;

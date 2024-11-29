@@ -20,6 +20,7 @@ import FileUploadPopup from "./FileUploadPopup";
 import { redirectToURL } from "@/utils/actions/miscellaneous ";
 import { PhoneInput } from "@/components/ui/phone-input";
 import { FaTrash } from "react-icons/fa6";
+import React from 'react'
 
 type PreloadedProps = {
   preloadedUser: Preloaded<typeof api.users.getUser>;
@@ -30,10 +31,7 @@ export default function UserForm(props: PreloadedProps) {
   const user = usePreloadedQuery(props.preloadedUser);
   const countries = usePreloadedQuery(props.preloadedCountries);
      
-  const {
-    mutate,
-    isPending
-  } = useApiMutation(api.users.updateUser); 
+  const updateUser = useApiMutation(api.users.updateUser); 
   
   const fullName =  user?.name === null || user?.name === undefined? "": user?.name;
   
@@ -78,7 +76,7 @@ export default function UserForm(props: PreloadedProps) {
     console.log(values)
 
       // You can now use these values for mutation.
-      mutate({
+      updateUser.mutate({
         id: user?._id,
         phoneNumber: values.phoneNumber,
         address: values.address,
@@ -98,7 +96,7 @@ export default function UserForm(props: PreloadedProps) {
           });
       form.reset();
     } catch (error) {
-      
+      toast.error("Failed to update the User: " + JSON.stringify(error, null, 2));  
     }
   }
 

@@ -2,7 +2,7 @@
 
 import { Separator } from "@/components/ui/separator";
 import NewSkillForm from "../_components/NewSkillForm";
-
+import React from 'react';
 
 export default function page() {
   return (

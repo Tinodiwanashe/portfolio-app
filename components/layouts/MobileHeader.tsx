@@ -4,7 +4,8 @@ import { Button } from "../ui/button"
 import { RootLayoutProps } from "@/app/types/definitions"
 import Logo from "../custom/Logo"
 import Menu from "./Menu"
-import { menuItems } from "@/app/types/data"
+import { menuItems } from "@/app/types/data";
+import React from 'react'
 
 const MobileHeader = ({children}: RootLayoutProps) => {
   return (

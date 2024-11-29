@@ -10,8 +10,9 @@ import { useApiMutation } from "@/hooks/use-api-mutation";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { CompanyFormSchema, CompanyFormValues } from "@/app/types/definitions";
-import { Preloaded, usePreloadedQuery, useQuery } from "convex/react";
+import { Preloaded, usePreloadedQuery } from "convex/react";
 import { redirectToURL } from "@/utils/actions/miscellaneous ";
+import React from 'react'
 
 type PreloadedProps = {
   preloadedCompany: Preloaded<typeof api.companies.getCompany>;
@@ -20,10 +21,7 @@ type PreloadedProps = {
 export default function CompanyForm(props: PreloadedProps) {  
   const company = usePreloadedQuery(props.preloadedCompany);
     
-  const {
-    mutate,
-    isPending
-  } = useApiMutation(api.companies.createOrUpdateCompany); 
+  const createOrUpdateCompany = useApiMutation(api.companies.createOrUpdateCompany); 
   
   // 1. Define your form and set default values. These values can come from database or API
   const defaultValues: Partial<CompanyFormValues> = {
@@ -53,7 +51,7 @@ export default function CompanyForm(props: PreloadedProps) {
     }
 
     try {
-      mutate({
+      createOrUpdateCompany.mutate({
         id: company?._id,
         name: values.name,
         description: values.description,

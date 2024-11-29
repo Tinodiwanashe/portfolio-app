@@ -9,17 +9,13 @@ import { api } from "@/convex/_generated/api";
 import { useApiMutation } from "@/hooks/use-api-mutation";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Doc, Id } from "@/convex/_generated/dataModel";
 import { SkillFormSchema, SkillFormValues } from "@/app/types/definitions";
-import { useQuery } from "convex/react";
 import { redirectToURL } from "@/utils/actions/miscellaneous ";
+import React from 'react';
 
 export default function NewSkillForm() {  
     
-  const {
-    mutate,
-    isPending
-  } = useApiMutation(api.skills.createOrUpdateSkill); 
+  const createOrUpdateSkill = useApiMutation(api.skills.createOrUpdateSkill); 
   
   // 1. Define your form and set default values. These values can come from database or API
   const defaultValues: Partial<SkillFormValues> = {
@@ -45,7 +41,7 @@ export default function NewSkillForm() {
 
     try {
       // You can now use these values for mutation.
-      mutate({
+      createOrUpdateSkill.mutate({
         id: null,
         name: values.name,
         code: values.code  

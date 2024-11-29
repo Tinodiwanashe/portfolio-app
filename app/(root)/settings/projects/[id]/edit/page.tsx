@@ -3,7 +3,7 @@ import { Id } from "@/convex/_generated/dataModel";
 import ProjectForm from "../../_components/ProjectForm";
 import { preloadQuery } from "convex/nextjs";
 import { api } from "@/convex/_generated/api";
-
+import React from 'react';
 
 export default async function page({ params }: { params: { id: Id<"Project"> } }) {
   const { id } = params;

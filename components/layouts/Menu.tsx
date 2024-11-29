@@ -11,7 +11,8 @@ import {
 import Link from "next/link"
 import { forwardRef, ElementRef, ComponentPropsWithoutRef } from "react"
 import { MenuItem, SubMenuItem } from "@/app/types/definitions"
-import { SignedIn } from "@clerk/nextjs"
+import { SignedIn } from "@clerk/nextjs";
+import React from 'react'
 
 const Menu = ({
     menuItems,

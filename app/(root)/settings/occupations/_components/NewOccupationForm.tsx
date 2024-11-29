@@ -18,6 +18,7 @@ import { Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { redirectToURL } from "@/utils/actions/miscellaneous ";
 import { FaTrash } from "react-icons/fa6";
+import React from 'react';
 
 export const defaultValue = {
   type: 'doc',
@@ -32,10 +33,7 @@ export const defaultValue = {
 export default function NewOccupationForm() {  
   const companies = useQuery(api.companies.getCompanies);
     
-  const {
-    mutate,
-    isPending
-  } = useApiMutation(api.occupations.createOrUpdateOccupation);
+  const createOrUpdateOccupation = useApiMutation(api.occupations.createOrUpdateOccupation);
   
   // 1. Define your form and set default values. These values can come from database or API
   const defaultValues: Partial<OccupationFormValues> = {
@@ -75,7 +73,7 @@ export default function NewOccupationForm() {
     console.log(values)
 
       // You can now use these values for mutation.
-      mutate({
+      createOrUpdateOccupation.mutate({
         id: null,
         title: values?.title,
         startDate: new Date(values?.startDate).getTime(),
@@ -92,7 +90,7 @@ export default function NewOccupationForm() {
           });
       //form.reset();
     } catch (error) {
-      
+      toast.error("Failed to create the Occupation: " + JSON.stringify(error, null, 2));  
     }
   }
 

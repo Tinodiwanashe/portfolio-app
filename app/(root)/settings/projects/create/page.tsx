@@ -2,7 +2,7 @@
 
 import { Separator } from "@/components/ui/separator";
 import NewProjectForm from "../_components/NewProjectForm";
-
+import React from 'react';
 
 export default function page() {
   return (

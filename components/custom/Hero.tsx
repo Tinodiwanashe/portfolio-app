@@ -15,6 +15,7 @@ import SocialMediaIcon from './SocialMediaIcon';
 import { SocialLinkObject } from '@/convex/helpers';
 import { Preloaded, usePreloadedQuery } from 'convex/react';
 import { buttonVariants } from '../ui/button';
+import React from 'react';
 
 type FileProps = {
   name: string | undefined; 

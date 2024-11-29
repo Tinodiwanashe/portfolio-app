@@ -16,13 +16,13 @@ import type {
 import type * as companies from "../companies.js";
 import type * as countries from "../countries.js";
 import type * as files from "../files.js";
-import type * as fileStorage from "../fileStorage.js";
 import type * as helpers from "../helpers.js";
 import type * as occupations from "../occupations.js";
 import type * as projects from "../projects.js";
 import type * as Schema from "../Schema.js";
 import type * as skillLinks from "../skillLinks.js";
 import type * as skills from "../skills.js";
+import type * as storage from "../storage.js";
 import type * as users from "../users.js";
 
 /**
@@ -37,13 +37,13 @@ declare const fullApi: ApiFromModules<{
   companies: typeof companies;
   countries: typeof countries;
   files: typeof files;
-  fileStorage: typeof fileStorage;
   helpers: typeof helpers;
   occupations: typeof occupations;
   projects: typeof projects;
   Schema: typeof Schema;
   skillLinks: typeof skillLinks;
   skills: typeof skills;
+  storage: typeof storage;
   users: typeof users;
 }>;
 export declare const api: FilterApi<

@@ -1,6 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { checkRole } from "./utils/roles";
 
 // createRouteMatcher() is a Clerk helper function that allows you to protect multiple routes. 
 // It accepts an array of routes and checks if the route the user is trying to visit matches one of the routes passed to it.
@@ -18,7 +17,8 @@ export default clerkMiddleware(async (auth,req) => {
 
   if (isProtectedRoute(req)) {
     if ((await auth()).sessionClaims?.metadata?.role === 'admin'){
-      await auth().protect(); // used if you want to redirect unauthenticated users to the sign-in route automatically.
+       await auth.protect(); // used if you want to redirect unauthenticated users to the sign-in route automatically.
+       //new changes
     } else {
       const url = new URL('/', req.url)
       return NextResponse.redirect(url)      

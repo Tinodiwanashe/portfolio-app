@@ -9,6 +9,7 @@ import ParentNode from './ParentNode';
 import StringToHtml from '@/components/custom/StringToHtml';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Id } from '@/convex/_generated/dataModel';
+import { Skill } from '@/convex/helpers';
 
 type EcosystemsProps = {
   id: Id<"User">;
@@ -28,9 +29,9 @@ const Ecosystems = (props: EcosystemsProps) => {
         <div className="flex size-full flex-row items-stretch justify-between gap-10 max-w-lg">
             <div  className="flex flex-col justify-center gap-2"> 
                 {
-                    childSkills.data?.map((item, index) => {
+                    childSkills.data?.map((item:Skill, index: number) => {
                         return (
-                          <TooltipProvider>
+                          <TooltipProvider key={index}>
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <ChildNode parentDivRef={divParentRef} containerDivRef={containerRef} >

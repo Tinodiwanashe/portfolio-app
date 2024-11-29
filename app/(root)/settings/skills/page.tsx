@@ -4,19 +4,14 @@
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { api } from "@/convex/_generated/api";
-import { useMutation, usePaginatedQuery } from "convex/react";
 import Link from "next/link";
-import { FaLink, FaPencil, FaPlus, FaTrash } from "react-icons/fa6";
+import { FaPlus } from "react-icons/fa6";
 import BlankSlate from "@/components/custom/BlankSlate";
-import { Id } from "@/convex/_generated/dataModel";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { useDialog } from "@/hooks/use-dialog";
-import NewSkillLinkForm from "./_components/NewSkillLinkForm";
-import { useAlertDialog } from "@/hooks/use-alert-dialog";
 import { columns } from "./_components/columns";
 import { DataTable } from "./_components/data-table";
 import { convexQuery } from "@convex-dev/react-query";
 import { useQuery } from "@tanstack/react-query";
+import React from 'react';
   
   export default function page() {
     const skills = useQuery(convexQuery(api.skills.getSkills,{}));
@@ -82,54 +77,6 @@ import { useQuery } from "@tanstack/react-query";
     </Link>
     )
   }
-
-  const Edit = ({destination}: {destination: string}) => {
-    return (
-        <Link href={destination}>
-            <DropdownMenuItem >
-                <FaPencil className="mr-2 h-4 w-4" />
-                <span>Edit</span>
-            </DropdownMenuItem>        
-        </Link>
-    );
-}
-
-const Delete = ({id}: {id: Id<"Skill">}) => {
-    const alertDialog = useAlertDialog();
-    const deleteskill = useMutation(api.skills.deleteSkill);
-    return (
-        <DropdownMenuItem onClick={() => {
-            alertDialog.onOpen({
-                title: "Delete Confirmation",
-                description: "Are you sure you want to delete this item?",
-                cancelLabel: "Cancel",
-                actionLabel: "Delete",
-                onAction: () => deleteskill({id}),
-                onCancel: () => { },
-            });
-        }}>
-            <FaTrash className="mr-2 h-4 w-4" />
-            <span>Delete</span>
-        </DropdownMenuItem>
-    );
-}
-
-const LinkSkill = ({id}: {id: Id<"Skill">}) => {
-    const infoDialog = useDialog();
-    return (
-        <DropdownMenuItem onClick={() => {
-            infoDialog.onOpen({
-              title: "Link a Skill",
-              description: "Are you sure you want to delete this item?",
-              children: <NewSkillLinkForm parentId={id}/>
-            });
-        }}
-        >
-            <FaLink className="mr-2 h-4 w-4" />
-            <span>Link</span>
-        </DropdownMenuItem>
-    );
-}
 
 
   
