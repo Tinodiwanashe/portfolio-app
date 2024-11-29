@@ -4,7 +4,7 @@ import { useEditor, EditorContent } from '@tiptap/react'
 import { extensions } from './tiptapExtensions'
 import MenuBar from './MenuBar'
 import { Separator } from '../ui/separator'
-import React from 'react'
+import React from 'react';
 
 type TipTapProps =  {
     content: string;

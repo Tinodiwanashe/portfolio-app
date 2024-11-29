@@ -30,10 +30,7 @@ export default function ProfileForm(props: PreloadedProps) {
 
   const user = usePreloadedQuery(props.preloadedUser);
   const countries = usePreloadedQuery(props.preloadedCountries);  
-  const {
-    mutate,
-    isPending
-  } = useApiMutation(api.users.updateUser); 
+  const updateUser = useApiMutation(api.users.updateUser); 
   
   const fullName =  user?.name ?? "";
   
@@ -73,7 +70,7 @@ export default function ProfileForm(props: PreloadedProps) {
     console.log(values)
 
       // You can now use these values for mutation.
-      mutate({
+      updateUser.mutate({
         id: user?._id,
         phoneNumber: values.phoneNumber,
         address: values.address,

@@ -3,6 +3,7 @@ import ProfileForm from "./_components/ProfileForm";
 import { preloadQuery } from "convex/nextjs";
 import { api } from "@/convex/_generated/api";
 import { getAuthToken } from "@/app/auth";
+import React from 'react';
 
 export default async function page() { 
   //To make authenticated requests to Convex during server rendering, pass a JWT token to preloadQuery or fetchQuery in the third options argument:
