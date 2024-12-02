@@ -9,6 +9,7 @@ import { ConvexClientProvider } from "@/components/providers/ConvexClientProvide
 import { Toaster } from "@/components/ui/sonner";
 import InfoDialog from "@/components/custom/InfoDialog";
 import ConfirmationDialog from "@/components/custom/ConfirmationDialog";
+import React from "react";
 
 const fontSans = FontSans({
   subsets: ["latin"],

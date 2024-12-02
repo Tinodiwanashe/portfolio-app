@@ -2,6 +2,7 @@
  
 import ErrorDisplay from '@/components/custom/ErrorDisplay'
 import React, { useEffect } from 'react'
+import * as Sentry from "@sentry/nextjs";
  
 type ErrorProps = {
   error: Error & { digest?: string }
@@ -11,7 +12,7 @@ type ErrorProps = {
 export default function Error(props: ErrorProps) {
   useEffect(() => {
     // Log the error to an error reporting service
-    console.error(props.error)
+    Sentry.captureException(props.error);
   }, [props.error])
  
   return (

@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 // Injected content via Sentry wizard below
-const { withSentryConfig } = require("@sentry/nextjs");
+import { withSentryConfig } from "@sentry/nextjs";
 
 const nextConfig = {
     images: {
@@ -16,14 +16,7 @@ const nextConfig = {
     i18n: {
       locales: ["en", "es",  "fr", "it"],
       defaultLocale: "en"
-    },
-    typescript: {
-      // !! WARN !!
-      // Dangerously allow production builds to successfully complete even if
-      // your project has type errors.
-      // !! WARN !!
-      ignoreBuildErrors: true,
-    },
+    }
 };
 
 const sentryWebpackPluginOptions = {
@@ -33,8 +26,11 @@ const sentryWebpackPluginOptions = {
   org: "tech-colony",
   project: "portfolio-app",
 
+  // An auth token is required for uploading source maps.
+  authToken: process.env.SENTRY_AUTH_TOKEN,  
+
   // Only print logs for uploading source maps in CI
-  silent: !process.env.CI,
+  silent: false, // Can be used to suppress logs
 
   // For all available options, see:
   // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
@@ -61,4 +57,4 @@ const sentryWebpackPluginOptions = {
   automaticVercelMonitors: true,
 };
 
-module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions);
+export default withSentryConfig(nextConfig, sentryWebpackPluginOptions);

@@ -3,7 +3,7 @@
 import ErrorDisplay from "@/components/custom/ErrorDisplay";
 import * as Sentry from "@sentry/nextjs";
 import Error from "next/error";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
  
 export default function GlobalError({
