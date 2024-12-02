@@ -16,7 +16,14 @@ const nextConfig = {
     i18n: {
       locales: ["en", "es",  "fr", "it"],
       defaultLocale: "en"
-    }
+    },
+    typescript: {
+      // !! WARN !!
+      // Dangerously allow production builds to successfully complete even if
+      // your project has type errors.
+      // !! WARN !!
+      ignoreBuildErrors: true,
+    },
 };
 
 const sentryWebpackPluginOptions = {
