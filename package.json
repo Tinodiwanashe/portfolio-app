@@ -2,10 +2,12 @@
   "name": "portfolio-app",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "npm-run-all --parallel dev:frontend dev:backend",
+    "dev:frontend": "next dev",
+    "dev:backend": "convex dev --typecheck=disable",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "tsc && next lint"
   },
   "dependencies": {
     "@clerk/backend": "^1.18.0",

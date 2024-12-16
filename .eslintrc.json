@@ -2,5 +2,12 @@
   "extends": [
     "next/core-web-vitals",
     "next/typescript"
-  ]
+  ],
+  "plugins": ["prettier"],
+  "ignorePatterns": [
+    ".eslintrc.json",
+    "convex/_generated",
+    // There are currently ESLint errors in shadcn/ui
+    "components/ui",
+  ],
 }
