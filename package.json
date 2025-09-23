@@ -5,6 +5,7 @@
     "dev": "npm-run-all --parallel dev:frontend dev:backend",
     "dev:frontend": "next dev",
     "dev:backend": "convex dev --typecheck=disable",
+    "predev": "convex dev --until-success && convex dashboard",
     "build": "next build",
     "start": "next start",
     "lint": "tsc && next lint"
@@ -51,7 +52,7 @@
     "cmdk": "^1.0.0",
     "cobe": "^0.6.3",
     "codemirror": "^6.0.1",
-    "convex": "1.17.3",
+    "convex": "1.18",
     "cookie": "^1.0.2",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.12.0",
