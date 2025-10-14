@@ -18,8 +18,8 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
-      //"convex/_generated/**",
-      // There are currently ESLint errors in shadcn/ui
+      "convex/_generated/**",
+      // There are currently ESLint errors in shadcn/ui, so we need to ignore it for now.
       "components/ui"
     ],
   },
