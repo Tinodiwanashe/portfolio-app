@@ -2,15 +2,19 @@ import React from 'react'
 
 type ErrorProps = {
     entity?: string;
-    error: any;
+    error: Error | unknown;
     jsonString?: string;
 }
 
 const ErrorDetail = (props: ErrorProps) => {
+  const errorMessage = props.error instanceof Error 
+    ? props.error.message 
+    : String(props.error);
+    
   return (
     <>
-        <span>Failed to update</span>
-        <i className="my-2 p-4">{props.error}</i>
+        <span>Failed to update {props.entity || 'item'}</span>
+        <i className="my-2 p-4">{errorMessage}</i>
 
         <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
         <code className="text-white">{props.jsonString}</code>

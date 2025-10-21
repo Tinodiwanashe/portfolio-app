@@ -82,7 +82,8 @@ export default function ProfileForm(props: PreloadedProps) {
             toast.success("Profile updated successfully!");
           })
           .catch((error) => {
-            <ErrorDetail entity="Profile" error={error} jsonString={JSON.stringify(values, null, 2)}/>               
+            console.error("Profile update error:", error);
+            toast.error("Failed to update the Profile: " + JSON.stringify(error, null, 2));
           });
       form.reset();
     } catch (error) {
