@@ -2,9 +2,7 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 import { FileCategorySchema, SocialLinkSchema, TextSchema } from "./helpers";
 
-
-
-export const userFields = {
+const userFields = {
   name: v.string(),
   tokenIdentifier: v.string(),
   pictureUrl: v.optional(v.string()),
@@ -17,7 +15,9 @@ export const userFields = {
   socialLinks: v.optional(v.array(SocialLinkSchema))
 }
 
-export const countryFields = {
+export const UserSchema = v.object(userFields);
+
+const countryFields = {
   name: v.string(),
   iso2: v.optional(v.string()),
   iso3: v.optional(v.string()),
@@ -25,7 +25,9 @@ export const countryFields = {
   continent: v.optional(v.string())
 }
 
-export const occupationFields = {
+export const CountrySchema = v.object(countryFields);
+
+const occupationFields = {
   title: v.string(),
   startDate: v.optional(v.number()),
   endDate: v.optional(v.number()),
@@ -35,14 +37,18 @@ export const occupationFields = {
   createdBy: v.union(v.id("User"), v.null())
 }
 
-export const companyFields = {
+export const OccupationSchema = v.object(occupationFields);
+
+const companyFields = {
   name: v.string(),
   description: v.optional(v.string()),
   url: v.optional(v.string()),
   createdBy: v.optional(v.union(v.id("User"), v.null()))
 }
 
-export const projectFields = {
+export const CompanySchema = v.object(companyFields);
+
+const projectFields = {
   name: v.string(),
   description: v.optional(v.string()),
   responsibilities: v.optional(v.array(TextSchema)),
@@ -51,25 +57,33 @@ export const projectFields = {
   createdBy: v.union(v.id("User"), v.null())
 }
 
-export const fileFields = {
+export const ProjectSchema = v.object(projectFields);
+
+const fileFields = {
   name: v.string(),
   category: FileCategorySchema,
   storageId: v.id("_storage"),
   uploadedBy: v.optional(v.union(v.id("User"), v.null()))
 }
 
-export const skillFields = {
+export const FileSchema = v.object(fileFields);
+
+const skillFields = {
   name: v.string(),
   code: v.optional(v.string()), 
   icon: v.optional(v.string()), 
   createdBy: v.optional(v.union(v.id("User"), v.null()))
 }
 
-export const skillLinkFields = {
+export const SkillSchema = v.object(skillFields);
+
+const skillLinkFields = {
   parentId: v.id("Skill"),
   childId: v.id("Skill"),
   createdBy: v.optional(v.union(v.id("User"), v.null()))
 }
+
+export const SkillLinkSchema = v.object(skillLinkFields);
 
 export default defineSchema({
   User: defineTable(userFields)

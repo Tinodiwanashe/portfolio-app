@@ -1,6 +1,6 @@
 import { Infer, v } from "convex/values";
 import { Doc } from "./_generated/dataModel";
-import { companyFields, occupationFields } from "./schema";
+import { CompanySchema, CountrySchema, OccupationSchema, SkillSchema, UserSchema } from "./schema";
 
 // Define a messages table with two indexes.
 /* Each table is defined using the defineTable function. Within each table, the document type is defined using the validator builder, v. 
@@ -35,25 +35,17 @@ export const SocialLinkSchema = v.object({
 
 export type SocialLinkObject = Infer<typeof SocialLinkSchema>;
 
-
-
-export const vOccupation = v.object(occupationFields);
-export const vCompany = v.object(companyFields);
-export type Occupation = Infer<typeof vOccupation>;
-export type Company = Infer<typeof vCompany>;
+export type Occupation = Infer<typeof OccupationSchema>;
+export type Company = Infer<typeof CompanySchema>;
+export type Country = Infer<typeof CountrySchema>;
+export type User = Infer<typeof UserSchema>;
+export type Skill = Infer<typeof SkillSchema>;
 
 export type WorkExperienceItem = {
   occupation: Occupation,
   company: Company,
   user?: userInfo
 };
-
-
-export type User = Doc<"User">;
-
-export type Country = Doc<"Country">;
-
-export type Skill = Doc<"Skill">;
 
 export type UserWithCountry = {
   user: Doc<"User">,
