@@ -2,13 +2,12 @@ import { Id } from "./_generated/dataModel";
 import { query, mutation, QueryCtx  } from "./_generated/server";
 import { v } from "convex/values";
 import { UserSkill } from "./helpers";
+import schema from "./schema";
 
 const getLinkedSkills = async (ctx: QueryCtx, parentId: Id<"Skill">) => {
     const linkedSkills = await ctx.db
                                     .query("SkillLink")
-                                    .withIndex("idx_parent", (q) =>
-                                        q.eq("parentId", parentId),
-                                    )
+                                    .withIndex("idx_parent", (q) => q.eq("parentId", parentId))
                                     .collect();
 
     return Promise.all(                                
@@ -44,7 +43,7 @@ export const getSkills = query({
             }),
         ); 
         
-    },
+    }
 });
 
 export const getSkillByName = query({
@@ -55,8 +54,7 @@ export const getSkillByName = query({
     handler: async (ctx, args) => {
         const skill = await ctx.db
         .query("Skill")
-        .withIndex("idx_skill_name", (q) =>
-            q.eq("name", args.name))
+        .withIndex("idx_skill_name", (q) => q.eq("name", args.name))
         .filter((q) => q.eq(q.field("createdBy"), args.userId))
         .order("asc")
         .first() ;
@@ -72,10 +70,8 @@ export const getSkillByName = query({
                 userEmail: user?.email,
                 userPictureUrl: user?.pictureUrl
             }
-        } 
-
-         
-    },
+        }     
+    }
 });
 
 export const getOtherSkills = query({
@@ -111,7 +107,7 @@ export const getOtherSkills = query({
                 }
             })
         );        
-    },
+    }
 });
 
 export const getSkillCodesForUser = query({
@@ -127,25 +123,21 @@ export const getSkillCodesForUser = query({
             (skills ?? []).map(async (skill) => {
                 return skill.code ?? "";
             }),
-        ); 
-
-         
-    },
+        );     
+    }
 });
 
 export const getSkill = query({
     args: {id: v.id("Skill") },
     handler: async (ctx, args) => {
         return await ctx.db.get(args.id);
-    },
+    }
 });
 
 export const createOrUpdateSkill = mutation({
     args: { 
-        id: v.union(v.id("Skill"), v.null()), 
-        name: v.string(),
-        code: v.optional(v.string()),
-        icon: v.optional(v.string())
+        ...schema.tables.Skill.validator.fields,                        
+        id: v.union(v.id("Skill"), v.null())
     },
     handler: async (ctx, args) => {
         const identity = await ctx.auth.getUserIdentity();
@@ -155,9 +147,7 @@ export const createOrUpdateSkill = mutation({
 
         const user = await ctx.db
         .query("User")
-        .withIndex("idx_token", (q) =>
-            q.eq("tokenIdentifier", identity.tokenIdentifier),
-        )
+        .withIndex("idx_token", (q) => q.eq("tokenIdentifier", identity.tokenIdentifier))
         .unique();
         if (!user) {
             throw new Error("Unauthenticated call to mutation");
@@ -184,7 +174,7 @@ export const createOrUpdateSkill = mutation({
             });  
             return SkillId;      
         }
-    },
+    }
 });
 
 export const deleteSkill= mutation({
@@ -197,9 +187,7 @@ export const deleteSkill= mutation({
 
         const user = await ctx.db
         .query("User")
-        .withIndex("idx_token", (q) =>
-            q.eq("tokenIdentifier", identity.tokenIdentifier),
-        )
+        .withIndex("idx_token", (q) => q.eq("tokenIdentifier", identity.tokenIdentifier))
         .unique();
         if (!user) {
             throw new Error("Unauthenticated call to mutation");
@@ -212,5 +200,5 @@ export const deleteSkill= mutation({
             await ctx.db.delete(args.id);
         }
         
-    },
+    }
 });

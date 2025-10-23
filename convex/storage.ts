@@ -13,14 +13,14 @@ export const getMetadata = query({
   },
   handler: async (ctx, args) => {
     return await ctx.db.system.get(args.storageId);
-  },
+  }
 });
 
 export const listAllFiles = query({
   handler: async (ctx) => {
     // You can use .paginate() as well
     return await ctx.db.system.query("_storage").collect();
-  },
+  }
 });
 
 // Storage IDs correspond to documents in the "_storage" system table (see Metadata), so they can be validated using the v.id("_storage").
@@ -30,5 +30,5 @@ export const deleteById = mutation({
   },
   handler: async (ctx, args) => {
     return await ctx.storage.delete(args.storageId);
-  },
+  }
 });

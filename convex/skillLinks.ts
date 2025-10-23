@@ -2,18 +2,16 @@ import { Id } from "./_generated/dataModel";
 import { query, mutation, QueryCtx  } from "./_generated/server";
 import { v } from "convex/values";
 import { Skill } from "./helpers";
+import schema from "./schema";
 
-    const getSkillbyName = async (ctx: QueryCtx, name: string) => {
-        return await ctx.db
-        .query("Skill")
-        .withIndex("idx_skill_name", (q) =>
-            q.eq("name", name))
-        .first();
+const getSkillbyName = async (ctx: QueryCtx, name: string) => {
+    return await ctx.db
+    .query("Skill")
+    .withIndex("idx_skill_name", (q) => q.eq("name", name))
+    .first();
+}
 
-
-    }
-
-    export const getSkillLinks = query({
+export const getSkillLinks = query({
     handler: async (ctx) => {
         const SkillLinks = await ctx.db
         .query("SkillLink")
@@ -36,114 +34,109 @@ import { Skill } from "./helpers";
                 return UserSkillLink;
             }),
         );         
+    }
+});
+
+export const getChildSkills = query({
+    args: {parentId: v.id("Skill")},
+    handler: async (ctx, args) => {
+        const SkillLinks = await ctx.db
+        .query("SkillLink")
+        .withIndex("idx_parent", (q) => q.eq("parentId", args.parentId))
+        .order("asc")
+        .collect();
+
+        return Promise.all(
+            (SkillLinks ?? []).map(async (SkillLink) => {
+                // For each user , fetch the `Country` he comes from and
+                // insert the name into the `Country name` field.
+                const skill = await ctx.db.get(SkillLink.childId as Id<"Skill">);
+                return {
+                    skillLinkId: SkillLink._id,
+                    skill,
+                }
+            })
+        );         
+    }
+});
+
+export const getChildSkillsByName = query({
+    args: {
+        name: v.string(),
+        userId: v.id("User") 
     },
-    });
+    handler: async (ctx, args) => {
+        const skill = await getSkillbyName(ctx, args.name);
 
-    export const getChildSkills = query({
-        args: {parentId: v.id("Skill")},
-        handler: async (ctx, args) => {
-            const SkillLinks = await ctx.db
-            .query("SkillLink")
-            .withIndex("idx_parent", (q) =>
-                q.eq("parentId", args.parentId))
-            .order("asc")
-            .collect();
-    
-            return Promise.all(
-                (SkillLinks ?? []).map(async (SkillLink) => {
-                    // For each user , fetch the `Country` he comes from and
-                    // insert the name into the `Country name` field.
-                    const skill = await ctx.db.get(SkillLink.childId as Id<"Skill">);
-                    return {
-                        skillLinkId: SkillLink._id,
-                        skill,
-                    }
-                })
-            );         
-        },
-    });
+        const SkillLinks = await ctx.db
+        .query("SkillLink")
+        .withIndex("idx_parent", (q) => q.eq("parentId", skill?._id as Id<"Skill">))
+        .filter((q) => q.eq(q.field("createdBy"), args.userId))
+        .order("asc")
+        .collect();
 
-    export const getChildSkillsByName = query({
-        args: {
-            name: v.string(),
-            userId: v.id("User") 
-        },
-        handler: async (ctx, args) => {
-            const skill = await getSkillbyName(ctx, args.name);
-
-            const SkillLinks = await ctx.db
-            .query("SkillLink")
-            .withIndex("idx_parent", (q) =>
-                q.eq("parentId", skill?._id as Id<"Skill">))
-            .filter((q) => q.eq(q.field("createdBy"), args.userId))
-            .order("asc")
-            .collect();
-    
-            return Promise.all(
-                (SkillLinks ?? []).map(async (SkillLink) => {
-                    // For each user , fetch the `Country` he comes from and
-                    // insert the name into the `Country name` field.
-                    const skill = await ctx.db.get(SkillLink.childId as Id<"Skill">);
-                    return {
-                        ...skill
-                    } as Skill;
-                })
-            );  
-        },
-    });
+        return Promise.all(
+            (SkillLinks ?? []).map(async (SkillLink) => {
+                // For each user , fetch the `Country` he comes from and
+                // insert the name into the `Country name` field.
+                const skill = await ctx.db.get(SkillLink.childId as Id<"Skill">);
+                return {
+                    ...skill
+                } as Skill;
+            })
+        );  
+    }
+});
 
 
 
-    export const getSkillLink = query({
-        args: {SkillLinkId: v.id("SkillLink") },
-        handler: async (ctx, args) => {
-            return await ctx.db.get(args.SkillLinkId);
-        },
-    });
+export const getSkillLink = query({
+    args: {SkillLinkId: v.id("SkillLink") },
+    handler: async (ctx, args) => {
+        return await ctx.db.get(args.SkillLinkId);
+    }
+});
 
-    export const createOrUpdateSkillLink = mutation({
-        args: { 
-            id: v.union(v.id("SkillLink"), v.null()), 
-            parentId: v.id("Skill"),
-            childId: v.id("Skill")
-        },
-        handler: async (ctx, args) => {
-            const identity = await ctx.auth.getUserIdentity();
-            if (!identity) {
-                throw new Error("Unauthenticated call to mutation");
-            }
+export const createOrUpdateSkillLink = mutation({
+    args: { 
+        ...schema.tables.SkillLink.validator.fields,                        
+        id: v.union(v.id("SkillLink"), v.null())
+    },
+    handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity();
+        if (!identity) {
+            throw new Error("Unauthenticated call to mutation");
+        }
 
-            const user = await ctx.db
-            .query("User")
-            .withIndex("idx_token", (q) =>
-                q.eq("tokenIdentifier", identity.tokenIdentifier),
-            )
-            .unique();
-            if (!user) {
-                throw new Error("Unauthenticated call to mutation");
-            }
+        const user = await ctx.db
+        .query("User")
+        .withIndex("idx_token", (q) => q.eq("tokenIdentifier", identity.tokenIdentifier))
+        .unique();
+        if (!user) {
+            throw new Error("Unauthenticated call to mutation");
+        }
 
-            
-            if (args.id !== null) {
-                const SkillLink = await ctx.db.get(args.id);
-                await ctx.db.patch(args.id, {
-                    parentId: args.parentId,
-                    childId: args.childId,
-                    createdBy: SkillLink?.createdBy
-                }); 
-                return SkillLink?._id;
-            } else {
-                const SkillLinkId = await ctx.db.insert("SkillLink", {
-                    parentId: args.parentId,
-                    childId: args.childId,
-                    createdBy: user._id
-                });  
-                return SkillLinkId;      
-            }
-            },
-    });
+        
+        if (args.id !== null) {
+            const SkillLink = await ctx.db.get(args.id);
+            await ctx.db.patch(args.id, {
+                parentId: args.parentId,
+                childId: args.childId,
+                createdBy: SkillLink?.createdBy
+            }); 
+            return SkillLink?._id;
+        } else {
+            const SkillLinkId = await ctx.db.insert("SkillLink", {
+                parentId: args.parentId,
+                childId: args.childId,
+                createdBy: user._id
+            });  
+            return SkillLinkId;      
+        }
+    }
+});
 
-    export const deleteSkillLink= mutation({
+export const deleteSkillLink= mutation({
     args: { id: v.id("SkillLink") },
     handler: async (ctx, args) => {
         const identity = await ctx.auth.getUserIdentity();
@@ -153,9 +146,7 @@ import { Skill } from "./helpers";
 
         const user = await ctx.db
         .query("User")
-        .withIndex("idx_token", (q) =>
-            q.eq("tokenIdentifier", identity.tokenIdentifier),
-        )
+        .withIndex("idx_token", (q) => q.eq("tokenIdentifier", identity.tokenIdentifier))
         .unique();
         if (!user) {
             throw new Error("Unauthenticated call to mutation");
@@ -167,6 +158,5 @@ import { Skill } from "./helpers";
         } else {
             await ctx.db.delete(args.id);
         }
-        
-    },
-    });
+    }
+});

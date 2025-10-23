@@ -59,8 +59,9 @@ export type UserSkill = Doc<"Skill"> & {
   linkedSkills: []
 };
 
-export type CompanyWithUser = Doc<"Company"> & {
-  company: Doc<"User">
+export type CompanyWithUser = {
+  company: Doc<"Company">,
+  user: Doc<"User">
 };
 
 export type CompanyWithProject = {
@@ -69,16 +70,9 @@ export type CompanyWithProject = {
   user: Doc<"User">
 };
 
-export type WorkExperienceItem = {
-  occupation: Doc<"Occupation">,
-  company: Doc<"Company">,
-  user?: userInfo
-};
-
 export type FileItem = {
   file: Doc<"File">,
   user: Doc<"User">,
   url?: string | null
 };
-
 

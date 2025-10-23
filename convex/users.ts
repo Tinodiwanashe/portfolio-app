@@ -2,14 +2,13 @@ import { paginationOptsValidator } from "convex/server";
 import { query, mutation, QueryCtx  } from "./_generated/server";
 import { v } from "convex/values";
 import { Id } from "./_generated/dataModel";
-import { SocialLinkSchema, User, UserWithCountry } from "./helpers";
+import { User, UserWithCountry } from "./helpers";
+import schema from "./schema";
 
 const getUserByTokenIdentifier = async (ctx: QueryCtx, tokenIdentifier: string) => {
   return await ctx.db
   .query("User")
-  .withIndex("idx_token", (q) =>
-    q.eq("tokenIdentifier", tokenIdentifier),
-  )
+  .withIndex("idx_token", (q) => q.eq("tokenIdentifier", tokenIdentifier))
   .unique();
 }
 
@@ -22,9 +21,7 @@ export const store = mutation(async ({ db, auth }) => {
   // Check if we've already stored this identity before.
   const user = await db
     .query("User")
-    .withIndex("idx_token", (q) =>
-      q.eq("tokenIdentifier", identity.tokenIdentifier),
-    )
+    .withIndex("idx_token", (q) => q.eq("tokenIdentifier", identity.tokenIdentifier))
     .unique();
 
   if (user !== null) {
@@ -54,13 +51,8 @@ export const store = mutation(async ({ db, auth }) => {
 
 export const updateUser = mutation({
   args: { 
-    id: v.id("User"),
-    phoneNumber: v.optional(v.string()),
-    address: v.optional(v.string()),
-    countryId: v.optional(v.union(v.id("Country"), v.null())),  
-    latitude: v.optional(v.float64()),
-    longitude: v.optional(v.float64()),
-    socialLinks: v.optional(v.array(SocialLinkSchema)),
+    ...schema.tables.User.validator.fields,                        
+    id: v.id("User")    
   },
   handler: async (ctx, args) => {
     // Check if the user exists.
@@ -93,8 +85,7 @@ export const updateUser = mutation({
     } else {
       throw new Error("User not found");
     }
-  
-  },
+  }
 });
 
 export const deleteUser = mutation({
@@ -105,9 +96,8 @@ export const deleteUser = mutation({
           throw new Error("User not found");
       } else {
           await ctx.db.delete(args.id);
-      }
-      
-  },
+      }   
+  }
 });
 
 export const getUsersPaginated = query({
@@ -118,7 +108,7 @@ export const getUsersPaginated = query({
     .withIndex("idx_user_name", (q) => q.eq("name", args.name))
     .order("asc")
     .paginate(args.paginationOpts);
-  },
+  }
 });
   
 export const getUsers = query({
@@ -141,20 +131,19 @@ export const getUsers = query({
 
       }),
     ); 
-  },
+  }
 });  
 
 export const getUser = query({
-    args: {id: v.id("User") },
-    handler: async (ctx, args) => {
-      //return await ctx.db.get(args.UserId);
-      const user = await ctx.db
-      .query("User")
-      .withIndex("by_id", (q) =>
-        q.eq("_id", args.id))
-      .unique();
-      return user as User;
-    },
+  args: {id: v.id("User") },
+  handler: async (ctx, args) => {
+    //return await ctx.db.get(args.UserId);
+    const user = await ctx.db
+    .query("User")
+    .withIndex("by_id", (q) => q.eq("_id", args.id))
+    .unique();
+    return user as User;
+  }
 }); 
 
 export const getUserByName = query({
@@ -162,12 +151,11 @@ export const getUserByName = query({
   handler: async (ctx, args) => {
     const user = await ctx.db
     .query("User")
-    .withIndex("idx_user_name", (q) =>
-      q.eq("name", args.name))
+    .withIndex("idx_user_name", (q) => q.eq("name", args.name))
     .first();
 
     return user as User;
-  },
+  }
 });
 
 export const getCurrentUser = query({
@@ -177,7 +165,7 @@ export const getCurrentUser = query({
       throw new Error("Called getCurrentUser without authentication present");
     }
     return await getUserByTokenIdentifier(ctx, identity.tokenIdentifier);
-  },
+  }
 });
 
 export const getUserSocialLinksByUserId = query({
@@ -187,13 +175,11 @@ export const getUserSocialLinksByUserId = query({
     const user = identity === null
       ? await ctx.db
         .query("User")
-        .withIndex("by_id", (q) =>
-          q.eq("_id", args.userId),
-        )
+        .withIndex("by_id", (q) => q.eq("_id", args.userId))
         .first()
       : await getUserByTokenIdentifier(ctx, identity?.tokenIdentifier);
 
     return user?.socialLinks ?? [];
 
-  },
+  }
 });

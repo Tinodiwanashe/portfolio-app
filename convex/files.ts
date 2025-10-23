@@ -4,18 +4,16 @@ import { Id } from "./_generated/dataModel";
 import { FileCategorySchema, FileItem } from "./helpers";
 
 /* 
-    **Uploading files via upload URLs**
+**Uploading files via upload URLs**
 
-    Arbitrarily large files can be uploaded directly to your backend using a generated upload URL. This requires the client to make 3 requests:
+Arbitrarily large files can be uploaded directly to your backend using a generated upload URL. This requires the client to make 3 requests:
 
-    1. Generate an upload URL using a mutation that calls storage.generateUploadUrl().
-    2. Send a POST request with the file contents to the upload URL and receive a storage ID.
-    3. Save the storage ID into your data model via another mutation.
-    
-    In the first mutation that generates the upload URL you can control who can upload files to your Convex storage. 
+1. Generate an upload URL using a mutation that calls storage.generateUploadUrl().
+2. Send a POST request with the file contents to the upload URL and receive a storage ID.
+3. Save the storage ID into your data model via another mutation.
+
+In the first mutation that generates the upload URL you can control who can upload files to your Convex storage. 
 */
-
-
 
 // 1. Generating an upload URL
 export const generateUploadUrl = mutation(async (ctx) => {
@@ -23,7 +21,7 @@ export const generateUploadUrl = mutation(async (ctx) => {
     return await ctx.storage.generateUploadUrl();
     // This mutation can control who is allowed to upload files.
     // The upload URL expires in 1 hour and so should be fetched shortly before the upload is made.
-  });
+});
 
 // 3. Writing the new storage ID to the database  
 export const createFileLink = mutation({
@@ -35,14 +33,12 @@ export const createFileLink = mutation({
     handler: async (ctx, args) => {
         const identity = await ctx.auth.getUserIdentity();
         if (identity === null) {
-          throw new Error("Called getCurrentUser without authentication present");
+            throw new Error("Called getCurrentUser without authentication present");
         }
-          // Check if we've already stored this identity before.
+            // Check if we've already stored this identity before.
         const user = await ctx.db
         .query("User")
-        .withIndex("idx_token", (q) =>
-            q.eq("tokenIdentifier", identity.tokenIdentifier),
-        )
+        .withIndex("idx_token", (q) => q.eq("tokenIdentifier", identity.tokenIdentifier))
         .unique();
         // The file size is not limited, but upload POST request has a 2 minute timeout.
         await ctx.db.insert("File", {
@@ -51,10 +47,10 @@ export const createFileLink = mutation({
             storageId: args.storageId,
             uploadedBy: user?._id
         });
-    },
+    }
 });
 
-  export const getResumeByUserId = query({
+export const getResumeByUserId = query({
     args: {
         userId: v.id("User")
     },
@@ -78,10 +74,10 @@ export const createFileLink = mutation({
             url
         } as FileItem;
 
-    },
-  });
+    }
+});
 
-  export const getFileByName = query({
+export const getFileByName = query({
     args: {
         fileName: v.string()
     },
@@ -103,10 +99,10 @@ export const createFileLink = mutation({
             user,
             url
         } as FileItem;
-    },
-  });
+    }
+});
 
-  export const getFiles = query({
+export const getFiles = query({
     handler: async (ctx) => {
         const files = await ctx.db
         .query("File")
@@ -126,12 +122,12 @@ export const createFileLink = mutation({
                     user,
                     url
                 } as FileItem;
-              }),            
+                }),            
         );
-    },
-  });
+    }
+});
 
-  export const getFilesByCurrentUser = query({
+export const getFilesByCurrentUser = query({
     handler: async (ctx) => {
         const identity = await ctx.auth.getUserIdentity();
         if (!identity) {
@@ -140,9 +136,7 @@ export const createFileLink = mutation({
 
         const user = await ctx.db
         .query("User")
-        .withIndex("idx_token", (q) =>
-            q.eq("tokenIdentifier", identity.tokenIdentifier),
-        )
+        .withIndex("idx_token", (q) => q.eq("tokenIdentifier", identity.tokenIdentifier))
         .unique();
         
         const files = user
@@ -166,8 +160,8 @@ export const createFileLink = mutation({
                     user,
                     url
                 } as FileItem;
-              }),            
+                }),            
         );
-    },
-  });
+    }
+});
 
