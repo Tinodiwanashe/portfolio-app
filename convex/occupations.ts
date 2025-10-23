@@ -2,6 +2,7 @@ import { Id } from "./_generated/dataModel";
 import { query, mutation  } from "./_generated/server";
 import { v } from "convex/values";
 import schema from "./schema";
+import { WorkExperienceItem } from "./helpers";
 
 export const getOccupationsByUserId = query({
     args: {userId: v.union(v.id("User"), v.null()) },
@@ -25,7 +26,7 @@ export const getOccupationsByUserId = query({
                         userEmail: user?.email,
                         userPictureUrl: user?.pictureUrl
                     }
-                };
+                } as WorkExperienceItem;
             }),
         );         
     }
@@ -63,8 +64,8 @@ export const getOccupationsForCurrentUser = query({
                         userName: user?.name,
                         userEmail: user?.email,
                         userPictureUrl: user?.pictureUrl
-                    }
-                };
+                    } 
+                } as WorkExperienceItem;
             }),
         ); 
     }
