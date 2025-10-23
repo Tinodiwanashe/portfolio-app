@@ -2,7 +2,7 @@ import { Id } from "./_generated/dataModel";
 import { query, mutation, QueryCtx  } from "./_generated/server";
 import { v } from "convex/values";
 import { Skill } from "./helpers";
-import schema from "./schema";
+import schema from "./Schema";
 
 const getSkillbyName = async (ctx: QueryCtx, name: string) => {
     return await ctx.db

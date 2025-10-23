@@ -2,7 +2,7 @@ import { Id } from "./_generated/dataModel";
 import { query, mutation  } from "./_generated/server";
 import { v } from "convex/values";
 import { CompanyWithProject } from "./helpers";
-import schema from "./schema";
+import schema from "./Schema";
 
 
 export const getProjectsByUserId = query({

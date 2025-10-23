@@ -3,7 +3,7 @@ import { query, mutation, QueryCtx  } from "./_generated/server";
 import { v } from "convex/values";
 import { Id } from "./_generated/dataModel";
 import { User, UserWithCountry } from "./helpers";
-import schema from "./schema";
+import schema from "./Schema";
 
 const getUserByTokenIdentifier = async (ctx: QueryCtx, tokenIdentifier: string) => {
   return await ctx.db

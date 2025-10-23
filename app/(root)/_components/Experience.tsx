@@ -15,7 +15,7 @@ type PreloadedProps = {
 
 const Experience = (props: PreloadedProps) => {
     const user = usePreloadedQuery(props.preloadedUser);
-    const occupations = useQuery(convexQuery(api.occupations.getOccupationsByUserId,{userId: user._id}));
+    const occupations = useQuery(convexQuery(api.occupations.getOccupationsByUserId,{userId: user.id}));
     if(occupations.data === undefined){
         return;
     }
