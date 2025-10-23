@@ -15,7 +15,7 @@ const userFields = {
   socialLinks: v.optional(v.array(SocialLinkSchema))
 }
 
-export const UserSchema = v.object(userFields);
+export const UserSchema = v.object({...userFields, id: v.id("User")});
 
 const countryFields = {
   name: v.string(),
@@ -25,7 +25,7 @@ const countryFields = {
   continent: v.optional(v.string())
 }
 
-export const CountrySchema = v.object(countryFields);
+export const CountrySchema = v.object({...countryFields, id: v.id("Country")});
 
 const occupationFields = {
   title: v.string(),
@@ -37,7 +37,7 @@ const occupationFields = {
   createdBy: v.union(v.id("User"), v.null())
 }
 
-export const OccupationSchema = v.object(occupationFields);
+export const OccupationSchema = v.object({...occupationFields, _id: v.id("Occupation")});
 
 const companyFields = {
   name: v.string(),
@@ -46,7 +46,7 @@ const companyFields = {
   createdBy: v.optional(v.union(v.id("User"), v.null()))
 }
 
-export const CompanySchema = v.object(companyFields);
+export const CompanySchema = v.object({...companyFields, _id: v.id("Company")});
 
 const projectFields = {
   name: v.string(),
@@ -57,7 +57,7 @@ const projectFields = {
   createdBy: v.union(v.id("User"), v.null())
 }
 
-export const ProjectSchema = v.object(projectFields);
+export const ProjectSchema = v.object({...projectFields, id: v.id("Project")});
 
 const fileFields = {
   name: v.string(),
@@ -66,7 +66,7 @@ const fileFields = {
   uploadedBy: v.optional(v.union(v.id("User"), v.null()))
 }
 
-export const FileSchema = v.object(fileFields);
+export const FileSchema = v.object({...fileFields, id: v.id("File")});
 
 const skillFields = {
   name: v.string(),
@@ -75,7 +75,7 @@ const skillFields = {
   createdBy: v.optional(v.union(v.id("User"), v.null()))
 }
 
-export const SkillSchema = v.object(skillFields);
+export const SkillSchema = v.object({...skillFields, id: v.id("Skill")});
 
 const skillLinkFields = {
   parentId: v.id("Skill"),
@@ -83,7 +83,7 @@ const skillLinkFields = {
   createdBy: v.optional(v.union(v.id("User"), v.null()))
 }
 
-export const SkillLinkSchema = v.object(skillLinkFields);
+export const SkillLinkSchema = v.object({...skillLinkFields, id: v.id("SkillLink")});
 
 export default defineSchema({
   User: defineTable(userFields)

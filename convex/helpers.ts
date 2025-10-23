@@ -38,7 +38,7 @@ export type SocialLinkObject = Infer<typeof SocialLinkSchema>;
 export type Occupation = Infer<typeof OccupationSchema>;
 export type Company = Infer<typeof CompanySchema>;
 export type Country = Infer<typeof CountrySchema>;
-export type User = Infer<typeof UserSchema>;
+export type User = Infer<typeof UserSchema>
 export type Skill = Infer<typeof SkillSchema>;
 
 export type WorkExperienceItem = {
