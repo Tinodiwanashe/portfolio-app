@@ -75,7 +75,7 @@ const skillFields = {
   createdBy: v.optional(v.union(v.id("User"), v.null()))
 }
 
-export const SkillSchema = v.object({...skillFields, id: v.id("Skill")});
+export const SkillSchema = v.object({...skillFields, id: v.optional(v.union(v.id("Skill"), v.any()))});
 
 const skillLinkFields = {
   parentId: v.id("Skill"),
