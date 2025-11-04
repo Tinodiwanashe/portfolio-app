@@ -44,8 +44,8 @@ type PreloadedProps = {
 const Hero = (props: PreloadedProps) => {
   const [isDownloadPending, setIsDownloadPending] = useState(false);
   const user = usePreloadedQuery(props.preloadedUser);
-  const resume = useQuery(convexQuery(api.files.getResumeByUserId,{userId: user._id}));
-  const socialLinks = useQuery(convexQuery(api.users.getUserSocialLinksByUserId,{userId: user._id}));
+  const resume = useQuery(convexQuery(api.files.getResumeByUserId,{userId: user.id}));
+  const socialLinks = useQuery(convexQuery(api.users.getUserSocialLinksByUserId,{userId: user.id}));
 
   const fileInfo = {
     name: resume.data?.file.name,
