@@ -49,7 +49,7 @@ export const getSkills = query({
 export const getSkillByName = query({
     args: {
         name: v.string(), 
-        userId: v.id("User") 
+        userId: v.optional(v.id("User")) 
     },
     handler: async (ctx, args) => {
         const skill = await ctx.db

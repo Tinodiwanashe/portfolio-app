@@ -63,7 +63,7 @@ export const getChildSkills = query({
 export const getChildSkillsByName = query({
     args: {
         name: v.string(),
-        userId: v.id("User") 
+        userId: v.optional(v.id("User"))
     },
     handler: async (ctx, args) => {
         const skill = await getSkillbyName(ctx, args.name);

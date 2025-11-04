@@ -52,7 +52,7 @@ export const createFileLink = mutation({
 
 export const getResumeByUserId = query({
     args: {
-        userId: v.id("User")
+        userId: v.optional(v.id("User"))
     },
     handler: async (ctx, args) => {
         const file = await ctx.db
