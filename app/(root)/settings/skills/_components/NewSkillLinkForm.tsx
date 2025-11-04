@@ -88,8 +88,8 @@ export default function NewSkillLinkForm(props: PreloadedProps) {
                   </FormControl>
                   {skills && (
                     <SelectContent>
-                      {skills.map((item, index: number) => (
-                        <SelectItem key={index} value={item._id}>
+                      {skills.map((item: Skill, index: number) => (
+                        <SelectItem key={index} value={item.id}>
                           {item.name}
                         </SelectItem>
                       ))}
