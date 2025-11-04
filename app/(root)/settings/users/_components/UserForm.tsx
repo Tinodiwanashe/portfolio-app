@@ -77,7 +77,7 @@ export default function UserForm(props: PreloadedProps) {
 
       // You can now use these values for mutation.
       updateUser.mutate({
-        id: user?._id,
+        id: user?.id,
         phoneNumber: values.phoneNumber,
         address: values.address,
         countryId: values.countryId,  
