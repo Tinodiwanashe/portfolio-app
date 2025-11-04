@@ -15,7 +15,7 @@ const userFields = {
   socialLinks: v.optional(v.array(SocialLinkSchema))
 }
 
-export const UserSchema = v.object({...userFields, id: v.id("User")});
+export const UserSchema = v.object({...userFields, id: v.optional(v.union(v.id("User"), v.any()))});
 
 const countryFields = {
   name: v.string(),

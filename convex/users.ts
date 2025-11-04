@@ -142,7 +142,17 @@ export const getUser = query({
     .query("User")
     .withIndex("by_id", (q) => q.eq("_id", args.id))
     .unique();
-    return user as User;
+
+    if (!user) return null;
+
+    // Convert Convex record (_id) to the API User type (id) and omit internal _creationTime
+    const { _id, _creationTime, ...rest } = user;
+    const result: User = {
+      id: _id,
+      ...rest
+    };
+
+    return result;
   }
 }); 
 
@@ -154,7 +164,16 @@ export const getUserByName = query({
     .withIndex("idx_user_name", (q) => q.eq("name", args.name))
     .first();
 
-    return user as User;
+    if (!user) return null;
+
+    // Convert Convex record (_id) to the API User type (id) and omit internal _creationTime
+    const { _id, _creationTime, ...rest } = user;
+    const result: User = {
+      id: _id ,
+      ...rest
+    };
+
+    return result;
   }
 });
 
