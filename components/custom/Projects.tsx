@@ -21,7 +21,7 @@ type PreloadedProps = {
 
 const Projects = (props: PreloadedProps) => {
     const user = usePreloadedQuery(props.preloadedUser);
-    const projects = useQuery(convexQuery(api.projects.getProjectsByUserId,{userId: user.id}));
+    const projects = useQuery(convexQuery(api.projects.getProjectsByUserId,{userId: user?.id}));
   return (
     <section id="projects" className="container h-max bg-white dark:bg-black-100 ">
         
