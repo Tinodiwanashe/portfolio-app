@@ -24,7 +24,7 @@ const SkillsBentoGrid = (props: PreloadedProps) => {
       description: "These are some to the technologies and and frameworks I have used on my journey.",
       href: "/",
       cta: "Learn more",
-      background: <SkillsCloud id={user._id }/>,
+      background: <SkillsCloud id={user.id }/>,
       className: "col-span-3 lg:col-span-2 row-span-2 "
     },
     {
@@ -33,7 +33,7 @@ const SkillsBentoGrid = (props: PreloadedProps) => {
       description: "Outsystems a low-code tool enable developers to integrate multiple programming languages.",
       href: "/",
       cta: "Learn more",
-      background: <Ecosystems id={user._id} parentSkill={"Outsystems"}/>,
+      background: <Ecosystems id={user.id} parentSkill={"Outsystems"}/>,
       className: "col-span-3 lg:col-span-1 row-span-1 md:col-span-3 md:row-span-1"
     },
     {
@@ -42,7 +42,7 @@ const SkillsBentoGrid = (props: PreloadedProps) => {
       description: "I am currently based in South Africa.",
       href: "/",
       cta: "Learn more",
-      background: <Ecosystems id={user._id} parentSkill={"Next.js"}/>,
+      background: <Ecosystems id={user.id} parentSkill={"Next.js"}/>,
       className: "col-span-3 lg:col-span-1 row-span-1 md:col-span-3 md:row-span-1"
     },    
   ]
