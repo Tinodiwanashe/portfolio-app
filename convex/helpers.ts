@@ -1,6 +1,6 @@
 import { Infer, v } from "convex/values";
 import { Doc } from "./_generated/dataModel";
-import { CompanySchema, CountrySchema, OccupationSchema, SkillSchema, UserSchema } from "./schema";
+import { CompanySchema, CountrySchema, OccupationSchema, SkillSchema, UserSchema } from "./Schema";
 
 // Define a messages table with two indexes.
 /* Each table is defined using the defineTable function. Within each table, the document type is defined using the validator builder, v. 
