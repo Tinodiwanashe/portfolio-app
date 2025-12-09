@@ -2,7 +2,7 @@ import { Id } from "./_generated/dataModel";
 import { query, mutation, QueryCtx  } from "./_generated/server";
 import { v } from "convex/values";
 import { UserSkill, Skill } from "./helpers";
-import schema from "./Schema";
+import schema from "./schema";
 
 const getLinkedSkills = async (ctx: QueryCtx, parentId: Id<"Skill">) => {
     const linkedSkills = await ctx.db
@@ -32,7 +32,7 @@ export const getSkills = query({
                 const linkedSkills = await getLinkedSkills(ctx, skill._id);
 
                 return  {
-                    ...skill,
+                    skill: skill,
                     user : {
                         userName: user?.name,
                         userEmail: user?.email,
